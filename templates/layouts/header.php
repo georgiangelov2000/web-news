@@ -75,7 +75,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts/favorites') === 0 ? ' active' : '' ?>" href="/api/favorites">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts/favorites') === 0 ? ' active' : '' ?>" href="/api/posts/favorites">
                         <i class="bi bi-star-fill me-1"></i>Favorites
                     </a>
                 </li>
