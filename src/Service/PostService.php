@@ -26,10 +26,19 @@ class PostService
     }
 
     /**
-     * Get a single post by ID
+     * Get a single post by ALIAS
      */
     public function getPost($alias)
     {
         return $this->posts->find($alias);
     }
+
+    /**
+     * Get a single post by ID
+     */
+    public function getPostById(int $id)
+    {
+        return $this->posts->findById($id);
+    }
+
 }

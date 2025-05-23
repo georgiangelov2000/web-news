@@ -13,6 +13,11 @@ class PostRepository
 
     public function find($alias)
     {
-        return Post::find($alias);
+        return Post::findByIdOrAlias($alias);
+    }
+    
+    public function findById(int $id)
+    {
+        return Post::findByIdOrAlias($id);
     }
 }

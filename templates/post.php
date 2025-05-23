@@ -1,5 +1,6 @@
 <?php
-$pageTitle = isset($data['post']['title']) ? htmlspecialchars($data['post']['title']) : 'Post';
+$post = $data['post'] ?? null;
+$pageTitle = isset($post->title) ? htmlspecialchars($post->title) : 'Post';
 include __DIR__ . '/layouts/header.php';
 
 $post = $data['post'] ?? [];
@@ -191,12 +192,12 @@ $comments = [
 <section class="post-hero">
     <div class="container">
         <div class="post-meta">
-            <span><i class="bi bi-clock"></i> <?= isset($post['created_at']) ? htmlspecialchars($post['created_at']) : '' ?></span>
+            <span><i class="bi bi-clock"></i> <?= htmlspecialchars($post->created_at ?? '') ?></span>
             <span class="mx-2">•</span>
-            <span><i class="bi bi-person-circle"></i> <?= isset($post['username']) ? htmlspecialchars($post['username']) : '' ?></span>
+            <span><i class="bi bi-person-circle"></i> <?= htmlspecialchars($post->username ?? '') ?></span>
         </div>
-        <h1><?= htmlspecialchars($post['title'] ?? '') ?></h1>
-        <img src="<?= htmlspecialchars($post['image_url'] ?? 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80') ?>"
+        <h1><?= htmlspecialchars($post->title ?? '') ?></h1>
+        <img src="<?= htmlspecialchars($post->image_url ?? 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80') ?>"
              alt="Post image"
              class="hero-image img-fluid shadow-sm mt-2">
     </div>
@@ -205,24 +206,24 @@ $comments = [
 <!-- Main content card -->
 <div class="post-content-card">
     <div class="post-body">
-        <?= isset($post['body']) ? nl2br(htmlspecialchars($post['body'])) : '' ?>
+        <?= isset($post->body) ? nl2br(htmlspecialchars($post->body)) : '' ?>
     </div>
     <div class="post-actions">
-        <a class="btn<?= !empty($post['is_favorite']) ? ' active' : '' ?>"
-           href="/posts/<?= $post['id'] ?? 0 ?>/favorite"
-           title="<?= !empty($post['is_favorite']) ? 'Remove from Favorites' : 'Add to Favorites' ?>">
-            <i class="bi bi-star<?= !empty($post['is_favorite']) ? '-fill text-warning' : '' ?>"></i> Favorite
+        <a class="btn<?= !empty($post->is_favorite) ? ' active' : '' ?>"
+           href="/posts/<?= $post->id ?? 0 ?>/favorite"
+           title="<?= !empty($post->is_favorite) ? 'Remove from Favorites' : 'Add to Favorites' ?>">
+            <i class="bi bi-star<?= !empty($post->is_favorite) ? '-fill text-warning' : '' ?>"></i> Favorite
         </a>
-        <a class="btn" href="/posts/<?= $post['id'] ?? 0 ?>/like" title="Like">
+        <a class="btn" href="/posts/<?= $post->id ?? 0 ?>/like" title="Like">
             <i class="bi bi-hand-thumbs-up"></i> Like
         </a>
-        <a class="btn" href="/posts/<?= $post['id'] ?? 0 ?>/dislike" title="Dislike">
+        <a class="btn" href="/posts/<?= $post->id ?? 0 ?>/dislike" title="Dislike">
             <i class="bi bi-hand-thumbs-down"></i> Dislike
         </a>
-        <a class="btn" href="/posts/<?= $post['id'] ?? 0 ?>/share" title="Share">
+        <a class="btn" href="/posts/<?= $post->id ?? 0 ?>/share" title="Share">
             <i class="bi bi-share"></i> Share
         </a>
-        <a class="btn" href="/posts/<?= $post['id'] ?? 0 ?>/report" title="Report">
+        <a class="btn" href="/posts/<?= $post->id ?? 0 ?>/report" title="Report">
             <i class="bi bi-flag"></i> Report
         </a>
     </div>
@@ -232,13 +233,15 @@ $comments = [
 <!-- Comments section -->
 <div class="comments-section">
     <h3><i class="bi bi-chat-left-text me-1"></i> Comments</h3>
+
     <!-- Comment form -->
-    <form class="comment-form mb-4" method="post" action="/posts/<?= $post['id'] ?? 0 ?>/comment">
+    <form class="comment-form mb-4" method="post" action="/posts/<?= $post->id ?? 0 ?>/comment">
         <div class="mb-2">
             <textarea name="body" placeholder="Write your comment..." required></textarea>
         </div>
         <button type="submit" class="btn"><i class="bi bi-send"></i> Post Comment</button>
     </form>
+
     <!-- Comment list -->
     <ul class="comment-list">
         <?php if (!empty($comments)): ?>
@@ -258,7 +261,9 @@ $comments = [
                 </li>
             <?php endforeach; ?>
         <?php else: ?>
-            <li class="comment text-center text-muted" style="background:transparent;box-shadow:none;">No comments yet. Be the first to comment!</li>
+            <li class="comment text-center text-muted" style="background:transparent;box-shadow:none;">
+                No comments yet. Be the first to comment!
+            </li>
         <?php endif; ?>
     </ul>
 </div>

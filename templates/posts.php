@@ -59,7 +59,7 @@ $totalPages = $data['total_pages'] ?? 1;
               </div>
             </div>
             <a class="btn btn-warning btn-sm rounded-pill shadow-sm w-100 mt-1"
-              href="/api/posts/<?= $post['alias'] ?? 0 ?>">Open
+              href="/api/post/<?= $post['alias'] ?? 0 ?>">Open
               post</a>
           </div>
         </div>
@@ -115,7 +115,7 @@ $totalPages = $data['total_pages'] ?? 1;
               </div>
             </div>
             <a class="btn btn-warning btn-sm rounded-pill shadow-sm w-100 mt-1"
-              href="/api/posts/<?= $post['alias'] ?? 0 ?>">Open
+              href="/api/post/<?= $post['alias'] ?? 0 ?>">Open
               post</a>
           </div>
         </div>
@@ -175,7 +175,7 @@ $totalPages = $data['total_pages'] ?? 1;
               </div>
             </div>
             <a class="btn btn-warning btn-sm rounded-pill shadow-sm w-100 mt-1"
-              href="/api/posts/<?= $post['alias'] ?? 0 ?>">Open
+              href="/api/post/<?= $post['alias'] ?? 0 ?>">Open
               post</a>
           </div>
         </div>

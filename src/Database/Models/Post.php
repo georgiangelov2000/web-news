@@ -15,12 +15,24 @@ class Post
         foreach ($data as $k => $v) $this->$k = $v;
     }
 
-    public static function find($alias)
+    public static function findByIdOrAlias($identifier)
     {
-        $stmt = Database::getConnection()->prepare("SELECT * FROM posts WHERE alias = ?");
-        $stmt->execute([$alias]);
-        return $stmt->fetch();
+        $db = Database::getConnection();
+    
+        if (ctype_digit((string) $identifier)) {
+            // If it is a numeric value → ID
+            $stmt = $db->prepare("SELECT * FROM posts WHERE id = ?");
+            $stmt->execute([$identifier]);
+        } else {
+            // Otherwise → alias
+            $stmt = $db->prepare("SELECT * FROM posts WHERE alias = ?");
+            $stmt->execute([$identifier]);
+        }
+    
+        $data = $stmt->fetch();
+        return $data ? new static($data) : null;
     }
+    
 
     public static function create($data)
     {

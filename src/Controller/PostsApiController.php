@@ -26,14 +26,11 @@ class PostsApiController extends ApiController
     // HTML API: GET /api/posts
     public function index(array $request)
     {
-        $urlParams = $this->parseRequestUriAndQuery($request);
-
-        $resource = $urlParams['resource'];
-        $page = $urlParams['id'];
+        $page = $request['identifier'];
 
         if ($page) {
             $this->currentPage = (int) $page;
-            $relativePath = $resource . '/' . $page . '.html';
+            $relativePath = $this->cacheDir . '/' . $page . '.html';
         } else {
             $relativePath = $this->cacheDir . '.html';
         }
@@ -56,11 +53,11 @@ class PostsApiController extends ApiController
     }
 
     // Render single post as HTML and cache it
-    // HTML API: GET /api/posts/<alias>
-    public function show(array $request)
+    // HTML API: GET /api/posts/<alias>||<id>
+    public function show($request)
     {
         // Extract alias from route params
-        $alias = $request['alias'] ?? null;
+        $alias = $request['identifier'] ?? null;
         if (!$alias) {
             http_response_code(400);
             echo "Missing post alias";
@@ -77,7 +74,7 @@ class PostsApiController extends ApiController
 
         // Retrieve post by alias (or ID if necessary)
         $post = $this->postService->getPost($alias);
-
+        
         if (!$post) {
             http_response_code(404);
             echo "Post not found";
@@ -109,6 +106,7 @@ class PostsApiController extends ApiController
 
         // Get the array of favorited post IDs for this session
         $favorites = $this->session->get('favorite_posts', []);
+
         if (in_array($postId, $favorites)) {
             // Unfavorite if already favorited
             $favorites = array_diff($favorites, [$postId]);
@@ -212,5 +210,19 @@ class PostsApiController extends ApiController
         $reason = $_POST['reason'] ?? 'Inappropriate content';
 
         echo json_encode(['status' => 'success', 'reported' => true, 'reason' => $reason]);
+    }
+
+    // GET /api/favourites
+    public function favoritesPage()
+    {
+        $favIds = $this->session->get('favorite_posts', []);
+        $favPosts = [];
+        foreach ($favIds as $id) {
+            $post = $this->postService->getPostById($id);
+            if ($post) $favPosts[] = $post;
+        }
+
+        // Render the favorites page
+        echo $this->view->render('favourites', ['favPosts' => $favPosts]);
     }
 }

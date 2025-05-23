@@ -52,9 +52,19 @@ class Session
 
     public function save(): void
     {
-        file_put_contents($this->getSessionFile(), serialize($this->data), LOCK_EX);
+        $sessionFile = $this->getSessionFile();
+        $serialized = serialize($this->data);
+        $result = file_put_contents($sessionFile, $serialized, LOCK_EX);
+        
+        $logMessage = date('Y-m-d H:i:s') . " | Session saved to {$sessionFile}\n";
+    
+        if ($result === false) {
+            $logMessage = date('Y-m-d H:i:s') . " | ERROR: Failed to save session to {$sessionFile}\n";
+        }
+    
+        file_put_contents(__DIR__ . '/../../storage/logs/session.log', $logMessage, FILE_APPEND);
     }
-
+    
     public function set(string $key, $value): void
     {
         $this->data[$key] = $value;
