@@ -44,46 +44,76 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg amazon-navbar mb-4 py-2">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <i class="bi bi-box-seam"></i> My App
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto align-items-lg-center">
-                    <li class="nav-item">
-                        <a class="nav-link<?= $_SERVER['REQUEST_URI'] === '/' ? ' active' : '' ?>" href="/">
-                            <i class="bi bi-house-door-fill me-1"></i>Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/users') === 0 ? ' active' : '' ?>" href="/users">
-                            <i class="bi bi-people-fill me-1"></i>Users
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/posts') === 0 ? ' active' : '' ?>" href="/posts">
-                            <i class="bi bi-card-list me-1"></i>Posts
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/favouries') === 0 ? ' active' : '' ?>" href="/api/posts/favorites">
-                            <i class="bi bi-star-fill me-2"></i> Favourites
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts/create') === 0 ? ' active' : '' ?>" href="/api/posts/create">
-                            <i class="bi bi-plus-circle me-2"></i>Create Post
-                        </a>
-                    </li>
-                </ul>
-            </div>
+<nav class="navbar navbar-expand-lg amazon-navbar mb-4 py-2">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="bi bi-lightning-charge-fill text-warning me-1"></i> My App
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                <li class="nav-item">
+                    <a class="nav-link<?= $_SERVER['REQUEST_URI'] === '/' ? ' active' : '' ?>" href="/">
+                        <i class="bi bi-house-door-fill me-1"></i>Home
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/posts') === 0 ? ' active' : '' ?>" href="/posts">
+                        <i class="bi bi-card-list me-1"></i>Posts
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts/create') === 0 ? ' active' : '' ?>" href="/api/posts/create">
+                        <i class="bi bi-plus-circle me-1"></i>Create
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/favorites') === 0 ? ' active' : '' ?>" href="/api/favorites">
+                        <i class="bi bi-star-fill me-1"></i>Favorites
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/users') === 0 ? ' active' : '' ?>" href="/users">
+                        <i class="bi bi-people-fill me-1"></i>Users
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/about') === 0 ? ' active' : '' ?>" href="/about">
+                        <i class="bi bi-info-circle me-1"></i>About
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/contact') === 0 ? ' active' : '' ?>" href="/contact">
+                        <i class="bi bi-envelope me-1"></i>Contact
+                    </a>
+                </li>
+
+                <li class="nav-item dropdown ms-2">
+                    <a class="btn btn-sm btn-outline-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle me-1"></i> Account
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" href="/login"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a></li>
+                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a></li>
+                        <li><a class="dropdown-item" href="/profile"><i class="bi bi-person-badge me-1"></i>Profile</a></li>
+                    </ul>
+                </li>
+
+            </ul>
         </div>
-    </nav>
+    </div>
+</nav>
+
 </header>
 
 <main class="container">
