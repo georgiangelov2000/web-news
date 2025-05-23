@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Database\Models\Comment;
 use App\Service\PostService;
 use App\Repository\PostRepository;
 use App\Session\Session;
@@ -254,4 +255,25 @@ class PostsApiController extends ApiController
         header('Location: /posts');
         exit;
     }
+
+    public function storeComment(array $request, int $id): void
+    {
+        $body = trim($request['body'] ?? '');
+        $username = $_SESSION['user_name'] ?? 'Guest'; // Replace with actual session logic
+    
+        if (empty($body)) {
+            http_response_code(422);
+            echo json_encode(['error' => 'Comment body is required.']);
+            return;
+        }
+    
+        Comment::create([
+            'post_id' => $id,
+            'username' => $username,
+            'body' => $body,
+        ]);
+    
+        echo json_encode(['success' => true, 'username' => $username, 'created_at' => date('Y-m-d H:i'), 'body' => $body]);
+    }
+    
 }

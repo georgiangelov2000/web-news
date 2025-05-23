@@ -105,6 +105,8 @@ $(document).ready(function () {
     });
   });
 
+
+
   // Share (GET, just open normally)
   $(document).on('click', '.btn-post-share', function (e) {
     // Optionally, open in modal or popup
@@ -113,6 +115,45 @@ $(document).ready(function () {
     // $('#shareModal').modal('show').find('.modal-body').load('/api/posts/' + postId + '/share');
     // Or, just allow normal navigation
   });
+
+  $('#comment-form').on('submit', function (e) {
+    e.preventDefault();
+
+    const $form = $(this);
+    const body = $('#comment-body').val().trim();
+    const url = $form.attr('action');
+
+    if (!body) return;
+
+    $.post(url, { body: body }, function (data) {
+      if (data.success) {
+        const comment = `
+                <li class="comment">
+                    <div class="comment-user">
+                        <i class="bi bi-person-circle"></i>
+                        ${escapeHtml(data.username)}
+                    </div>
+                    <span class="comment-date">
+                        <i class="bi bi-clock"></i>
+                        ${escapeHtml(data.created_at)}
+                    </span>
+                    <div class="comment-body">
+                        ${escapeHtml(data.body).replace(/\n/g, '<br>')}
+                    </div>
+                </li>`;
+        $('#comment-list').prepend(comment);
+        $('#comment-body').val('');
+      } else {
+        alert(data.error || 'Something went wrong.');
+      }
+    }, 'json').fail(function () {
+      alert('Request failed. Try again.');
+    });
+  });
+
+  function escapeHtml(text) {
+    return $('<div>').text(text).html();
+  }
 
   $('.slick-slider').slick({
     prevArrow: `<button class="slick-prev slick-arrow" aria-label="Previous" type="button">

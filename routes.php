@@ -12,7 +12,8 @@ $routes = [
     new \PhpDevCommunity\Route('posts.favorites', '/api/posts/favorites', [PostsApiController::class, 'favoritesPage'], ['GET']),
     new \PhpDevCommunity\Route('posts.identifier', '/api/posts/{identifier}', [PostsApiController::class, 'index'], ['GET','HEAD']),
     new \PhpDevCommunity\Route('posts.show', '/api/post/{identifier}', [PostsApiController::class, 'show'], ['GET','HEAD']),
-
+    new \PhpDevCommunity\Route('posts.comment','/api/posts/{id}/comment',[PostsApiController::class, 'storeComment'],['POST']),
+    
     // ACTIONS
     new \PhpDevCommunity\Route('posts.store','/api/posts/create',[PostsApiController::class, 'store'],['POST']),
     new \PhpDevCommunity\Route('posts.like', '/api/posts/{id}/like', [PostsApiController::class, 'like'], ['POST']),
