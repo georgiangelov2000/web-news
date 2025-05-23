@@ -1,0 +1,323 @@
+/* Amazon-like basic reset and font */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff;
+    color: #111;
+    margin: 0;
+    padding: 0;
+}
+
+/* Widget card post text clamp */
+.widget-post .widget-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+    white-space: normal;
+    max-height: 4.5em;
+    line-height: 1.5em;
+}
+
+/* Container for the slider */
+.amazon-slider-container {
+    background: #fff;
+    padding: 32px 0;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Slider navigation arrows */
+.slick-prev,
+.slick-next {
+    background: #fff;
+    color: #232f3e;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    line-height: 36px;
+    font-size: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+    opacity: 0.85;
+    transition: background 0.2s, color 0.2s;
+    z-index: 2;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+.slick-prev:hover,
+.slick-next:hover {
+    background: #232f3e;
+    color: #fff;
+}
+
+/* Slick dots styled like Amazon carousel */
+.slick-dots {
+    bottom: -32px;
+}
+.slick-dots li button:before {
+    font-size: 11px;
+    color: #888;
+    opacity: 1;
+}
+.slick-dots li.slick-active button:before {
+    color: #232f3e;
+}
+
+/* Product card styles */
+.amazon-product-card {
+    background: #fff;
+    border: 1px solid #e7e7e7;
+    border-radius: 6px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.06);
+    padding: 16px;
+    text-align: center;
+    margin: 0 8px;
+}
+.amazon-product-card img {
+    max-width: 100%;
+    height: 160px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+.amazon-product-card .product-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #0f1111;
+    margin-bottom: 8px;
+    min-height: 2.4em;
+}
+.amazon-product-card .product-price {
+    color: #b12704;
+    font-size: 18px;
+    margin-bottom: 8px;
+}
+.amazon-product-card .product-rating {
+    color: #ffa41c;
+    font-size: 15px;
+    margin-bottom: 6px;
+}
+.amazon-product-card .add-to-cart-btn {
+    background: #ffd814;
+    border: 1px solid #fcd200;
+    color: #111;
+    padding: 7px 18px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: background 0.1s;
+}
+.amazon-product-card .add-to-cart-btn:hover {
+    background: #f7ca00;
+}
+
+/* Widget Post Container */
+.widget-post {
+    padding: 10px 10px 10px 10px;
+    height: 100%;
+}
+.widget-post .widget-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Show ... if text overflows */
+    word-break: break-word;
+    /* Break long words if needed */
+    white-space: normal;
+    /* Allow word wrapping */
+    max-height: 4.5em;
+    /* Approx 3 lines for 1.5em line-height */
+    line-height: 1.5em;
+}
+.widget-post .widget-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Show ... if text overflows */
+    word-break: break-word;
+    /* Break long words if needed */
+    white-space: normal;
+    /* Allow word wrapping */
+    max-height: 4.5em;
+    /* Approx 3 lines for 1.5em line-height */
+    line-height: 1.5em;
+}
+/* Card Styling */
+.amazon-fancy-box {
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 4px 18px rgba(33, 52, 96, 0.10), 0 1.5px 6px rgba(33, 52, 96, 0.07);
+    transition: box-shadow 0.2s, transform 0.2s;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.amazon-fancy-box:hover {
+    box-shadow: 0 8px 32px rgba(33,52,96,0.16), 0 3px 12px rgba(33,52,96,0.13);
+    transform: translateY(-2px) scale(1.02);
+}
+
+/* Badge Styling */
+.post-widget-badge {
+    font-size: 0.93rem;
+    letter-spacing: 0.01em;
+    background: linear-gradient(90deg, #ffe484 60%, #ffecb3 100%);
+    color: #876800 !important;
+    box-shadow: 0 2px 6px rgba(255,226,115,0.12);
+    margin-bottom: 0.6rem;
+    font-weight: 500;
+}
+
+/* Image area */
+.card-img-top {
+    height: 145px;
+    background: #f8fafb;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    padding: 8px;
+}
+.card-img-top img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+/* Card Body */
+.widget-title {
+    font-size: 1.13rem;
+    color: #213460;
+    font-weight: 700;
+    margin-bottom: 0.45rem;
+    margin-top: 0.08rem;
+}
+.widget-text {
+    color: #4a5670 !important;
+    font-size: 0.98rem;
+    line-height: 1.6;
+}
+
+/* Card Footer */
+.card-footer {
+    background: #fff;
+    border-top: none;
+    padding-top: 0.5rem;
+    padding-bottom: 0.75rem;
+}
+
+/* Action Buttons */
+.btn-group-widget-actions .btn {
+    margin-right: 7px;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.18s, color 0.18s, border-color 0.18s;
+    border: 1.5px solid #e4e7ef;
+    background: #fafbfc;
+    color: #7a8396;
+    font-size: 1.11rem;
+}
+.btn-group-widget-actions .btn:last-child {
+    margin-right: 0;
+}
+.btn-group-widget-actions .btn:hover,
+.btn-group-widget-actions .btn.active,
+.btn-group-widget-actions .btn:focus {
+    background: #fffbe6;
+    color: #e6a700;
+    border-color: #ffe484;
+    box-shadow: 0 2px 8px rgba(255, 228, 132, 0.08);
+}
+.btn-group-widget-actions .btn-outline-warning.active,
+.btn-group-widget-actions .btn-outline-warning:active {
+    background: #fffbe6;
+    color: #e6a700;
+    border-color: #ffe484;
+}
+
+/* "Open post" button */
+.btn-warning {
+    background: linear-gradient(90deg, #ffe484 60%, #ffecb3 100%) !important;
+    color: #876800 !important;
+    font-weight: 600;
+    border: none;
+    box-shadow: 0 2px 10px rgba(255, 228, 132, 0.09);
+    transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.btn-warning:hover,
+.btn-warning:focus {
+    background: linear-gradient(90deg, #ffe484 30%, #ffe484 100%) !important;
+    color: #b38d00 !important;
+    box-shadow: 0 4px 16px rgba(255, 228, 132, 0.13);
+}
+
+/* Responsive tweaks */
+@media (max-width: 991px) {
+    .card-img-top { height: 115px; }
+    .widget-title { font-size: 1rem; }
+}
+@media (max-width: 600px) {
+    .amazon-fancy-box { padding: 0.5rem; }
+    .card-img-top { height: 75px; }
+    .widget-title { font-size: 0.97rem; }
+    .widget-text { min-height: 32px !important; font-size: 0.93rem; }
+}
+
+/* Pagination styling (modern, widget style) */
+.amazon-pagination {
+    margin-top: 2rem;
+}
+.amazon-pagination .page-item { margin: 0 2px; }
+.amazon-pagination .page-link {
+    border-radius: 50% !important;
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #213460;
+    background: #f8fafb;
+    border: none;
+    font-weight: 500;
+    font-size: 1.09rem;
+    transition: background 0.13s, color 0.13s, box-shadow 0.15s;
+    box-shadow: 0 1px 2px rgba(33, 52, 96, 0.06);
+}
+.amazon-pagination .page-item.active .page-link,
+.amazon-pagination .page-link:hover,
+.amazon-pagination .page-link:focus {
+    background: #ffe484;
+    color: #876800;
+    outline: none;
+    box-shadow: 0 2px 8px rgba(255, 228, 132, 0.11);
+}
+.amazon-pagination .page-item.disabled .page-link {
+    color: #c2c8de;
+    background: #f8fafb;
+    pointer-events: none;
+    opacity: 0.7;
+    box-shadow: none;
+}
+.amazon-pagination .page-link i {
+    font-size: 1.1rem;
+    vertical-align: middle;
+}
+
+/* Responsive for mobile */
+@media (max-width: 768px) {
+    .amazon-slider-container { padding: 12px 0; }
+    .amazon-product-card { padding: 10px; margin: 0 4px; }
+}
