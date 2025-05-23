@@ -171,7 +171,7 @@ $(document).ready(function () {
     slidesToShow: 3,        // Number of slides to show at once
     slidesToScroll: 1,      // Number of slides to scroll per click
     arrows: true,           // Show navigation arrows
-    dots: true,             // Show pagination dots
+    dots: false,             // Show pagination dots
     autoplay: false,        // Set to true for automatic sliding
     autoplaySpeed: 3000,    // Delay between slides if autoplay is true
     responsive: [
