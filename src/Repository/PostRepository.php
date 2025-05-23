@@ -15,9 +15,15 @@ class PostRepository
     {
         return Post::findByIdOrAlias($alias);
     }
-    
+
     public function findById(int $id)
     {
         return Post::findByIdOrAlias($id);
     }
+
+    public function create(array $data)
+    {
+        return Post::create($data);
+    }
+
 }

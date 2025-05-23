@@ -40,5 +40,10 @@ class PostService
     {
         return $this->posts->findById($id);
     }
-
+    
+    public function create(array $data)
+    {
+        return $this->posts->create($data);
+    }
+    
 }

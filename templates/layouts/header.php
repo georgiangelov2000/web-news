@@ -71,12 +71,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/favouries') === 0 ? ' active' : '' ?>" href="/api/favorites">
+                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/favouries') === 0 ? ' active' : '' ?>" href="/api/posts/favorites">
                             <i class="bi bi-star-fill me-2"></i> Favourites
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/posts') === 0 ? ' active' : '' ?>" href="/posts">
+                        <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts/create') === 0 ? ' active' : '' ?>" href="/api/posts/create">
                             <i class="bi bi-plus-circle me-2"></i>Create Post
                         </a>
                     </li>
@@ -86,5 +86,4 @@
     </nav>
 </header>
 
-<?php include __DIR__ . '/sidebar.php'; ?>
 <main class="container">

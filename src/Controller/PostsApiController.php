@@ -74,7 +74,7 @@ class PostsApiController extends ApiController
 
         // Retrieve post by alias (or ID if necessary)
         $post = $this->postService->getPost($alias);
-        
+
         if (!$post) {
             http_response_code(404);
             echo "Post not found";
@@ -219,10 +219,39 @@ class PostsApiController extends ApiController
         $favPosts = [];
         foreach ($favIds as $id) {
             $post = $this->postService->getPostById($id);
-            if ($post) $favPosts[] = $post;
+            if ($post)
+                $favPosts[] = $post;
         }
 
         // Render the favorites page
         echo $this->view->render('favourites', ['favPosts' => $favPosts]);
+    }
+
+    public function createForm(): void
+    {
+        echo $this->view->render('create_post');
+    }
+
+    public function store(array $request): void
+    {
+        $title = trim($request['title'] ?? '');
+        $body = trim($request['body'] ?? '');
+
+        if (empty($title) || empty($body)) {
+            echo $this->view->render('create_post', [
+                'error' => 'Title and body are required.',
+                'old' => $request,
+            ]);
+            return;
+        }
+
+        $this->postService->create([
+            'userId' => 1, // Assume a logged-in user or default for now
+            'title' => $title,
+            'body' => $body,
+        ]);
+
+        header('Location: /posts');
+        exit;
     }
 }
