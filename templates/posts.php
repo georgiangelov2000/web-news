@@ -44,24 +44,45 @@ $totalPages = $data['total_pages'] ?? 1;
                   title="<?= !empty($post['is_favorite']) ? 'Remove from Favorites' : 'Add to Favorites' ?>">
                   <i class="bi bi-star<?= !empty($post['is_favorite']) ? '-fill text-warning' : '' ?>"></i>
                 </a>
+
                 <a class="btn btn-outline-success btn-sm" href="/posts/<?= $post['id'] ?? 0 ?>/like" title="Like">
                   <i class="bi bi-hand-thumbs-up"></i>
                 </a>
+
                 <a class="btn btn-outline-danger btn-sm" href="/posts/<?= $post['id'] ?? 0 ?>/dislike" title="Dislike">
                   <i class="bi bi-hand-thumbs-down"></i>
                 </a>
+
                 <a class="btn btn-outline-primary btn-sm" href="/posts/<?= $post['id'] ?? 0 ?>/share" title="Share">
                   <i class="bi bi-share"></i>
                 </a>
+
                 <a class="btn btn-outline-secondary btn-sm" href="/posts/<?= $post['id'] ?? 0 ?>/report" title="Report">
                   <i class="bi bi-flag"></i>
                 </a>
               </div>
             </div>
+
+            <!-- Fancy count display -->
+            <div class="d-flex text-center small text-muted mb-2">
+              <div style="margin-right: 1rem;">
+                <i class="bi bi-hand-thumbs-up-fill text-success me-1"></i>
+                <?= (int) ($post['likes'] ?? 0) ?> Likes
+              </div>
+              <div style="margin-right: 1rem;">
+                <i class="bi bi-hand-thumbs-down-fill text-danger me-1"></i>
+                <?= (int) ($post['dislikes'] ?? 0) ?> Dislikes
+              </div>
+              <div style="margin-right: 1rem;">
+                <i class="bi bi-share-fill text-primary me-1"></i>
+                <?= (int) ($post['shares'] ?? 0) ?> Shares
+              </div>
+            </div>
+
             <a class="btn btn-warning btn-sm rounded-pill shadow-sm w-100 mt-1"
-              href="/api/post/<?= $post['alias'] ?? 0 ?>">Open
-              post</a>
+              href="/api/post/<?= $post['alias'] ?? 0 ?>">Open post</a>
           </div>
+
         </div>
       </div>
     <?php endforeach; ?>
