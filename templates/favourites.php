@@ -1,14 +1,6 @@
 <?php
 $pageTitle = "My Favorite Posts";
 include __DIR__ . '/layouts/header.php';
-
-// Assume $session is available and $postService is initialized
-$favIds = $session->get('favorite_posts', []);
-$favPosts = [];
-foreach ($favIds as $id) {
-    $post = $postService->getById($id);
-    if ($post) $favPosts[] = $post;
-}
 ?>
 
 <style>
@@ -29,7 +21,7 @@ foreach ($favIds as $id) {
 .fav-hero .desc {
     font-size: 1.15rem;
     color: #876800;
-    margin-bottom: 0;
+    margin-bottom: 30px;
 }
 
 .fav-list-section {
@@ -92,8 +84,6 @@ foreach ($favIds as $id) {
     margin-bottom: 10px;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-height: 2.5em;
-    white-space: nowrap;
 }
 .fav-card-actions {
     margin-top: auto;
@@ -137,30 +127,30 @@ foreach ($favIds as $id) {
         <?php foreach ($favPosts as $post): ?>
             <div class="fav-card">
                 <div class="fav-card-img">
-                    <a href="/posts/<?= htmlspecialchars($post['id']) ?>">
-                        <img src="<?= htmlspecialchars($post['image_url'] ?? 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80') ?>"
-                             alt="<?= htmlspecialchars($post['title']) ?>">
+                    <a href="/posts/<?= $post->id ?>">
+                        <img src="<?= $post->image_url ?? 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=600&q=80' ?>"
+                             alt="<?= $post->title ?>">
                     </a>
                 </div>
                 <div class="fav-card-body">
-                    <a class="fav-card-title" href="/posts/<?= htmlspecialchars($post['id']) ?>">
-                        <?= htmlspecialchars($post['title']) ?>
+                    <a class="fav-card-title" href="/posts/<?= $post->id ?>">
+                        <?= $post->title ?>
                     </a>
                     <div class="fav-card-meta">
-                        <i class="bi bi-clock"></i> <?= htmlspecialchars($post['created_at']) ?>
+                        <i class="bi bi-clock"></i> <?= $post->created_at ?>
                         <span class="mx-2">•</span>
-                        <i class="bi bi-person-circle"></i> <?= htmlspecialchars($post['username']) ?>
+                        <i class="bi bi-person-circle"></i> <?= $post->username ?>
                     </div>
                     <div class="fav-card-excerpt">
-                        <?= htmlspecialchars(mb_strimwidth(strip_tags($post['body']), 0, 120, '...')) ?>
+                        <?= (mb_strimwidth(strip_tags($post->body), 0, 120, '...')) ?>
                     </div>
                     <div class="fav-card-actions">
-                        <a class="btn<?= in_array($post['id'], $favIds) ? ' active' : '' ?>"
-                           href="/posts/<?= htmlspecialchars($post['id']) ?>/favorite"
+                        <a class="btn<?= in_array($post->id, $favIds) ? ' active' : '' ?>"
+                           href="/posts/<?= ($post->id) ?>/favorite"
                            title="Remove from Favorites">
                             <i class="bi bi-star-fill text-warning"></i> Unfavorite
                         </a>
-                        <a class="btn" href="/posts/<?= htmlspecialchars($post['id']) ?>" title="Read More">
+                        <a class="btn" href="/posts/<?= ($post->id) ?>" title="Read More">
                             <i class="bi bi-book"></i> Read
                         </a>
                     </div>
