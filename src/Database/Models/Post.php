@@ -2,7 +2,7 @@
 
 namespace App\Database\Models;
 
-use App\Database\Model;
+use App\Database\Abstract\Model;
 use App\Database\Database;
 use App\Database\Models\User;
 use App\Database\Models\Comment;
@@ -45,7 +45,7 @@ class Post extends Model
 
     public static function findByUserId($userId): array
     {
-        $stmt = static::getConnection()->prepare("SELECT * FROM posts WHERE user_id = ?");
+        $stmt = static::getConnection()->prepare("SELECT * FROM posts WHERE userId = ?");
         $stmt->execute([$userId]);
         return array_map(fn($row) => new static($row), $stmt->fetchAll());
     }

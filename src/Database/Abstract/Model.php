@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Database;
+namespace App\Database\Abstract;
 
 use App\Database\Database;
-use PDO;
 
 abstract class Model
 {

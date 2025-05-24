@@ -2,7 +2,7 @@
 
 namespace App\Database\Models;
 
-use App\Database\Model;
+use App\Database\Abstract\Model;
 use App\Database\Models\Post;
 
 class User extends Model
