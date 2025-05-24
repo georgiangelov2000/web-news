@@ -43,6 +43,7 @@ class PostsApiController extends ApiController
 
         // Check if the data is already cached
         if ($this->cache->has($relativePath)) {
+            http_response_code(200);
             echo $this->cache->get($relativePath);
             return;
         }
@@ -60,6 +61,7 @@ class PostsApiController extends ApiController
         $html = $this->view->render('posts', $data);
         $this->cache->set($relativePath, $html);
 
+        http_response_code(200);
         echo $html;
     }
 
@@ -79,13 +81,14 @@ class PostsApiController extends ApiController
 
         // Serve from cache if available
         if ($this->cache->has($relativePath)) {
+            http_response_code(200);
             echo $this->cache->get($relativePath);
             return;
         }
 
         // Retrieve post by alias (or ID if necessary)
         $post = $this->postService->getPost($alias);
-
+        
         if (!$post) {
             http_response_code(404);
             echo "Post not found";
@@ -108,6 +111,7 @@ class PostsApiController extends ApiController
 
         // Cache the result
         $this->cache->set($relativePath, $html);
+        http_response_code(200);
 
         echo $html;
     }
@@ -136,6 +140,7 @@ class PostsApiController extends ApiController
         }
         $this->session->set('favorite_posts', array_values($favorites));
 
+        http_response_code(200);
         echo json_encode(['status' => 'success', 'favorited' => $favorited]);
     }
 
@@ -174,6 +179,7 @@ class PostsApiController extends ApiController
         $likes = (int) ($post->likes ?? 0);
         $dislikes = (int) ($post->dislikes ?? 0);
 
+        http_response_code(200);
         echo json_encode([
             'status' => 'success',
             'liked' => true,
@@ -215,6 +221,7 @@ class PostsApiController extends ApiController
         $likes = (int) ($post->likes ?? 0);
         $dislikes = (int) ($post->dislikes ?? 0);
 
+        http_response_code(200);
         echo json_encode([
             'status' => 'success',
             'disliked' => true,
@@ -240,6 +247,7 @@ class PostsApiController extends ApiController
             return;
         }
 
+        http_response_code(200);
         // Simple modal/page with share info (implement this view as needed)
         echo $this->view->render('post_share', ['post' => $post]);
     }
@@ -264,6 +272,7 @@ class PostsApiController extends ApiController
         // Optionally save a reason
         $reason = $_POST['reason'] ?? 'Inappropriate content';
 
+        http_response_code(200);
         echo json_encode(['status' => 'success', 'reported' => true, 'reason' => $reason]);
     }
 
@@ -304,11 +313,13 @@ class PostsApiController extends ApiController
             'total_pages' => $totalPages,
         ];
 
+        http_response_code(200);
         echo $this->view->render('favourites', $data);
     }
 
     public function createForm(): void
     {
+        http_response_code(200);
         echo $this->view->render('create_post');
     }
 
@@ -331,13 +342,13 @@ class PostsApiController extends ApiController
             'body' => $body,
         ]);
 
+        http_response_code(302);
         header('Location: /posts');
         exit;
     }
 
     public function storeComment(array $request): void
     {
-
         $body = trim($_POST['body'] ?? '');
         $id = $request['id'] ?? null;
         $username = $_SESSION['user_name'] ?? 'Guest'; // Replace with actual session logic
@@ -354,6 +365,7 @@ class PostsApiController extends ApiController
             'body' => $body,
         ]);
 
+        http_response_code(201);
         echo json_encode(['success' => true, 'username' => $username, 'created_at' => date('Y-m-d H:i'), 'body' => $body]);
     }
 

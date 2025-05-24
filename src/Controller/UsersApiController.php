@@ -30,6 +30,7 @@ class UsersApiController extends ApiController
     {
         // Redirect if already authenticated
         $this->guard->redirectIfAuthenticated('/');
+        http_response_code(200);
         echo $this->view->render('register');
     }
 
@@ -44,6 +45,7 @@ class UsersApiController extends ApiController
         $password = trim($request['password'] ?? '');
 
         if (empty($username) || empty($email) || empty($password)) {
+            http_response_code(422);
             echo $this->view->render('register', [
                 'error' => 'All fields are required.',
                 'old' => $request,
@@ -52,6 +54,7 @@ class UsersApiController extends ApiController
         }
 
         if ($this->userService->getUserByUsernameOrEmail($username, $email)) {
+            http_response_code(409);
             echo $this->view->render('register', [
                 'error' => 'Username or email already exists.',
                 'old' => $request,
@@ -69,9 +72,11 @@ class UsersApiController extends ApiController
             $this->session->set('user_id', $user->id);
             $this->session->set('user_name', $user->username);
             $this->session->regenerate(); // Prevent session fixation
+            http_response_code(302);
             header('Location: /');
             exit;
         } else {
+            http_response_code(500);
             echo $this->view->render('register', [
                 'error' => 'Registration failed.',
                 'old' => $request,
@@ -84,6 +89,7 @@ class UsersApiController extends ApiController
     {
         // Redirect if already authenticated
         $this->guard->redirectIfAuthenticated('/');
+        http_response_code(200);
         echo $this->view->render('login');
     }
 
@@ -95,6 +101,7 @@ class UsersApiController extends ApiController
         $password = trim($request['password'] ?? '');
 
         if (empty($username) || empty($password)) {
+            http_response_code(422);
             echo $this->view->render('login', [
                 'error' => 'Username and password are required.',
                 'old' => $request,
@@ -107,9 +114,11 @@ class UsersApiController extends ApiController
             $this->session->set('user_id', $user->id);
             $this->session->set('user_name', $user->username);
             $this->session->regenerate(); // Prevent session fixation
+            http_response_code(302);
             header('Location: /');
             exit;
         } else {
+            http_response_code(401);
             echo $this->view->render('login', [
                 'error' => 'Invalid username or password.',
                 'old' => $request,
@@ -121,9 +130,11 @@ class UsersApiController extends ApiController
     public function logout()
     {
         $this->session->destroy();
+        http_response_code(302);
         header('Location: /login');
         exit;
     }
+
     // GET /api/users/1
     public function index(array $request = [])
     {
@@ -143,6 +154,7 @@ class UsersApiController extends ApiController
 
         // Check if the data is already cached
         if ($this->cache->has($relativePath)) {
+            http_response_code(200);
             echo $this->cache->get($relativePath);
             return;
         }
@@ -150,6 +162,7 @@ class UsersApiController extends ApiController
         $html = $this->view->render('users', $data);
         $this->cache->set($relativePath, $html);
 
+        http_response_code(200);
         echo $html;
     }
 
@@ -164,6 +177,7 @@ class UsersApiController extends ApiController
         }
         $relativePath = $this->cacheDir . "/$id.html";
         if ($this->cache->has($relativePath)) {
+            http_response_code(200);
             echo $this->cache->get($relativePath);
             return;
         }
@@ -176,6 +190,7 @@ class UsersApiController extends ApiController
         $data = ['user' => $user];
         $html = $this->view->render('user', $data);
         $this->cache->set($relativePath, $html);
+        http_response_code(200);
         echo $html;
     }
 
@@ -198,6 +213,13 @@ class UsersApiController extends ApiController
             'password' => password_hash($password, PASSWORD_DEFAULT)
         ]);
 
+        if (!$user) {
+            http_response_code(500);
+            echo json_encode(['error' => 'User creation failed.']);
+            return;
+        }
+
+        http_response_code(201);
         echo json_encode(['success' => true, 'user' => $user]);
     }
 
@@ -230,6 +252,8 @@ class UsersApiController extends ApiController
             echo json_encode(['error' => 'User update failed']);
             return;
         }
+
+        http_response_code(200);
         echo json_encode(['success' => true]);
     }
 
@@ -239,7 +263,7 @@ class UsersApiController extends ApiController
         $id = $request['id'] ?? null;
         if (!$id) {
             http_response_code(400);
-            echo "Missing user ID";
+            echo json_encode(['error' => 'Missing user ID']);
             return;
         }
         $result = $this->userService->delete($id);
@@ -248,6 +272,7 @@ class UsersApiController extends ApiController
             echo json_encode(['error' => 'User delete failed']);
             return;
         }
+        http_response_code(200);
         echo json_encode(['success' => true]);
     }
 }
