@@ -56,8 +56,13 @@ $(document).ready(function () {
       dataType: 'json',
       success: function (resp) {
         $btn.addClass('active');
-        $('.btn-post-dislike[data-post-id="' + postId + '"]').removeClass('active');
-        showMessage('You liked this post!', "success");
+        $btn.find('i').addClass('text-success');
+        var $dislikeBtn = $('.btn-post-dislike[data-post-id="' + postId + '"]');
+        $dislikeBtn.removeClass('active');
+        $dislikeBtn.find('i').removeClass('text-danger');
+        // Update counts live
+        $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-up-fill').parent().html('<i class="bi bi-hand-thumbs-up-fill text-success me-1"></i> ' + resp.likes + ' Likes');
+        $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-down-fill').parent().html('<i class="bi bi-hand-thumbs-down-fill text-danger me-1"></i> ' + resp.dislikes + ' Dislikes');
       },
       error: function () {
         showMessage('Could not like post. Try again.', "danger");
@@ -76,8 +81,13 @@ $(document).ready(function () {
       dataType: 'json',
       success: function (resp) {
         $btn.addClass('active');
-        $('.btn-post-like[data-post-id="' + postId + '"]').removeClass('active');
-        showMessage('You disliked this post.', "warning");
+        $btn.find('i').addClass('text-danger');
+        var $likeBtn = $('.btn-post-like[data-post-id="' + postId + '"]');
+        $likeBtn.removeClass('active');
+        $likeBtn.find('i').removeClass('text-success');
+        // Update counts live
+        $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-up-fill').parent().html('<i class="bi bi-hand-thumbs-up-fill text-success me-1"></i> ' + resp.likes + ' Likes');
+        $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-down-fill').parent().html('<i class="bi bi-hand-thumbs-down-fill text-danger me-1"></i> ' + resp.dislikes + ' Dislikes');
       },
       error: function () {
         showMessage('Could not dislike post. Try again.', "danger");

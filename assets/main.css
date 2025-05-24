@@ -52,7 +52,9 @@ body {
     background: #232f3e;
     color: #fff;
 }
-
+.slick-prev:before, .slick-next:before{
+    background-color: #000;
+}
 /* Slick dots styled like Amazon carousel */
 .slick-dots {
     bottom: -32px;

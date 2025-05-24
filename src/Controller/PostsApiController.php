@@ -156,20 +156,30 @@ class PostsApiController extends ApiController
 
         if (!$isLiked) {
             $liked[] = $postId;
-            $this->postService->likePost((int)$postId);
+            $this->postService->likePost((int) $postId);
         }
-        
+
         // Remove from disliked if present
         if (in_array($postId, $disliked)) {
             $disliked = array_diff($disliked, [$postId]);
-            $this->postService->undislikePost((int)$postId);
+            $this->postService->undislikePost((int) $postId);
         }
 
         // Remove from disliked if present
         $this->session->set('liked_posts', array_values($liked));
         $this->session->set('disliked_posts', array_values($disliked));
-    
-        echo json_encode(['status' => 'success', 'liked' => true]);
+
+        // Fetch updated counts
+        $post = $this->postService->getPostById((int) $postId);
+        $likes = (int) ($post->likes ?? 0);
+        $dislikes = (int) ($post->dislikes ?? 0);
+
+        echo json_encode([
+            'status' => 'success',
+            'liked' => true,
+            'likes' => $likes,
+            'dislikes' => $dislikes
+        ]);
     }
 
     // POST /posts/{id}/dislike
@@ -181,26 +191,36 @@ class PostsApiController extends ApiController
             echo 'Missing post ID';
             return;
         }
-    
+
         // Prevent liking and disliking at the same time
         $liked = $this->session->get('liked_posts', []);
         $disliked = $this->session->get('disliked_posts', []);
         $isDisliked = in_array($postId, $disliked);
-    
+
         if (!$isDisliked) {
             $disliked[] = $postId;
-            $this->postService->dislikePost((int)$postId);
+            $this->postService->dislikePost((int) $postId);
         }
         // Remove from liked if present
         if (in_array($postId, $liked)) {
             $liked = array_diff($liked, [$postId]);
-            $this->postService->unlikePost((int)$postId);
+            $this->postService->unlikePost((int) $postId);
         }
-    
+
         $this->session->set('disliked_posts', array_values($disliked));
         $this->session->set('liked_posts', array_values($liked));
-    
-        echo json_encode(['status' => 'success', 'disliked' => true]);
+
+        // Fetch updated counts
+        $post = $this->postService->getPostById((int) $postId);
+        $likes = (int) ($post->likes ?? 0);
+        $dislikes = (int) ($post->dislikes ?? 0);
+
+        echo json_encode([
+            'status' => 'success',
+            'disliked' => true,
+            'likes' => $likes,
+            'dislikes' => $dislikes
+        ]);
     }
 
     // GET /posts/{id}/share
@@ -296,20 +316,20 @@ class PostsApiController extends ApiController
         $body = trim($_POST['body'] ?? '');
         $id = $request['id'] ?? null;
         $username = $_SESSION['user_name'] ?? 'Guest'; // Replace with actual session logic
-    
+
         if (empty($body)) {
             http_response_code(422);
             echo json_encode(['error' => 'Comment body is required.']);
             return;
         }
-    
+
         Comment::create([
             'post_id' => $id,
             'username' => $username,
             'body' => $body,
         ]);
-    
+
         echo json_encode(['success' => true, 'username' => $username, 'created_at' => date('Y-m-d H:i'), 'body' => $body]);
     }
-    
+
 }
