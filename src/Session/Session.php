@@ -55,16 +55,16 @@ class Session
         $sessionFile = $this->getSessionFile();
         $serialized = serialize($this->data);
         $result = file_put_contents($sessionFile, $serialized, LOCK_EX);
-        
+
         $logMessage = date('Y-m-d H:i:s') . " | Session saved to {$sessionFile}\n";
-    
+
         if ($result === false) {
             $logMessage = date('Y-m-d H:i:s') . " | ERROR: Failed to save session to {$sessionFile}\n";
         }
-    
+
         file_put_contents(__DIR__ . '/../../storage/logs/session.log', $logMessage, FILE_APPEND);
     }
-    
+
     public function set(string $key, $value): void
     {
         $this->data[$key] = $value;
@@ -95,5 +95,36 @@ class Session
         }
         $this->data = [];
         setcookie('app_session', '', time() - 3600, '/');
+    }
+
+    /**
+     * Regenerate the session ID, keeping existing data.
+     * - Removes the old session file.
+     * - Generates a new session ID and cookie.
+     * - Saves session data under the new session file.
+     */
+    public function regenerate(): void
+    {
+        // Remove old file
+        $oldFile = $this->getSessionFile();
+
+        // Generate new session id and cookie
+        $newId = bin2hex(random_bytes(16));
+        setcookie('app_session', $newId, [
+            'expires' => time() + 60 * 60 * 24 * 7,
+            'path' => '/',
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+        $_COOKIE['app_session'] = $newId;
+        $this->sessionId = $newId;
+
+        // Remove old session file (after sessionId is changed)
+        if (file_exists($oldFile)) {
+            unlink($oldFile);
+        }
+
+        // Save data under new session file
+        $this->save();
     }
 }

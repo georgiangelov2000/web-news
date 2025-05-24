@@ -2,12 +2,22 @@
 require __DIR__ . '/vendor/autoload.php';
 
 use App\Session\Session;
+use App\Security\RateLimiter;
+use App\Security\SessionGuard;
 use Slim\Psr7\Factory\ServerRequestFactory;
 
-
 $session = new Session(__DIR__ . '/storage/session');
-$session->set('counter', $session->get('counter', 0) + 1);
 
+// Session security
+$guard = new SessionGuard($session);
+$guard->enforce();
+
+// Rate limiting
+$clientIp = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '';
+$limiter = new RateLimiter(__DIR__ . '/../storage/ratelimit/');
+$limiter->check($clientIp);
+
+// Load routes
 $routes = require __DIR__ . '/routes.php';
 
 // Initialize the router
