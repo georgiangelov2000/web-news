@@ -5,6 +5,8 @@ include __DIR__ . '/layouts/header.php';
 // Extract pagination data
 $posts = $data['posts'] ?? [];
 $favIds = $data['favIds'] ?? [];
+$liked = $data['liked'] ?? [];
+$disliked = $data['disliked'] ?? [];
 $currentPage = $data['current_page'] ?? 1;
 $perPage = $data['per_page'] ?? 10;
 $totalItems = $data['total_items'] ?? 0;
@@ -22,7 +24,9 @@ $totalPages = $data['total_pages'] ?? 1;
     <div class="slick-slider mb-5 bg-white rounded" id="<?= $sliderId ?>">
       <?php foreach ($group as $post): ?>
         <?php
-        $favorited = in_array($post['id'], $favIds);
+          $favorited = in_array($post['id'], $favIds);
+          $liked1 = in_array($post['id'], $liked);
+          $disliked1 = in_array($post['id'], $disliked);
         ?>
         <div class="widget-post">
           <div class="card h-100 amazon-fancy-box border-0">
@@ -30,7 +34,7 @@ $totalPages = $data['total_pages'] ?? 1;
               class="badge rounded-pill bg-warning text-dark mb-2 px-3 py-2 d-inline-flex align-items-center post-widget-badge">
               <i class="bi bi-clock me-1"></i> <?= htmlspecialchars($post['created_at']) ?>
               <span class="mx-2">|</span>
-              <i class="bi bi-person-circle me-1"></i> <?= htmlspecialchars($post['username']) ?>
+              <i class="bi bi-person-circle me-1"></i>
             </span>
 
             <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
@@ -47,20 +51,44 @@ $totalPages = $data['total_pages'] ?? 1;
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <div class="btn-group-widget-actions" role="group">
                   <a class="btn-post-favorite btn btn-outline-warning btn-sm<?= $favorited ? ' active' : '' ?>"
-                    role="button" data-post-id="<?= $post['id'] ?? 0 ?>"
-                    title="<?= $favorited ? 'Remove from Favorites' : 'Add to Favorites' ?>">
+                    role="button" 
+                    data-post-id="<?= $post['id'] ?? 0 ?>"
+                    title="<?= $favorited ? 'Remove from Favorites' : 'Add to Favorites' ?>"
+                  >
                     <i class="bi bi-star<?= $favorited ? '-fill text-warning' : '' ?>"></i>
                   </a>
-                  <a class="btn btn-outline-success btn-sm btn-post-like" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Like">
+                  <a 
+                    class="btn btn-outline-success btn-sm btn-post-like <?= $liked1 ? ' active' : '' ?>" 
+                    role="button" 
+                    data-post-id="<?= $post['id'] ?? 0 ?>" 
+                    title="Like"
+                    title="<?= $liked1 ? 'Remove from Likes' : 'Add to Likes' ?>"
+                  >
                     <i class="bi bi-hand-thumbs-up"></i>
                   </a>
-                  <a class="btn btn-outline-danger btn-sm btn-post-dislike" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Dislike">
+                  <a 
+                    class="btn btn-outline-danger btn-sm btn-post-dislike <?= $disliked ? ' active' : '' ?>" 
+                    role="button" 
+                    data-post-id="<?= $post['id'] ?? 0 ?>" 
+                    title="Dislike"
+                    title="<?= $disliked1 ? 'Remove from Dislikes' : 'Add to Dislikes' ?>"
+                  >
                     <i class="bi bi-hand-thumbs-down"></i>
                   </a>
-                  <a class="btn btn-outline-primary btn-sm" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Share">
+                  <a 
+                    class="btn btn-outline-primary btn-sm btn-post-share" 
+                    role="button" 
+                    data-post-id="<?= $post['id'] ?? 0 ?>" 
+                    title="Share"
+                  >
                     <i class="bi bi-share"></i>
                   </a>
-                  <a class="btn btn-outline-secondary btn-sm btn-post-report" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Report">
+                  <a 
+                    class="btn btn-outline-secondary btn-sm btn-post-report" 
+                    role="button" 
+                    data-post-id="<?= $post['id'] ?? 0 ?>" 
+                    title="Report"
+                  >
                     <i class="bi bi-flag"></i>
                   </a>
                 </div>

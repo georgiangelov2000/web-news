@@ -47,8 +47,15 @@ class PostsApiController extends ApiController
             return;
         }
 
+        // Favourite posts
         $favIds = $this->session->get('favorite_posts', []);
         $data['favIds'] = $favIds;
+
+        // Liked and disliked posts
+        $liked = $this->session->get('liked_posts', []);
+        $disliked = $this->session->get('disliked_posts', []);
+        $data['liked'] = $liked;
+        $data['disliked'] = $disliked;
 
         $html = $this->view->render('posts', $data);
         $this->cache->set($relativePath, $html);
