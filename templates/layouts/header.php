@@ -63,7 +63,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/posts') === 0 ? ' active' : '' ?>" href="/posts">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts') === 0 ? ' active' : '' ?>" href="/posts">
                         <i class="bi bi-card-list me-1"></i>Posts
                     </a>
                 </li>
@@ -81,7 +81,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/users') === 0 ? ' active' : '' ?>" href="/users">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/users') === 0 ? ' active' : '' ?>" href="/api/users">
                         <i class="bi bi-people-fill me-1"></i>Users
                     </a>
                 </li>

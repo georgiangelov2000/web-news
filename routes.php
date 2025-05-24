@@ -1,6 +1,7 @@
 <?php
 
 use App\Controller\PostsApiController;
+use App\Controller\UsersApiController;
 
 $routes = [
     // HTML API: GET /api/posts
@@ -21,6 +22,17 @@ $routes = [
     new \PhpDevCommunity\Route('posts.favorite', '/api/posts/{id}/favorite', [PostsApiController::class, 'favorite'], ['POST']),
     new \PhpDevCommunity\Route('posts.report', '/api/posts/{id}/report', [PostsApiController::class, 'report'], ['POST']),
     new \PhpDevCommunity\Route('posts.share', '/api/posts/{id}/share', [PostsApiController::class, 'share'], ['GET']),
+
+        // USERS API: GET /api/users
+        new \PhpDevCommunity\Route('users', '/api/users', [UsersApiController::class, 'index'], ['GET','HEAD']),
+        // USERS API: GET /api/users/{id}
+        new \PhpDevCommunity\Route('users.show', '/api/users/{id}', [UsersApiController::class, 'show'], ['GET','HEAD']),
+        // USERS API: POST /api/users/create
+        new \PhpDevCommunity\Route('users.create', '/api/users/create', [UsersApiController::class, 'create'], ['POST']),
+        // USERS API: POST /api/users/{id}/update
+        new \PhpDevCommunity\Route('users.update', '/api/users/{id}/update', [UsersApiController::class, 'update'], ['POST']),
+        // USERS API: POST /api/users/{id}/delete
+        new \PhpDevCommunity\Route('users.delete', '/api/users/{id}/delete', [UsersApiController::class, 'delete'], ['POST']),
 ];
 
 return $routes;

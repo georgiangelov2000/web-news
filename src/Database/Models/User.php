@@ -11,7 +11,8 @@ class User
 
     public function __construct($data = [])
     {
-        foreach ($data as $k => $v) $this->$k = $v;
+        foreach ($data as $k => $v)
+            $this->$k = $v;
     }
 
     public static function find($id)
@@ -37,9 +38,35 @@ class User
         return Database::getConnection()->lastInsertId();
     }
 
-        // Relation: User has many Posts
-        public function posts()
-        {
-            return Post::findByUserId($this->id);
-        }
+    // Relation: User has many Posts
+    public function posts()
+    {
+        return Post::findByUserId($this->id);
+    }
+
+    public static function paginate($page = 1, $perPage = 10)
+    {
+        $offset = ($page - 1) * $perPage;
+        $db = Database::getConnection();
+
+        // Get total items count
+        $countStmt = $db->query("SELECT COUNT(*) FROM posts");
+        $totalItems = (int) $countStmt->fetchColumn();
+        $totalPages = (int) ceil($totalItems / $perPage);
+
+        // Get current page items
+        $stmt = $db->prepare("SELECT * FROM users LIMIT :limit OFFSET :offset");
+        $stmt->bindValue(':limit', $perPage, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
+        $posts = $stmt->fetchAll();
+
+        return [
+            'posts' => $posts,
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'total_items' => $totalItems,
+            'total_pages' => $totalPages
+        ];
+    }
 }

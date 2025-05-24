@@ -44,7 +44,7 @@ $totalPages = $total_pages ?? ($data['total_pages'] ?? 1);
                         <a class="btn"
                            href="/api/posts/<?= ($post->id) ?>/favorite"
                            title="Remove from Favorites">
-                            <i class="bi bi-star-fill text-warning"></i> Unfavorite
+                            <i class="bi bi-star"></i> Unfavorite
                         </a>
                         <a class="btn" href="/api/post/<?= ($post->alias) ?>" title="Read More">
                             <i class="bi bi-book"></i> Read

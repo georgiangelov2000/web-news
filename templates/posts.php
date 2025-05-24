@@ -30,12 +30,15 @@ $totalPages = $data['total_pages'] ?? 1;
         ?>
         <div class="widget-post">
           <div class="card h-100 amazon-fancy-box border-0">
-            <span
-              class="badge rounded-pill bg-warning text-dark mb-2 px-3 py-2 d-inline-flex align-items-center post-widget-badge">
-              <i class="bi bi-clock me-1"></i> <?= htmlspecialchars($post['created_at']) ?>
-              <span class="mx-2">|</span>
-              <i class="bi bi-person-circle me-1"></i>
-            </span>
+          <span
+            class="badge rounded-pill bg-warning text-dark mb-2 px-3 py-2 d-inline-flex align-items-center post-widget-badge">
+            <i class="bi bi-clock me-1"></i> <?= htmlspecialchars($post['created_at']) ?>
+            <span class="mx-2">|</span>
+            <i class="bi bi-person-circle me-1"></i>
+            <?php if (!empty($post['promoted']) && $post['promoted'] == 1): ?>
+              <span class="badge bg-success ms-2">Promoted</span>
+            <?php endif; ?>
+          </span>
 
             <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
               <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&q=80" alt="Default product image"

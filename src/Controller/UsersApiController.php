@@ -2,20 +2,150 @@
 
 namespace App\Controller;
 
-use App\Model\User;
-use App\View\ViewRenderer;
+use App\Service\UserService;
+use App\Repository\UserRepository;
+use App\Session\Session;
 
-class UsersApiController
+class UsersApiController extends ApiController
 {
-    public function show($id)
+    protected $userService;
+    private $perPage = 10;
+    private $currentPage = 1;
+    protected $session;
+
+    public function __construct()
     {
-        $user = User::find($id);
+        parent::__construct();
+        $this->setResource('users');
+        $this->setCacheDir('users');
+        $this->userService = new UserService(new UserRepository());
+        $this->session = new Session(__DIR__ . '/../../../storage/session');
+    }
+
+    // GET /api/users/1
+    public function index(array $request = [])
+    {
+        $page = $request['identifier'];
+
+        if ($page) {
+            $this->currentPage = (int) $page;
+            $relativePath = $this->cacheDir . '/' . $page . '.html';
+        } else {
+            $relativePath = $this->cacheDir . '.html';
+        }
+
+        $data = $this->userService->getPaginatedUsers(
+            $this->currentPage,
+            $this->perPage
+        );
+
+        // Check if the data is already cached
+        if ($this->cache->has($relativePath)) {
+            echo $this->cache->get($relativePath);
+            return;
+        }
+
+        $html = $this->view->render('users', $data);
+        $this->cache->set($relativePath, $html);
+
+        echo $html;
+    }
+
+    // GET /api/users/{id}
+    public function show(array $request = [])
+    {
+        $id = $request['id'] ?? null;
+        if (!$id) {
+            http_response_code(400);
+            echo "Missing user ID";
+            return;
+        }
+        $relativePath = $this->cacheDir . "/$id.html";
+        if ($this->cache->has($relativePath)) {
+            echo $this->cache->get($relativePath);
+            return;
+        }
+        $user = $this->userService->getUserById($id);
         if (!$user) {
             http_response_code(404);
             echo "User not found";
             return;
         }
-        header('Content-Type: application/json');
-        echo json_encode($user);
+        $data = ['user' => $user];
+        $html = $this->view->render('user', $data);
+        $this->cache->set($relativePath, $html);
+        echo $html;
+    }
+
+    // POST /api/users/create
+    public function create(array $request)
+    {
+        $username = trim($request['username'] ?? '');
+        $email = trim($request['email'] ?? '');
+        $password = trim($request['password'] ?? '');
+
+        if (empty($username) || empty($email) || empty($password)) {
+            http_response_code(422);
+            echo json_encode(['error' => 'Username, email and password are required.']);
+            return;
+        }
+
+        $user = $this->userService->create([
+            'username' => $username,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ]);
+
+        echo json_encode(['success' => true, 'user' => $user]);
+    }
+
+    // POST /api/users/{id}/update
+    public function update(array $request)
+    {
+        $id = $request['id'] ?? null;
+        if (!$id) {
+            http_response_code(400);
+            echo "Missing user ID";
+            return;
+        }
+        $data = [];
+        if (isset($request['username']))
+            $data['username'] = trim($request['username']);
+        if (isset($request['email']))
+            $data['email'] = trim($request['email']);
+        if (isset($request['password']))
+            $data['password'] = password_hash($request['password'], PASSWORD_DEFAULT);
+
+        if (empty($data)) {
+            http_response_code(422);
+            echo json_encode(['error' => 'No data to update.']);
+            return;
+        }
+
+        $result = $this->userService->update($id, $data);
+        if (!$result) {
+            http_response_code(400);
+            echo json_encode(['error' => 'User update failed']);
+            return;
+        }
+        echo json_encode(['success' => true]);
+    }
+
+    // POST /api/users/{id}/delete
+    public function delete(array $request)
+    {
+        $id = $request['id'] ?? null;
+        if (!$id) {
+            http_response_code(400);
+            echo "Missing user ID";
+            return;
+        }
+        $result = $this->userService->delete($id);
+        if (!$result) {
+            http_response_code(400);
+            echo json_encode(['error' => 'User delete failed']);
+            return;
+        }
+        echo json_encode(['success' => true]);
     }
 }
