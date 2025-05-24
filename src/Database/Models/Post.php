@@ -122,14 +122,23 @@ class Post
         $stmt = Database::getConnection()->query("SELECT * FROM posts");
         return $stmt->fetchAll();
     }
+    public static function toggleFavorite($userId, $postId)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM favorites WHERE user_id = ? AND post_id = ?");
+        $stmt->execute([$userId, $postId]);
+        $favorite = $stmt->fetch();
 
-    // Relation: Post belongs to User
-    // public static function user()
-    // {
-    //     return User::find($this->userId);
-    // }
-
-    // Relation: Post has many Comments
+        if ($favorite) {
+            // Remove favorite
+            $stmt = $db->prepare("DELETE FROM favorites WHERE user_id = ? AND post_id = ?");
+            return $stmt->execute([$userId, $postId]);
+        } else {
+            // Add favorite
+            $stmt = $db->prepare("INSERT INTO favorites (user_id, post_id) VALUES (?, ?)");
+            return $stmt->execute([$userId, $postId]);
+        }
+    }
     public static function getComments($id)
     {
         $stmt = Database::getConnection()->prepare("SELECT * FROM comments WHERE post_id = ?");

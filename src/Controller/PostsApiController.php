@@ -20,8 +20,7 @@ class PostsApiController extends ApiController
         $this->setResource('posts');
         $this->setCacheDir('posts');
         $this->postService = new PostService(new PostRepository());
-        $this->session = new Session(__DIR__ . '/../../../storage/session');
-
+        $this->session = $GLOBALS['session'];
     }
 
     // HTML API: GET /api/posts
@@ -121,28 +120,39 @@ class PostsApiController extends ApiController
     public function favorite(array $params)
     {
         $postId = $params['id'] ?? null;
-        if (!$postId) {
+        if (!$postId || !is_numeric($postId)) {
             http_response_code(400);
-            echo 'Missing post ID';
+            echo json_encode(['status' => 'error', 'message' => 'Missing or invalid post ID']);
             return;
         }
-
-        // Get the array of favorited post IDs for this session
-        $favorites = $this->session->get('favorite_posts', []);
-
-        if (in_array($postId, $favorites)) {
-            // Unfavorite if already favorited
-            $favorites = array_diff($favorites, [$postId]);
-            $favorited = false;
+    
+        $userId = $this->session->get('user_id');
+    
+        if ($userId) {
+            // Authenticated user: use DB
+            $isNowFavorited = $this->postService->toggleFavoriteInDb($userId, (int)$postId);
+            http_response_code(200);
+            echo json_encode(['status' => 'success', 'favorited' => $isNowFavorited]);
         } else {
-            $favorites[] = $postId;
-            $favorited = true;
+            // Guest: store in session
+            $favorites = $this->session->get('favorite_posts', []);
+            $favorited = false;
+    
+            if (in_array($postId, $favorites)) {
+                $favorites = array_diff($favorites, [$postId]);
+                $favorited = false;
+            } else {
+                $favorites[] = $postId;
+                $favorited = true;
+            }
+    
+            $this->session->set('favorite_posts', array_values($favorites));
+    
+            http_response_code(200);
+            echo json_encode(['status' => 'success', 'favorited' => $favorited]);
         }
-        $this->session->set('favorite_posts', array_values($favorites));
-
-        http_response_code(200);
-        echo json_encode(['status' => 'success', 'favorited' => $favorited]);
     }
+    
 
     // POST /posts/{id}/like
     public function like(array $params)

@@ -74,11 +74,3 @@ $userName = $session->get('user_name');
 
     </header>
     <main class="container">
-        <?php if ($userId): ?>
-            <!-- Authenticated layout -->
-            <div class="alert alert-success mt-3">Welcome, <?= htmlspecialchars($userName) ?>! You are logged in.</div>
-        <?php else: ?>
-            <!-- Guest layout -->
-            <div class="alert alert-info mt-3">Welcome, Guest! Please <a href="/api/login">log in</a> to access more
-                features.</div>
-        <?php endif; ?>

@@ -40,7 +40,7 @@ class PostService
     {
         return $this->posts->findById($id);
     }
-    
+
     public function create(array $data)
     {
         return $this->posts->create($data);
@@ -70,5 +70,11 @@ class PostService
     {
         return $this->posts->decrementDislikes($postId);
     }
-    
+
+    public function toggleFavoriteInDb(int $userId, int $postId)
+    {
+        return $this->posts->toggleFavorite($userId, $postId);
+    }
+
+
 }

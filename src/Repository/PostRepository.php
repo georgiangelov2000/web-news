@@ -55,4 +55,8 @@ class PostRepository
         return Post::decrementDislikes($postId);
     }
 
+    public function toggleFavorite(int $userId, int $postId)
+    {
+        return Post::toggleFavorite($userId, $postId);
+    }
 }

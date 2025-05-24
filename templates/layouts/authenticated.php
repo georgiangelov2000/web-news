@@ -5,8 +5,6 @@ $userId = $GLOBALS['session']->get('user_id');
 <ul class="navbar-nav ms-auto align-items-lg-center">
     <li class="nav-item"><a class="nav-link<?= $_SERVER['REQUEST_URI'] === '/' ? ' active' : '' ?>" href="/"><i class="bi bi-house-door-fill me-1"></i>Home</a></li>
     <li class="nav-item"><a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts') === 0 ? ' active' : '' ?>" href="/api/posts"><i class="bi bi-card-list me-1"></i>Posts</a></li>
-    <li class="nav-item"><a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts/create') === 0 ? ' active' : '' ?>" href="/api/posts/create"><i class="bi bi-plus-circle me-1"></i>Create</a></li>
-    <li class="nav-item"><a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts/favorites') === 0 ? ' active' : '' ?>" href="/api/posts/favorites"><i class="bi bi-star-fill me-1"></i>Favorites</a></li>
     <li class="nav-item"><a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/users') === 0 ? ' active' : '' ?>" href="/api/users"><i class="bi bi-people-fill me-1"></i>Users</a></li>
     <li class="nav-item dropdown ms-2">
         <a class="btn btn-sm btn-outline-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
