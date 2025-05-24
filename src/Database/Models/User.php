@@ -91,7 +91,7 @@ class User
             "INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)"
         );
         $stmt->execute([
-            $data['name'] ?? null,
+            $data['username'] ?? null,
             $data['username'] ?? null,
             $data['email'] ?? null,
             $passwordHash

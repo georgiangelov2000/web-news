@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\UserService;
 use App\Repository\UserRepository;
+use App\Repository\PostRepository;
 use App\Session\Session;
 use App\Security\SessionGuard;
 
@@ -20,7 +21,7 @@ class UsersApiController extends ApiController
         parent::__construct();
         $this->setResource('users');
         $this->setCacheDir('users');
-        $this->userService = new UserService(new UserRepository());
+        $this->userService = new UserService(new UserRepository(), new PostRepository());
         $this->session = new Session(__DIR__ . '/../../../storage/session');
         $this->guard = new SessionGuard($this->session);
     }
@@ -35,20 +36,19 @@ class UsersApiController extends ApiController
     }
 
     // Handle user registration
-    public function register(array $request)
+    public function register()
     {
         // Redirect if already authenticated
         $this->guard->redirectIfAuthenticated('/');
 
-        $username = trim($request['username'] ?? '');
-        $email = trim($request['email'] ?? '');
-        $password = trim($request['password'] ?? '');
+        $username = trim($_POST['username'] ?? '');
+        $email = trim($_POST['email'] ?? '');
+        $password = trim($_POST['password'] ?? '');
 
         if (empty($username) || empty($email) || empty($password)) {
             http_response_code(422);
             echo $this->view->render('register', [
                 'error' => 'All fields are required.',
-                'old' => $request,
             ]);
             return;
         }
@@ -57,7 +57,6 @@ class UsersApiController extends ApiController
             http_response_code(409);
             echo $this->view->render('register', [
                 'error' => 'Username or email already exists.',
-                'old' => $request,
             ]);
             return;
         }
@@ -73,13 +72,12 @@ class UsersApiController extends ApiController
             $this->session->set('user_name', $user->username);
             $this->session->regenerate(); // Prevent session fixation
             http_response_code(302);
-            header('Location: /');
+            header('Location: /api/profile');
             exit;
         } else {
             http_response_code(500);
             echo $this->view->render('register', [
                 'error' => 'Registration failed.',
-                'old' => $request,
             ]);
         }
     }
@@ -95,16 +93,15 @@ class UsersApiController extends ApiController
 
 
     // Handle login
-    public function login(array $request)
+    public function login()
     {
-        $username = trim($request['username'] ?? '');
-        $password = trim($request['password'] ?? '');
+        $username = trim($_REQUEST['username'] ?? '');
+        $password = trim($_REQUEST['password'] ?? '');
 
         if (empty($username) || empty($password)) {
             http_response_code(422);
             echo $this->view->render('login', [
                 'error' => 'Username and password are required.',
-                'old' => $request,
             ]);
             return;
         }
@@ -115,13 +112,12 @@ class UsersApiController extends ApiController
             $this->session->set('user_name', $user->username);
             $this->session->regenerate(); // Prevent session fixation
             http_response_code(302);
-            header('Location: /');
+            header('Location: /api/profile');
             exit;
         } else {
             http_response_code(401);
             echo $this->view->render('login', [
                 'error' => 'Invalid username or password.',
-                'old' => $request,
             ]);
         }
     }
@@ -194,35 +190,6 @@ class UsersApiController extends ApiController
         echo $html;
     }
 
-    // POST /api/users/create
-    public function create(array $request)
-    {
-        $username = trim($request['username'] ?? '');
-        $email = trim($request['email'] ?? '');
-        $password = trim($request['password'] ?? '');
-
-        if (empty($username) || empty($email) || empty($password)) {
-            http_response_code(422);
-            echo json_encode(['error' => 'Username, email and password are required.']);
-            return;
-        }
-
-        $user = $this->userService->create([
-            'username' => $username,
-            'email' => $email,
-            'password' => password_hash($password, PASSWORD_DEFAULT)
-        ]);
-
-        if (!$user) {
-            http_response_code(500);
-            echo json_encode(['error' => 'User creation failed.']);
-            return;
-        }
-
-        http_response_code(201);
-        echo json_encode(['success' => true, 'user' => $user]);
-    }
-
     // POST /api/users/{id}/update
     public function update(array $request)
     {
@@ -274,5 +241,39 @@ class UsersApiController extends ApiController
         }
         http_response_code(200);
         echo json_encode(['success' => true]);
+    }
+
+    // Add this method to your UsersApiController
+
+    public function profile()
+    {
+        // Ensure session is started
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        // Check if user is authenticated
+        $userId = $this->session->get('user_id');
+
+        $user = $this->userService->getUserById($userId);
+
+        if (!$user) {
+            http_response_code(404);
+            echo $this->view->render('error', [
+                'error' => 'User not found.'
+            ]);
+            return;
+        }
+    
+        // Fetch all comments made by this user
+        $posts = $this->userService->findByUserId($userId);
+    
+        $data = [
+            'user' => $user,
+            'posts' => $posts
+        ];
+    
+        http_response_code(200);
+        echo $this->view->render('profile', $data);
     }
 }

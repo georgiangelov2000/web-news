@@ -13,7 +13,7 @@
                 <a href="/privacy" class="text-decoration-none text-secondary">Privacy Policy</a>
                 <a href="/terms" class="text-decoration-none text-secondary">Terms of Service</a>
                 <a href="/faq" class="text-decoration-none text-secondary">FAQ</a>
-                <a href="/register" class="text-decoration-none text-secondary">Register</a>
+                <a href="/api/register" class="text-decoration-none text-secondary">Register</a>
                 <a href="/login" class="text-decoration-none text-secondary">Login</a>
             </div>
         </div>

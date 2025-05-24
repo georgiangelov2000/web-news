@@ -3,14 +3,17 @@
 namespace App\Service;
 
 use App\Repository\UserRepository;
+use App\Repository\PostRepository;
 
 class UserService
 {
     protected $users;
+    protected $posts;
 
-    public function __construct(UserRepository $users)
+    public function __construct(UserRepository $users, PostRepository $posts)
     {
         $this->users = $users;
+        $this->posts = $posts;
     }
 
     // Get paginated users for the given page and perPage
@@ -40,21 +43,8 @@ class UserService
         return $this->users->getUserById($id);
     }
 
-    // // Create a new user
-    // public function create(array $data)
-    // {
-    //     return $this->users->createUser($data);
-    // }
-
-    // // Update user by id
-    // public function update($id, array $data)
-    // {
-    //     return $this->users->updateUser($id, $data);
-    // }
-
-    // // Delete user by id
-    // public function delete($id)
-    // {
-    //     return $this->users->deleteUser($id);
-    // }
+    public function findByUserId($userId)
+    {
+        return $this->posts->findByUserId($userId);
+    }
 }

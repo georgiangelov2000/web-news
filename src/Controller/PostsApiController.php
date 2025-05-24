@@ -349,7 +349,7 @@ class PostsApiController extends ApiController
 
     public function storeComment(array $request): void
     {
-        $body = trim($_POST['body'] ?? '');
+        $body = trim(string: $_POST['body'] ?? '');
         $id = $request['id'] ?? null;
         $username = $_SESSION['user_name'] ?? 'Guest'; // Replace with actual session logic
 

@@ -20,6 +20,10 @@ class PostRepository
     {
         return Post::findByIdOrAlias($id);
     }
+    public function findByUserId(int $userId)
+    {
+        return Post::findByUserId($userId);
+    }
 
     public function create(array $data)
     {
