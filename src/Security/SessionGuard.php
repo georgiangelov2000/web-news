@@ -37,4 +37,25 @@ class SessionGuard
             $this->session->regenerate();
         }
     }
+
+    /**
+     * Checks if the user is authenticated.
+     * You may adjust the session key used to mark authentication.
+     */
+    public function isAuthenticated(): bool
+    {
+        // Assuming 'user_id' is set on login
+        return (bool)$this->session->get('user_id');
+    }
+
+    /**
+     * Redirect to home if already authenticated (for login/register pages)
+     */
+    public function redirectIfAuthenticated($redirectTo = '/')
+    {
+        if ($this->isAuthenticated()) {
+            header("Location: $redirectTo");
+            exit;
+        }
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Service\UserService;
 use App\Repository\UserRepository;
 use App\Session\Session;
+use App\Security\SessionGuard;
 
 class UsersApiController extends ApiController
 {
@@ -12,6 +13,7 @@ class UsersApiController extends ApiController
     private $perPage = 10;
     private $currentPage = 1;
     protected $session;
+    protected $guard;
 
     public function __construct()
     {
@@ -20,17 +22,23 @@ class UsersApiController extends ApiController
         $this->setCacheDir('users');
         $this->userService = new UserService(new UserRepository());
         $this->session = new Session(__DIR__ . '/../../../storage/session');
+        $this->guard = new SessionGuard($this->session);
     }
 
     // Show registration form
     public function registerForm()
     {
+        // Redirect if already authenticated
+        $this->guard->redirectIfAuthenticated('/');
         echo $this->view->render('register');
     }
 
     // Handle user registration
     public function register(array $request)
     {
+        // Redirect if already authenticated
+        $this->guard->redirectIfAuthenticated('/');
+
         $username = trim($request['username'] ?? '');
         $email = trim($request['email'] ?? '');
         $password = trim($request['password'] ?? '');
@@ -60,6 +68,7 @@ class UsersApiController extends ApiController
         if ($user) {
             $this->session->set('user_id', $user->id);
             $this->session->set('user_name', $user->username);
+            $this->session->regenerate(); // Prevent session fixation
             header('Location: /');
             exit;
         } else {
@@ -73,6 +82,8 @@ class UsersApiController extends ApiController
     // Show login form
     public function loginForm()
     {
+        // Redirect if already authenticated
+        $this->guard->redirectIfAuthenticated('/');
         echo $this->view->render('login');
     }
 
@@ -95,6 +106,7 @@ class UsersApiController extends ApiController
         if ($user && password_verify($password, $user->password)) {
             $this->session->set('user_id', $user->id);
             $this->session->set('user_name', $user->username);
+            $this->session->regenerate(); // Prevent session fixation
             header('Location: /');
             exit;
         } else {
