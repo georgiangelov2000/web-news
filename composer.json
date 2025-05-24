@@ -8,6 +8,7 @@
         "phpdevcommunity/php-router": "^3.0",
         "nyholm/psr7": "^1.8",
         "nyholm/psr7-server": "^1.1",
-        "slim/psr7": "^1.7"
+        "slim/psr7": "^1.7",
+        "phpmailer/phpmailer": "^6.10"
     }
   }
