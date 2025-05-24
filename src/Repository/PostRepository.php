@@ -6,62 +6,63 @@ use App\Database\Models\Post;
 
 class PostRepository
 {
-    public function paginate($page = 1, $perPage = 10, $filters = [])
+    public function paginate(int $page = 1, int $perPage = 10, array $filters = []): array
     {
-        return Post::paginate($page, $perPage, $filters);
+        return Post::paginate($page, $perPage);
     }
 
-    public function find($alias)
+    public function find($alias): ?Post
     {
         return Post::findByIdOrAlias($alias);
     }
 
-    public function findById(int $id)
+    public function findById(int $id): ?Post
     {
         return Post::findByIdOrAlias($id);
     }
-    public function findByUserId(int $userId)
+
+    public function findByUserId(int $userId): array
     {
         return Post::findByUserId($userId);
     }
 
-    public function create(array $data)
+    public function create(array $data): int
     {
         return Post::create($data);
     }
 
-    public function getComments($postId)
+    public function getComments(int $postId): array
     {
         return Post::getComments($postId);
     }
-    
-    public function incrementLikes(int $postId)
+
+    public function incrementLikes(int $postId): bool
     {
         return Post::incrementLikes($postId);
     }
 
-    public function decrementLikes(int $postId)
+    public function decrementLikes(int $postId): bool
     {
         return Post::decrementLikes($postId);
     }
 
-    public function incrementDislikes(int $postId)
+    public function incrementDislikes(int $postId): bool
     {
         return Post::incrementDislikes($postId);
     }
 
-    public function decrementDislikes(int $postId)
+    public function decrementDislikes(int $postId): bool
     {
         return Post::decrementDislikes($postId);
     }
 
-    public function toggleFavorite(int $userId, int $postId)
+    public function toggleFavorite(int $userId, int $postId): bool
     {
         return Post::toggleFavorite($userId, $postId);
     }
 
-    public function getFavoritePosts(int $userId, int $page = 1, int $perPage = 10)
+    public function getFavoritePosts(int $userId, int $page = 1, int $perPage = 10, array $columns = ['*']): array
     {
-        return Post::getFavoritePosts($userId, $page, $perPage);
+        return Post::getFavoritePosts($userId, $page, $perPage, $columns);
     }
 }
