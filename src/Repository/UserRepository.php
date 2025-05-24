@@ -21,4 +21,10 @@ class UserRepository
     {
         return User::createUser($data);
     }
+
+    public function getUserById($id)
+    {
+        return User::getUserById($id);
+    }
+    
 }

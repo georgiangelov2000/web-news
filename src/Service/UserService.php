@@ -33,11 +33,12 @@ class UserService
     {
         return $this->users->createUser($data);
     }
+    
     // Get user by id
-    // public function getUserById($id)
-    // {
-    //     return $this->users->getUserById($id);
-    // }
+    public function getUserById($id)
+    {
+        return $this->users->getUserById($id);
+    }
 
     // // Create a new user
     // public function create(array $data)

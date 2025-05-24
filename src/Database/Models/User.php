@@ -102,4 +102,11 @@ class User
         ]));
     }
 
+    public static function getUserById($id)
+    {
+        $stmt = Database::getConnection()->prepare("SELECT * FROM users WHERE id = ?");
+        $stmt->execute([$id]);
+        $data = $stmt->fetch();
+        return $data ? new static($data) : null;
+    }
 }

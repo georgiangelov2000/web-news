@@ -54,8 +54,8 @@ $totalPages = $total_pages ?? ($data['total_pages'] ?? 1);
             <div class="card-footer bg-white border-0 pb-3 px-4">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <div role="group">
-                  <a class="btn btn-outline-primary btn-sm"
-                     href="/api/users/<?= urlencode($user->id) ?>"
+                  <a class="btn btn-warning btn-sm rounded-pill shadow-sm w-100 mt-1"
+                     href="/api/user/<?= urlencode($user['id']) ?>"
                      title="View Profile">
                     <i class="bi bi-eye"></i> View Profile
                   </a>

@@ -28,7 +28,7 @@ $routes = [
     new \PhpDevCommunity\Route('users.register_form', '/api/register', [UsersApiController::class, 'registerForm'], ['GET']),
     new \PhpDevCommunity\Route('users.login_form', '/api/login', [UsersApiController::class, 'loginForm'], ['GET']),
     new \PhpDevCommunity\Route('users', '/api/users', [UsersApiController::class, 'index'], ['GET', 'HEAD']),
-    new \PhpDevCommunity\Route('users.show', '/api/users/{id}', [UsersApiController::class, 'show'], ['GET', 'HEAD']),
+    new \PhpDevCommunity\Route('users.show', '/api/user/{id}', [UsersApiController::class, 'show'], ['GET', 'HEAD']),
     new \PhpDevCommunity\Route('users.create', '/api/users/create', [UsersApiController::class, 'create'], ['POST']),
     new \PhpDevCommunity\Route('users.update', '/api/users/{id}/update', [UsersApiController::class, 'update'], ['POST']),
     new \PhpDevCommunity\Route('users.delete', '/api/users/{id}/delete', [UsersApiController::class, 'delete'], ['POST']),

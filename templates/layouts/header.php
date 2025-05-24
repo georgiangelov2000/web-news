@@ -86,18 +86,6 @@
                     </a>
                 </li>
 
-                <li class="nav-item">
-                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/about') === 0 ? ' active' : '' ?>" href="/about">
-                        <i class="bi bi-info-circle me-1"></i>About
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/contact') === 0 ? ' active' : '' ?>" href="/contact">
-                        <i class="bi bi-envelope me-1"></i>Contact
-                    </a>
-                </li>
-
                 <li class="nav-item dropdown ms-2">
                     <a class="btn btn-sm btn-outline-dark dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-circle me-1"></i> Account
