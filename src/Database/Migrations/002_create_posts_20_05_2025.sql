@@ -3,6 +3,8 @@ CREATE TABLE IF NOT EXISTS posts (
     userId INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     body TEXT NOT NULL,
+    likes INT NOT NULL DEFAULT 0,
+    dislikes INT NOT NULL DEFAULT 0,
     alias VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (userId) REFERENCES users(id)

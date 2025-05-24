@@ -4,6 +4,7 @@ namespace App\Database\Models;
 
 use App\Database\Database;
 use App\Database\Models\User;
+use App\Database\Models\Comment;
 
 class Post
 {
@@ -86,7 +87,7 @@ class Post
     {
         $stmt = Database::getConnection()->prepare("SELECT * FROM posts WHERE userId = ?");
         $stmt->execute([$userId]);
-        return array_map(fn($row) => new static($row), $stmt->fetchAll());
+        return array_map(fn($row) => new static(data: $row), $stmt->fetchAll());
     }
 
     public static function update($id, $data)
@@ -123,8 +124,45 @@ class Post
     }
 
     // Relation: Post belongs to User
-    public function user()
+    // public static function user()
+    // {
+    //     return User::find($this->userId);
+    // }
+
+    // Relation: Post has many Comments
+    public static function getComments($id)
     {
-        return User::find($this->userId);
+        $stmt = Database::getConnection()->prepare("SELECT * FROM comments WHERE post_id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+      // Database manipulation for likes/dislikes
+      public static function incrementLikes(int $postId)
+      {
+          $pdo = Database::getConnection();
+          $stmt = $pdo->prepare("UPDATE posts SET likes = likes + 1 WHERE id = ?");
+          return $stmt->execute([$postId]);
+      }
+  
+      public static function decrementLikes(int $postId)
+      {
+          $pdo = Database::getConnection();
+          $stmt = $pdo->prepare("UPDATE posts SET likes = GREATEST(likes - 1, 0) WHERE id = ?");
+          return $stmt->execute([$postId]);
+      }
+  
+      public static function incrementDislikes(int $postId)
+      {
+          $pdo = Database::getConnection();
+          $stmt = $pdo->prepare("UPDATE posts SET dislikes = dislikes + 1 WHERE id = ?");
+          return $stmt->execute([$postId]);
+      }
+  
+      public static function decrementDislikes(int $postId)
+      {
+          $pdo = Database::getConnection();
+          $stmt = $pdo->prepare("UPDATE posts SET dislikes = GREATEST(dislikes - 1, 0) WHERE id = ?");
+          return $stmt->execute([$postId]);
+      }
 }

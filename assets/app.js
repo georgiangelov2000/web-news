@@ -122,7 +122,7 @@ $(document).ready(function () {
     const $form = $(this);
     const body = $('#comment-body').val().trim();
     const url = $form.attr('action');
-
+    
     if (!body) return;
 
     $.post(url, { body: body }, function (data) {
@@ -141,8 +141,8 @@ $(document).ready(function () {
                         ${escapeHtml(data.body).replace(/\n/g, '<br>')}
                     </div>
                 </li>`;
-        $('#comment-list').prepend(comment);
-        $('#comment-body').val('');
+        $('.comment-list').prepend(comment);
+        $('.comment-body').val('');
       } else {
         alert(data.error || 'Something went wrong.');
       }

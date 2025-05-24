@@ -47,6 +47,9 @@ class PostsApiController extends ApiController
             return;
         }
 
+        $favIds = $this->session->get('favorite_posts', []);
+        $data['favIds'] = $favIds;
+
         $html = $this->view->render('posts', $data);
         $this->cache->set($relativePath, $html);
 
@@ -84,6 +87,14 @@ class PostsApiController extends ApiController
 
         // Prepare data for the view (you may want to adapt this)
         $data = ['post' => $post];
+
+        // Get comments for the post
+        $comments = $this->postService->getComments($post->id);
+        $data['comments'] = $comments;
+
+        // Get the current user's favorite post IDs from the session
+        $favIds = $this->session->get('favorite_posts', []);
+        $data['favIds'] = $favIds;
 
         // Render HTML for the single post
         $html = $this->view->render('post', $data);
@@ -134,14 +145,23 @@ class PostsApiController extends ApiController
         // Prevent disliking and liking at the same time
         $liked = $this->session->get('liked_posts', []);
         $disliked = $this->session->get('disliked_posts', []);
-        if (!in_array($postId, $liked)) {
+        $isLiked = in_array($postId, $liked);
+
+        if (!$isLiked) {
             $liked[] = $postId;
+            $this->postService->likePost((int)$postId);
         }
+        
         // Remove from disliked if present
-        $disliked = array_diff($disliked, [$postId]);
+        if (in_array($postId, $disliked)) {
+            $disliked = array_diff($disliked, [$postId]);
+            $this->postService->undislikePost((int)$postId);
+        }
+
+        // Remove from disliked if present
         $this->session->set('liked_posts', array_values($liked));
         $this->session->set('disliked_posts', array_values($disliked));
-
+    
         echo json_encode(['status' => 'success', 'liked' => true]);
     }
 
@@ -154,18 +174,25 @@ class PostsApiController extends ApiController
             echo 'Missing post ID';
             return;
         }
-
+    
         // Prevent liking and disliking at the same time
         $liked = $this->session->get('liked_posts', []);
         $disliked = $this->session->get('disliked_posts', []);
-        if (!in_array($postId, $disliked)) {
+        $isDisliked = in_array($postId, $disliked);
+    
+        if (!$isDisliked) {
             $disliked[] = $postId;
+            $this->postService->dislikePost((int)$postId);
         }
         // Remove from liked if present
-        $liked = array_diff($liked, [$postId]);
+        if (in_array($postId, $liked)) {
+            $liked = array_diff($liked, [$postId]);
+            $this->postService->unlikePost((int)$postId);
+        }
+    
         $this->session->set('disliked_posts', array_values($disliked));
         $this->session->set('liked_posts', array_values($liked));
-
+    
         echo json_encode(['status' => 'success', 'disliked' => true]);
     }
 
@@ -256,9 +283,11 @@ class PostsApiController extends ApiController
         exit;
     }
 
-    public function storeComment(array $request, int $id): void
+    public function storeComment(array $request): void
     {
-        $body = trim($request['body'] ?? '');
+
+        $body = trim($_POST['body'] ?? '');
+        $id = $request['id'] ?? null;
         $username = $_SESSION['user_name'] ?? 'Guest'; // Replace with actual session logic
     
         if (empty($body)) {

@@ -26,4 +26,29 @@ class PostRepository
         return Post::create($data);
     }
 
+    public function getComments($postId)
+    {
+        return Post::getComments($postId);
+    }
+    
+    public function incrementLikes(int $postId)
+    {
+        return Post::incrementLikes($postId);
+    }
+
+    public function decrementLikes(int $postId)
+    {
+        return Post::decrementLikes($postId);
+    }
+
+    public function incrementDislikes(int $postId)
+    {
+        return Post::incrementDislikes($postId);
+    }
+
+    public function decrementDislikes(int $postId)
+    {
+        return Post::decrementDislikes($postId);
+    }
+
 }

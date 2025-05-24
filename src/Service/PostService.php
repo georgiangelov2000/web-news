@@ -45,5 +45,30 @@ class PostService
     {
         return $this->posts->create($data);
     }
+
+    public function getComments($postId)
+    {
+        return $this->posts->getComments($postId);
+    }
+
+    public function likePost(int $postId)
+    {
+        return $this->posts->incrementLikes($postId);
+    }
+
+    public function unlikePost(int $postId)
+    {
+        return $this->posts->decrementLikes($postId);
+    }
+
+    public function dislikePost(int $postId)
+    {
+        return $this->posts->incrementDislikes($postId);
+    }
+
+    public function undislikePost(int $postId)
+    {
+        return $this->posts->decrementDislikes($postId);
+    }
     
 }

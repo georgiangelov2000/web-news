@@ -4,6 +4,7 @@ include __DIR__ . '/layouts/header.php';
 
 // Extract pagination data
 $posts = $data['posts'] ?? [];
+$favIds = $data['favIds'] ?? [];
 $currentPage = $data['current_page'] ?? 1;
 $perPage = $data['per_page'] ?? 10;
 $totalItems = $data['total_items'] ?? 0;
@@ -21,7 +22,7 @@ $totalPages = $data['total_pages'] ?? 1;
     <div class="slick-slider mb-5 bg-white rounded" id="<?= $sliderId ?>">
       <?php foreach ($group as $post): ?>
         <?php
-        $favorited = isset($_SESSION['favorite_posts']) && in_array($post['id'], $_SESSION['favorite_posts']);
+        $favorited = in_array($post['id'], $favIds);
         ?>
         <div class="widget-post">
           <div class="card h-100 amazon-fancy-box border-0">
@@ -45,21 +46,21 @@ $totalPages = $data['total_pages'] ?? 1;
             <div class="card-footer bg-white border-0 pb-3 px-4">
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <div class="btn-group-widget-actions" role="group">
-                  <a class="btn btn-outline-warning btn-sm<?= $favorited ? ' active' : '' ?>"
-                    href="/posts/<?= $post['id'] ?>/favorite"
+                  <a class="btn-post-favorite btn btn-outline-warning btn-sm<?= $favorited ? ' active' : '' ?>"
+                    role="button" data-post-id="<?= $post['id'] ?? 0 ?>"
                     title="<?= $favorited ? 'Remove from Favorites' : 'Add to Favorites' ?>">
                     <i class="bi bi-star<?= $favorited ? '-fill text-warning' : '' ?>"></i>
                   </a>
-                  <a class="btn btn-outline-success btn-sm" href="/posts/<?= $post['id'] ?>/like" title="Like">
+                  <a class="btn btn-outline-success btn-sm btn-post-like" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Like">
                     <i class="bi bi-hand-thumbs-up"></i>
                   </a>
-                  <a class="btn btn-outline-danger btn-sm" href="/posts/<?= $post['id'] ?>/dislike" title="Dislike">
+                  <a class="btn btn-outline-danger btn-sm btn-post-dislike" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Dislike">
                     <i class="bi bi-hand-thumbs-down"></i>
                   </a>
-                  <a class="btn btn-outline-primary btn-sm" href="/posts/<?= $post['id'] ?>/share" title="Share">
+                  <a class="btn btn-outline-primary btn-sm" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Share">
                     <i class="bi bi-share"></i>
                   </a>
-                  <a class="btn btn-outline-secondary btn-sm" href="/posts/<?= $post['id'] ?>/report" title="Report">
+                  <a class="btn btn-outline-secondary btn-sm btn-post-report" role="button" data-post-id="<?= $post['id'] ?? 0 ?>" title="Report">
                     <i class="bi bi-flag"></i>
                   </a>
                 </div>

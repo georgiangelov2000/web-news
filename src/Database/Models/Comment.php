@@ -6,6 +6,7 @@ use App\Database\Database;
 
 class Comment
 {
+    
     public static function create(array $data)
     {
         $db = Database::getConnection();
