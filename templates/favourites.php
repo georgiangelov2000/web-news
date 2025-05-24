@@ -57,7 +57,7 @@ $totalPages = $total_pages ?? ($data['total_pages'] ?? 1);
         <div class="empty-state">
             <i class="bi bi-star text-warning" style="font-size:2.7rem;"></i><br>
             You have not added any favorites yet.<br>
-            Go to <a href="/posts" style="color:#b38d00;text-decoration:underline;">All Posts</a> to add some!
+            Go to <a href="/api/posts" style="color:#b38d00;text-decoration:underline;">All Posts</a> to add some!
         </div>
     <?php endif; ?>
 </section>

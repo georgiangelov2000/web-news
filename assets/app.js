@@ -1,12 +1,19 @@
-// Make sure jQuery and slick.min.js are loaded before this script
+// Make sure jQuery, slick.min.js, and toastr.min.js are loaded before this script
 
 $(document).ready(function () {
 
   // Helper: Show toast or alert
   function showMessage(msg, type = "success") {
-    // You can integrate with Bootstrap Toast, Snackbar, etc.
-    // For now, use alert as fallback
-    if (window.bootstrap && $("#main-toast").length) {
+    // Use Toastr if available
+    if (window.toastr) {
+      switch (type) {
+        case "success": toastr.success(msg); break;
+        case "danger": toastr.error(msg); break;
+        case "warning": toastr.warning(msg); break;
+        case "info": toastr.info(msg); break;
+        default: toastr.info(msg); break;
+      }
+    } else if (window.bootstrap && $("#main-toast").length) {
       $("#main-toast .toast-body").text(msg);
       $("#main-toast").removeClass("bg-success bg-danger bg-warning");
       $("#main-toast").addClass("bg-" + type);
@@ -32,13 +39,16 @@ $(document).ready(function () {
           $btn.addClass('active');
           $btn.attr('title', 'Remove from Favorites');
           $btn.find('i').addClass('bi-star-fill text-warning').removeClass('bi-star');
+          showMessage('Added to favorites!', "success");
         } else {
           $btn.removeClass('active');
           $btn.attr('title', 'Add to Favorites');
           $btn.find('i').removeClass('bi-star-fill text-warning').addClass('bi-star');
+          showMessage('Removed from favorites.', "info");
         }
       },
       error: function (error) {
+        showMessage('Could not update favorite. Try again.', "danger");
         console.error('Error:', error);
       }
     });
@@ -62,6 +72,7 @@ $(document).ready(function () {
         // Update counts live
         $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-up-fill').parent().html('<i class="bi bi-hand-thumbs-up-fill text-success me-1"></i> ' + resp.likes + ' Likes');
         $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-down-fill').parent().html('<i class="bi bi-hand-thumbs-down-fill text-danger me-1"></i> ' + resp.dislikes + ' Dislikes');
+        showMessage('You liked this post!', "success");
       },
       error: function () {
         showMessage('Could not like post. Try again.', "danger");
@@ -87,6 +98,7 @@ $(document).ready(function () {
         // Update counts live
         $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-up-fill').parent().html('<i class="bi bi-hand-thumbs-up-fill text-success me-1"></i> ' + resp.likes + ' Likes');
         $btn.closest('.btn-group-widget-actions').parent().find('.bi-hand-thumbs-down-fill').parent().html('<i class="bi bi-hand-thumbs-down-fill text-danger me-1"></i> ' + resp.dislikes + ' Dislikes');
+        showMessage('You disliked this post.', "warning");
       },
       error: function () {
         showMessage('Could not dislike post. Try again.', "danger");
@@ -150,11 +162,12 @@ $(document).ready(function () {
                 </li>`;
         $('.comment-list').prepend(comment);
         $('.comment-body').val('');
+        showMessage('Comment added!', "success");
       } else {
-        alert(data.error || 'Something went wrong.');
+        showMessage(data.error || 'Something went wrong.', "danger");
       }
     }, 'json').fail(function () {
-      alert('Request failed. Try again.');
+      showMessage('Request failed. Try again.', "danger");
     });
   });
 
@@ -192,8 +205,5 @@ $(document).ready(function () {
       }
     ]
   });
-
-
-
 
 });

@@ -18,16 +18,33 @@
             </div>
         </div>
         <div class="container text-center small mt-2 text-muted">
-            Made by <a href="https://github.com/georgiangelov2000" class="text-secondary" target="_blank">georgiangelov2000</a>
+            Made by <a href="https://github.com/georgiangelov2000" class="text-secondary"
+                target="_blank">georgiangelov2000</a>
         </div>
     </div>
 </footer>
 
 <!-- Bootstrap 5 JS bundle from CDN -->
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
-<script type="text/javascript" src="/assets/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
+<script src="/assets/app.js"></script>
+
+<!-- Example: Show success notification from PHP session -->
+<?php if (!empty($_SESSION['toastr_success'])): ?>
+    <script>
+        toastr.success("<?= addslashes($_SESSION['toastr_success']) ?>");
+    </script>
+    <?php unset($_SESSION['toastr_success']); endif; ?>
+
+<!-- Example: Show error notification from PHP session -->
+<?php if (!empty($_SESSION['toastr_error'])): ?>
+    <script>
+        toastr.error("<?= addslashes($_SESSION['toastr_error']) ?>");
+    </script>
+    <?php unset($_SESSION['toastr_error']); endif; ?>
 
 </body>
+
 </html>
