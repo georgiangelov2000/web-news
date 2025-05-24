@@ -323,3 +323,39 @@ body {
     .amazon-slider-container { padding: 12px 0; }
     .amazon-product-card { padding: 10px; margin: 0 4px; }
 }
+/* ... your existing CSS ... */
+
+/* Sticky Footer styles */
+html, body {
+    height: 100%;
+}
+
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}
+
+footer {
+    flex-shrink: 0;
+    width: 100%;
+    /* Optional: use a fixed height if desired */
+    /* height: 80px; */
+    /* line-height: 80px; */
+    /* Or for auto height based on content, just leave this out */
+}
+
+/* Amazon-like basic reset and font */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #fff;
+    color: #111;
+    margin: 0;
+    padding: 0;
+}
+
+/* ... rest of your existing CSS ... */
