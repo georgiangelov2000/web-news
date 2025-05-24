@@ -267,19 +267,44 @@ class PostsApiController extends ApiController
         echo json_encode(['status' => 'success', 'reported' => true, 'reason' => $reason]);
     }
 
-    // GET /api/favourites
-    public function favoritesPage()
+    // GET /api/posts/favourites?page=1
+    public function favoritesPage(array $request = [])
     {
+        // Get the page number from the request, default to 1
+        $page = isset($request['page']) && is_numeric($request['page']) ? (int) $request['page'] : 1;
+        $perPage = 5; // Number of favorites per page
+
+        // Get favorited post IDs from session
         $favIds = $this->session->get('favorite_posts', []);
+        if (!is_array($favIds))
+            $favIds = [];
+
+        // Pagination calculations
+        $totalItems = count($favIds);
+        $totalPages = max(1, ceil($totalItems / $perPage));
+        $page = min(max($page, 1), $totalPages);
+
+        // Slice the favorites for the current page
+        $favIdsPage = array_slice($favIds, ($page - 1) * $perPage, $perPage);
+
         $favPosts = [];
-        foreach ($favIds as $id) {
+        foreach ($favIdsPage as $id) {
             $post = $this->postService->getPostById($id);
             if ($post)
                 $favPosts[] = $post;
         }
 
-        // Render the favorites page
-        echo $this->view->render('favourites', ['favPosts' => $favPosts]);
+        // Pass pagination info to the view
+        $data = [
+            'favPosts' => $favPosts,
+            'favIds' => $favIds,
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'total_items' => $totalItems,
+            'total_pages' => $totalPages,
+        ];
+
+        echo $this->view->render('favourites', $data);
     }
 
     public function createForm(): void

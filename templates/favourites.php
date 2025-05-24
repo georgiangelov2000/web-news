@@ -2,6 +2,10 @@
 $pageTitle = "My Favorite Posts";
 $customCss = '/assets/favorites.css';
 include __DIR__ . '/layouts/header.php';
+
+// Pagination variables (ensure they're set from controller)
+$currentPage = $current_page ?? ($data['current_page'] ?? 1);
+$totalPages = $total_pages ?? ($data['total_pages'] ?? 1);
 ?>
 
 <?php if (isset($customCss)): ?>
@@ -57,5 +61,28 @@ include __DIR__ . '/layouts/header.php';
         </div>
     <?php endif; ?>
 </section>
+
+  <!-- Pagination Controls -->
+<?php if ($totalPages > 1): ?>
+    <nav aria-label="Favorites pagination" class="mt-4">
+      <ul class="pagination justify-content-center amazon-pagination">
+        <li class="page-item <?= $currentPage <= 1 ? 'disabled' : '' ?>">
+          <a class="page-link" href="/api/posts/favourites/<?= max($currentPage - 1, 1) ?>" tabindex="-1">
+            <i class="bi bi-chevron-left"></i>
+          </a>
+        </li>
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+          <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
+            <a class="page-link" href="/api/posts/favourites/<?= $i ?>"><?= $i ?></a>
+          </li>
+        <?php endfor; ?>
+        <li class="page-item <?= $currentPage >= $totalPages ? 'disabled' : '' ?>">
+          <a class="page-link" href="/api/posts/favourites/<?= min($currentPage + 1, $totalPages) ?>">
+            <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+<?php endif; ?>
 
 <?php include __DIR__ . '/layouts/footer.php'; ?>
