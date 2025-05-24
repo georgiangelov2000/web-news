@@ -59,4 +59,9 @@ class PostRepository
     {
         return Post::toggleFavorite($userId, $postId);
     }
+
+    public function getFavoritePosts(int $userId, int $page = 1, int $perPage = 10)
+    {
+        return Post::getFavoritePosts($userId, $page, $perPage);
+    }
 }

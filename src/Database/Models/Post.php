@@ -13,13 +13,14 @@ class Post
 
     public function __construct($data = [])
     {
-        foreach ($data as $k => $v) $this->$k = $v;
+        foreach ($data as $k => $v)
+            $this->$k = $v;
     }
 
     public static function findByIdOrAlias($identifier)
     {
         $db = Database::getConnection();
-    
+
         if (ctype_digit((string) $identifier)) {
             // If it is a numeric value → ID
             $stmt = $db->prepare("SELECT * FROM posts WHERE id = ?");
@@ -29,11 +30,11 @@ class Post
             $stmt = $db->prepare("SELECT * FROM posts WHERE alias = ?");
             $stmt->execute([$identifier]);
         }
-    
+
         $data = $stmt->fetch();
         return $data ? new static($data) : null;
     }
-    
+
 
     public static function create($data)
     {
@@ -50,7 +51,7 @@ class Post
         static::$with = is_array($relation) ? $relation : [$relation];
         return new static;
     }
-    
+
     // Reset eager loading relations
     protected static function resetEager()
     {
@@ -61,19 +62,19 @@ class Post
     {
         $offset = ($page - 1) * $perPage;
         $db = Database::getConnection();
-    
+
         // Get total items count
         $countStmt = $db->query("SELECT COUNT(*) FROM posts");
-        $totalItems = (int)$countStmt->fetchColumn();
-        $totalPages = (int)ceil($totalItems / $perPage);
-    
+        $totalItems = (int) $countStmt->fetchColumn();
+        $totalPages = (int) ceil($totalItems / $perPage);
+
         // Get current page items
         $stmt = $db->prepare("SELECT * FROM posts LIMIT :limit OFFSET :offset");
         $stmt->bindValue(':limit', $perPage, \PDO::PARAM_INT);
         $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
         $stmt->execute();
         $posts = $stmt->fetchAll();
-    
+
         return [
             'posts' => $posts,
             'current_page' => $page,
@@ -82,7 +83,7 @@ class Post
             'total_pages' => $totalPages
         ];
     }
-    
+
     public static function findByUserId($userId)
     {
         $stmt = Database::getConnection()->prepare("SELECT * FROM posts WHERE userId = ?");
@@ -125,17 +126,17 @@ class Post
     public static function toggleFavorite($userId, $postId)
     {
         $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM favorites WHERE user_id = ? AND post_id = ?");
+        $stmt = $db->prepare("SELECT * FROM user_favorite_posts WHERE user_id = ? AND post_id = ?");
         $stmt->execute([$userId, $postId]);
         $favorite = $stmt->fetch();
 
         if ($favorite) {
             // Remove favorite
-            $stmt = $db->prepare("DELETE FROM favorites WHERE user_id = ? AND post_id = ?");
+            $stmt = $db->prepare("DELETE FROM user_favorite_posts WHERE user_id = ? AND post_id = ?");
             return $stmt->execute([$userId, $postId]);
         } else {
             // Add favorite
-            $stmt = $db->prepare("INSERT INTO favorites (user_id, post_id) VALUES (?, ?)");
+            $stmt = $db->prepare("INSERT INTO user_favorite_posts (user_id, post_id) VALUES (?, ?)");
             return $stmt->execute([$userId, $postId]);
         }
     }
@@ -146,32 +147,67 @@ class Post
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-      // Database manipulation for likes/dislikes
-      public static function incrementLikes(int $postId)
-      {
-          $pdo = Database::getConnection();
-          $stmt = $pdo->prepare("UPDATE posts SET likes = likes + 1 WHERE id = ?");
-          return $stmt->execute([$postId]);
-      }
-  
-      public static function decrementLikes(int $postId)
-      {
-          $pdo = Database::getConnection();
-          $stmt = $pdo->prepare("UPDATE posts SET likes = GREATEST(likes - 1, 0) WHERE id = ?");
-          return $stmt->execute([$postId]);
-      }
-  
-      public static function incrementDislikes(int $postId)
-      {
-          $pdo = Database::getConnection();
-          $stmt = $pdo->prepare("UPDATE posts SET dislikes = dislikes + 1 WHERE id = ?");
-          return $stmt->execute([$postId]);
-      }
-  
-      public static function decrementDislikes(int $postId)
-      {
-          $pdo = Database::getConnection();
-          $stmt = $pdo->prepare("UPDATE posts SET dislikes = GREATEST(dislikes - 1, 0) WHERE id = ?");
-          return $stmt->execute([$postId]);
-      }
+    // Database manipulation for likes/dislikes
+    public static function incrementLikes(int $postId)
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE posts SET likes = likes + 1 WHERE id = ?");
+        return $stmt->execute([$postId]);
+    }
+
+    public static function decrementLikes(int $postId)
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE posts SET likes = GREATEST(likes - 1, 0) WHERE id = ?");
+        return $stmt->execute([$postId]);
+    }
+
+    public static function incrementDislikes(int $postId)
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE posts SET dislikes = dislikes + 1 WHERE id = ?");
+        return $stmt->execute([$postId]);
+    }
+
+    public static function decrementDislikes(int $postId)
+    {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("UPDATE posts SET dislikes = GREATEST(dislikes - 1, 0) WHERE id = ?");
+        return $stmt->execute([$postId]);
+    }
+
+    public static function getFavoritePosts(int $userId, int $page = 1, int $perPage = 10)
+    {
+        $offset = ($page - 1) * $perPage;
+        $db = Database::getConnection();
+
+        // Get total items count
+        $countStmt = $db->prepare("SELECT COUNT(*) FROM user_favorite_posts WHERE user_id = ?");
+        $countStmt->execute([$userId]);
+        $totalItems = (int) $countStmt->fetchColumn();
+        $totalPages = (int) ceil($totalItems / $perPage);
+
+        // Get current page items
+        $stmt = $db->prepare("
+        SELECT p.* FROM posts p 
+        JOIN user_favorite_posts uf ON p.id = uf.post_id 
+        WHERE uf.user_id = :user_id 
+        LIMIT :limit OFFSET :offset
+    ");
+        $stmt->bindValue(':user_id', $userId, \PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $perPage, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
+
+        $posts = $stmt->fetchAll();
+
+        return [
+            'posts' => array_map(fn($row) => new static(data: $row), $posts),
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'total_items' => $totalItems,
+            'total_pages' => $totalPages
+        ];
+    }
+
 }

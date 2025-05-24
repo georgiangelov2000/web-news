@@ -76,5 +76,9 @@ class PostService
         return $this->posts->toggleFavorite($userId, $postId);
     }
 
+    public function getFavorites(int $userId, int $page = 1, int $perPage = 10)
+    {
+        return $this->posts->getFavorites($userId, $page, $perPage);
+    }
 
 }

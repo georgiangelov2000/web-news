@@ -246,10 +246,12 @@ class UsersApiController extends ApiController
         }
 
         $posts = $this->userService->findByUserId($userId);
+        $favoritePosts = $this->userService->getFavoritePosts($userId);
 
         $data = [
             'user' => $user,
-            'posts' => $posts
+            'posts' => $posts,
+            'favoritePosts' => $favoritePosts['posts'],
         ];
 
         http_response_code(200);

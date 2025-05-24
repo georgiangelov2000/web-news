@@ -47,4 +47,9 @@ class UserService
     {
         return $this->posts->findByUserId($userId);
     }
+
+    public function getFavoritePosts($userId, $page = 1, $perPage = 10)
+    {
+        return $this->posts->getFavoritePosts($userId, $page, $perPage);
+    }
 }
