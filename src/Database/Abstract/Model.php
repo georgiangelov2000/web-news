@@ -3,6 +3,7 @@
 namespace App\Database;
 
 use App\Database\Database;
+use PDO;
 
 abstract class Model
 {
@@ -11,6 +12,7 @@ abstract class Model
 
     protected array $attributes = [];
     protected array $original = [];
+    protected array $relations = [];
 
     public function __construct(array $data = [])
     {
@@ -27,7 +29,20 @@ abstract class Model
 
     public function __get($name)
     {
-        return $this->attributes[$name] ?? null;
+        if (array_key_exists($name, $this->attributes)) {
+            return $this->attributes[$name];
+        }
+
+        if (array_key_exists($name, $this->relations)) {
+            return $this->relations[$name];
+        }
+
+        if (method_exists($this, $name)) {
+            $this->relations[$name] = $this->$name();
+            return $this->relations[$name];
+        }
+
+        return null;
     }
 
     public function __set($name, $value): void
@@ -49,7 +64,7 @@ abstract class Model
         $model = new static($result);
         foreach ($with as $relation) {
             if (method_exists($model, $relation)) {
-                $model->$relation = $model->$relation();
+                $model->relations[$relation] = $model->$relation();
             }
         }
 
@@ -66,7 +81,7 @@ abstract class Model
             $model = new static($row);
             foreach ($with as $relation) {
                 if (method_exists($model, $relation)) {
-                    $model->$relation = $model->$relation();
+                    $model->relations[$relation] = $model->$relation();
                 }
             }
             return $model;
@@ -109,7 +124,7 @@ abstract class Model
 
     public function toArray(): array
     {
-        return $this->attributes;
+        return array_merge($this->attributes, $this->relations);
     }
 
     // Relationships
