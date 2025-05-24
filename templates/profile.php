@@ -11,7 +11,7 @@ $customCss = '/assets/profile.css';
 <div class="profile-container">
     <div class="profile-header">
         <div class="avatar">
-            <img src="<?= htmlspecialchars($user->avatar ?? '/assets/default-avatar.png') ?>" alt="Avatar">
+            <img class="img-fluid rounded" src="<?= htmlspecialchars($user->avatar ?? 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALgAwwMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABQMEBgECB//EADMQAQABAwEECQQBAwUAAAAAAAABAgMEEQU0U3ISFBUhMVGRobEyM3HBQRNSYSIkQkWD/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9hAUkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS9rZlduqLNqej3a1THiqIO199nlgGKmxlVxFUUXZie/Xv73vVsvh3fSV3G3a1yR8PjJzLGPOlyrWr+2O+QRerZfDu+knVsvh3fSVextHHvVRTFU01T4RVGmrbBzvVsvh3fSTq2Xw7vpLogHO9Wy+Hd9JOrZfDu+kuiAc71bL4d30k6tl8O76S6IBzlNzJxLkazXRPjpV4Sv492L1mi5EadKNdPJK25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFe3V0MKiv+21E+zna6prqmqqdapnWZdJjxFWLbifCbcRPohZeJcxq5iaZmj/jVANZ0Wz7tV3Dt1Vd9XhM/hCsWLl+uKbdEz/n+IdFj2osWaLUd/Rjx8wZAfNy5TaomuudKY8ZAuXKbVE11zpTHjL5sXqL9uLludYn2Qs7Mqyq+7WLcfTT+5fGJk14tzpU98T9VPmDpBjsXqL9uLludYn2ZARtufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFnG3a1yR8MrFjbta5I+H3crpt0TXXMRTHjIFVVNumaqpimmP5nufTn8/Mqyq9I7rceFP7ln2dtD+lH9K/P+iPpq8gV7lym1RNdc6Ux4ygZ2ZVlV92sW4+mn9yZ2ZVlV92sW4+mn9y1QAAZ8TKrxbnSp76Z+qnzdBYvUX7cXLc6xPs5hQ2LVMZNVOs6TRrMA+tufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFixVFOJbqq7oi3Ez6Iudm1ZVekaxbjwp/cq//Xf+P6c9pPkDwe6T5Gk+QPB7pPkaT5A8Huk+RpPkDxQ2LvdXJPzDQ0nyb+xY/wB3VyT8wD625961yy39mbja/E/MtDbn3rXLLf2ZuNr8T8yDaAAAAAAAAAAAAQtsRpmz/mmF1rZuHRl0xrPRrjwqBjx83GixbpquxExTETEsnXsXjUp/Y93iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7godexeNSdexeNSn9j3uJR7nY97iUe4KHXsXjUnXsXjUp/Y97iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7gx7Wv2792ibVXSiKe+VTZsaYNrXyn5aVnZE9OJvXImnyp/lVpiKaYppjSIjSIB6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=') ?>" alt="Avatar">
         </div>
         <div class="profile-info">
             <h2><?= htmlspecialchars($user->username) ?></h2>
@@ -43,7 +43,7 @@ $customCss = '/assets/profile.css';
     </div>
 
     <div class="user-favorites mt-5">
-        <h4 class="mb-3"><i class="bi bi-star-fill me-2"></i>Your Favorites</h4>
+        <h4 class="mb-3"><i class="bi bi-star-fill me-2"></i>Classified posts</h4>
 
         <!-- Tabs -->
         <ul class="nav nav-tabs" id="favoritesTab" role="tablist">

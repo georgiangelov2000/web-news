@@ -68,23 +68,22 @@ class PostsApiController extends ApiController
     // HTML API: GET /api/posts/<alias>||<id>
     public function show($request)
     {
-        // Extract alias from route params
         $alias = $request['identifier'] ?? null;
         if (!$alias) {
             http_response_code(400);
             echo "Missing post alias";
             return;
         }
-
+    
         $relativePath = $this->cacheDir . '/' . $alias . '.html';
-
+    
         // Serve from cache if available
         if ($this->cache->has($relativePath)) {
             http_response_code(200);
             echo $this->cache->get($relativePath);
             return;
         }
-
+    
         // Retrieve post by alias (or ID if necessary)
         $post = $this->postService->getPost($alias);
         
@@ -93,27 +92,35 @@ class PostsApiController extends ApiController
             echo "Post not found";
             return;
         }
-
-        // Prepare data for the view (you may want to adapt this)
-        $data = ['post' => $post];
-
-        // Get comments for the post
+    
+        // Get comments
         $comments = $this->postService->getComments($post->id);
-        $data['comments'] = $comments;
-
-        // Get the current user's favorite post IDs from the session
-        $favIds = $this->session->get('favorite_posts', []);
-        $data['favIds'] = $favIds;
-
-        // Render HTML for the single post
+    
+        // Get favorite post IDs depending on auth status
+        $userId = $this->session->get('user_id');
+        if ($userId) {
+            // Authenticated: from database
+            $favIds = $this->postService->getFavoritePostIds($userId);
+        } else {
+            // Guest: from session
+            $favIds = $this->session->get('favorite_posts', []);
+        }
+    
+        // Prepare data
+        $data = [
+            'post' => $post,
+            'comments' => $comments,
+            'favIds' => $favIds,
+        ];
+    
+        // Render view
         $html = $this->view->render('post', $data);
-
-        // Cache the result
+    
+        // Cache it
         $this->cache->set($relativePath, $html);
         http_response_code(200);
-
         echo $html;
-    }
+    }    
 
 
     // POST /posts/{id}/favorite
