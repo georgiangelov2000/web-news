@@ -170,4 +170,9 @@ abstract class Model
 
         return array_map(fn($row) => new $relatedClass($row), $rows);
     }
+
+    protected static function getConnection()
+    {
+        return Database::getConnection();
+    }
 }
