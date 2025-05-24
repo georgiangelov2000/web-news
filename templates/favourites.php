@@ -25,7 +25,7 @@ include __DIR__ . '/layouts/header.php';
                     </a>
                 </div>
                 <div class="fav-card-body">
-                    <a class="fav-card-title" href="/posts/<?= $post->id ?>">
+                    <a class="fav-card-title" href="/api/post/<?= $post->alias ?>">
                         <?= $post->title ?>
                     </a>
                     <div class="fav-card-meta">
@@ -42,7 +42,7 @@ include __DIR__ . '/layouts/header.php';
                            title="Remove from Favorites">
                             <i class="bi bi-star-fill text-warning"></i> Unfavorite
                         </a>
-                        <a class="btn" href="/api/post/<?= ($post->id) ?>" title="Read More">
+                        <a class="btn" href="/api/post/<?= ($post->alias) ?>" title="Read More">
                             <i class="bi bi-book"></i> Read
                         </a>
                     </div>

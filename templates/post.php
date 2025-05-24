@@ -58,7 +58,7 @@ $customCss = '/assets/comments.css';
             <i class="bi bi-flag"></i> Report
         </a>
     </div>
-    <a class="back-link" href="/posts"><i class="bi bi-arrow-left"></i> Back to posts</a>
+    <a class="back-link" href="/api/posts"><i class="bi bi-arrow-left"></i> Back to posts</a>
 </div>
 
 <!-- Comments section -->
