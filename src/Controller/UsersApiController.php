@@ -22,6 +22,96 @@ class UsersApiController extends ApiController
         $this->session = new Session(__DIR__ . '/../../../storage/session');
     }
 
+    // Show registration form
+    public function registerForm()
+    {
+        echo $this->view->render('register');
+    }
+
+    // Handle user registration
+    public function register(array $request)
+    {
+        $username = trim($request['username'] ?? '');
+        $email = trim($request['email'] ?? '');
+        $password = trim($request['password'] ?? '');
+
+        if (empty($username) || empty($email) || empty($password)) {
+            echo $this->view->render('register', [
+                'error' => 'All fields are required.',
+                'old' => $request,
+            ]);
+            return;
+        }
+
+        if ($this->userService->getUserByUsernameOrEmail($username, $email)) {
+            echo $this->view->render('register', [
+                'error' => 'Username or email already exists.',
+                'old' => $request,
+            ]);
+            return;
+        }
+
+        $user = $this->userService->create([
+            'username' => $username,
+            'email' => $email,
+            'password' => password_hash($password, PASSWORD_DEFAULT)
+        ]);
+
+        if ($user) {
+            $this->session->set('user_id', $user->id);
+            $this->session->set('user_name', $user->username);
+            header('Location: /');
+            exit;
+        } else {
+            echo $this->view->render('register', [
+                'error' => 'Registration failed.',
+                'old' => $request,
+            ]);
+        }
+    }
+
+    // Show login form
+    public function loginForm()
+    {
+        echo $this->view->render('login');
+    }
+
+
+    // Handle login
+    public function login(array $request)
+    {
+        $username = trim($request['username'] ?? '');
+        $password = trim($request['password'] ?? '');
+
+        if (empty($username) || empty($password)) {
+            echo $this->view->render('login', [
+                'error' => 'Username and password are required.',
+                'old' => $request,
+            ]);
+            return;
+        }
+
+        $user = $this->userService->getUserByUsernameOrEmail($username, $username);
+        if ($user && password_verify($password, $user->password)) {
+            $this->session->set('user_id', $user->id);
+            $this->session->set('user_name', $user->username);
+            header('Location: /');
+            exit;
+        } else {
+            echo $this->view->render('login', [
+                'error' => 'Invalid username or password.',
+                'old' => $request,
+            ]);
+        }
+    }
+
+    // Handle logout
+    public function logout()
+    {
+        $this->session->destroy();
+        header('Location: /login');
+        exit;
+    }
     // GET /api/users/1
     public function index(array $request = [])
     {

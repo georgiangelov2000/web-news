@@ -10,4 +10,15 @@ class UserRepository
     {
         return User::paginate($page, $perPage, $filters);
     }
+
+    // Add this method to your UserRepository
+    public function getUserByUsernameOrEmail($username, $email)
+    {
+        return User::getUserByUsernameOrEmail($username, $email);
+    }
+
+    public function createUser($data)
+    {
+        return User::createUser($data);
+    }
 }

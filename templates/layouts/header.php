@@ -63,7 +63,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts') === 0 ? ' active' : '' ?>" href="/posts">
+                    <a class="nav-link<?= strpos($_SERVER['REQUEST_URI'], '/api/posts') === 0 ? ' active' : '' ?>" href="/api/posts">
                         <i class="bi bi-card-list me-1"></i>Posts
                     </a>
                 </li>
@@ -103,9 +103,9 @@
                         <i class="bi bi-person-circle me-1"></i> Account
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
-                        <li><a class="dropdown-item" href="/login"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a></li>
-                        <li><a class="dropdown-item" href="/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a></li>
-                        <li><a class="dropdown-item" href="/profile"><i class="bi bi-person-badge me-1"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="/api/login"><i class="bi bi-box-arrow-in-right me-1"></i>Login</a></li>
+                        <li><a class="dropdown-item" href="/api/logout"><i class="bi bi-box-arrow-right me-1"></i>Logout</a></li>
+                        <li><a class="dropdown-item" href="/api/profile"><i class="bi bi-person-badge me-1"></i>Profile</a></li>
                     </ul>
                 </li>
 

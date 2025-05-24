@@ -44,7 +44,6 @@ $(document).ready(function () {
     });
   });
 
-
   // Like
   $(document).on('click', '.btn-post-like', function (e) {
     e.preventDefault();
@@ -114,8 +113,6 @@ $(document).ready(function () {
       }
     });
   });
-
-
 
   // Share (GET, just open normally)
   $(document).on('click', '.btn-post-share', function (e) {

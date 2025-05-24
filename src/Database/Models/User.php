@@ -50,7 +50,7 @@ class User
         $db = Database::getConnection();
 
         // Get total items count
-        $countStmt = $db->query("SELECT COUNT(*) FROM posts");
+        $countStmt = $db->query("SELECT COUNT(*) FROM users");
         $totalItems = (int) $countStmt->fetchColumn();
         $totalPages = (int) ceil($totalItems / $perPage);
 
@@ -62,11 +62,44 @@ class User
         $posts = $stmt->fetchAll();
 
         return [
-            'posts' => $posts,
+            'users' => $posts,
             'current_page' => $page,
             'per_page' => $perPage,
             'total_items' => $totalItems,
             'total_pages' => $totalPages
         ];
     }
+
+    public static function getUserByUsernameOrEmail($username, $email)
+    {
+        $stmt = Database::getConnection()->prepare(
+            "SELECT * FROM users WHERE username = ? OR email = ?"
+        );
+        $stmt->execute([$username, $email]);
+        $data = $stmt->fetch();
+        return $data ? new static($data) : null;
+    }
+
+    public static function createUser($data)
+    {
+        // Ensure password is set and hashed
+        $passwordHash = isset($data['password'])
+            ? (password_get_info($data['password'])['algo'] ? $data['password'] : password_hash($data['password'], PASSWORD_DEFAULT))
+            : null;
+    
+        $stmt = Database::getConnection()->prepare(
+            "INSERT INTO users (name, username, email, password) VALUES (?, ?, ?, ?)"
+        );
+        $stmt->execute([
+            $data['name'] ?? null,
+            $data['username'] ?? null,
+            $data['email'] ?? null,
+            $passwordHash
+        ]);
+        return new static(array_merge($data, [
+            'id' => Database::getConnection()->lastInsertId(),
+            'password' => $passwordHash
+        ]));
+    }
+
 }

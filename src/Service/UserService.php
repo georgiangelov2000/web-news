@@ -23,6 +23,16 @@ class UserService
         return $this->users->paginate($page, $perPage, $filters);
     }
 
+    // Add this method to your UserService
+    public function getUserByUsernameOrEmail($username, $email)
+    {
+        return $this->users->getUserByUsernameOrEmail($username, $email);
+    }
+
+    public function create(array $data)
+    {
+        return $this->users->createUser($data);
+    }
     // Get user by id
     // public function getUserById($id)
     // {
