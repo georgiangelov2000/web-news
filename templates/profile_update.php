@@ -1,8 +1,6 @@
 <?php
 include __DIR__ . '/layouts/header.php';
 
-
-
 $pageTitle = 'Update Profile';
 $customCss = '/assets/profile.css';
 $profile = $data['profile'] ?? null;
@@ -25,7 +23,7 @@ if (isset($customCss)): ?>
             </div>
         <?php endif; ?>
 
-        <form method="POST" action="/profile/update" class="profile-form">
+        <form method="POST" action="/profile/update" class="profile-form" enctype="multipart/form-data">
             <input type="hidden" name="_method" value="PUT">
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
@@ -41,13 +39,20 @@ if (isset($customCss)): ?>
                 <label for="password" class="form-label">New Password (leave blank to keep current)</label>
                 <input type="password" id="password" name="password" class="form-control">
             </div>
+            <div class="mb-3">
+                <label for="profile_image" class="form-label">Profile Image</label>
+                <input type="file" id="profile_image" name="profile_image" class="form-control" accept="image/*">
+                <?php if (!empty($profile->profile_image)): ?>
+                    <div class="mt-2">
+                        <img src="<?= htmlspecialchars($profile->profile_image) ?>" alt="Current Profile Image" class="img-thumbnail" style="max-width:120px;">
+                        <div><small>Current image</small></div>
+                    </div>
+                <?php endif; ?>
+            </div>
             <button type="submit" class="btn btn-primary">Update Profile</button>
         </form>
     </div>
 </section>
 <?php
 include __DIR__ . '/layouts/footer.php';
-// Include footer
-// include __DIR__ . '/layouts/footer.php';
 // End of profile update template
-// Include footer       
