@@ -249,7 +249,7 @@ class UserController extends ApiController
     public function profile()
     {
         $userId = $this->session->get('user_id');
-        
+
         if (!$userId) {
             header('Location: /login', true, 302);
             exit;
@@ -263,7 +263,7 @@ class UserController extends ApiController
 
         $posts = $this->userService->findByUserId($userId);
         $favoritePosts = $this->userService->getFavoritePosts($userId);
-        
+
         $data = [
             'user' => $user,
             'posts' => $posts,
@@ -305,9 +305,10 @@ class UserController extends ApiController
         echo json_encode(['success' => true]);
     }
 
-    public function getProfileForm(){
+    public function getProfileForm()
+    {
         $userId = $this->session->get('user_id');
-        
+
         if (!$userId) {
             http_response_code(401);
             echo $this->view->render('error', [
@@ -327,5 +328,66 @@ class UserController extends ApiController
 
         http_response_code(200);
         echo $this->view->render('profile_update', ['profile' => $user]);
+    }
+
+    // GET method for forgot password form
+    public function forgotPasswordForm(array $request): void
+    {
+        echo $this->view->render('forgot_password', [
+            'error' => $request['error'] ?? null,
+            'success' => $request['success'] ?? null,
+            'old' => $request['old'] ?? [],
+        ]);
+    }
+
+    // POST method for forgot password submission
+    public function forgotPassword(array $request): void
+    {
+        $email = trim($_POST['email'] ?? '');
+        $old = ['email' => $email];
+
+        if (empty($email)) {
+            http_response_code(422);
+            echo $this->view->render('forgot_password', [
+                'error' => 'Email is required.',
+                'old' => $old
+            ]);
+            return;
+        }
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            http_response_code(422);
+            echo $this->view->render('forgot_password', [
+                'error' => 'Please enter a valid email address.',
+                'old' => $old
+            ]);
+            return;
+        }
+
+        // Simulate user lookup; replace with your User model or service
+        $user = User::findByEmail($email);
+        if (!$user) {
+            http_response_code(404);
+            echo $this->view->render('forgot_password', [
+                'error' => 'No user found with that email address.',
+                'old' => $old
+            ]);
+            return;
+        }
+
+        // Generate reset token and save it (implement token logic as needed)
+        $token = bin2hex(random_bytes(32));
+        // Save token to user (implement this in your User model/service)
+        $user->savePasswordResetToken($token);
+
+        // Send reset email (implement mail logic)
+        $resetLink = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . "/reset-password?token=$token";
+        // mail($email, "Password Reset", "Reset your password here: $resetLink");
+        // For demo, just show a message
+        $success = "A password reset link has been sent to your email if it exists in our system.";
+
+        echo $this->view->render('forgot_password', [
+            'success' => $success
+        ]);
     }
 }

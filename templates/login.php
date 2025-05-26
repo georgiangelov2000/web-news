@@ -18,7 +18,10 @@ include __DIR__ . '/layouts/header.php';
       <input type="password" class="form-control" name="password" id="password" required>
     </div>
     <button type="submit" class="btn btn-primary w-100">Login</button>
-    <p class="mt-3 small">Don't have an account? <a href="/register">Register</a></p>
+    <div class="d-flex justify-content-between mt-3 small">
+      <span>Don't have an account? <a href="/register">Register</a></span>
+      <a href="/forgot-password">Forgot password?</a>
+    </div>
   </form>
 </div>
 

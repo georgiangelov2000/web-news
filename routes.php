@@ -60,7 +60,14 @@ $routes = [
     new \PhpDevCommunity\Route('profile.edit_form',  '/profile/edit',             [UserController::class, 'getProfileForm'],['GET', 'HEAD']),
     new \PhpDevCommunity\Route('profile.update',     '/profile',                  [UserController::class, 'updateProfile'],['POST']),
 
+    // Pricing page (GET)
     new \PhpDevCommunity\Route('pricing.show',     '/pricing',                  [CustomizationController::class, 'getPricingPage'],['GET', 'HEAD']),
+
+    // Forgot password (GET form)
+    new \PhpDevCommunity\Route('forgot_password.form', '/forgot-password', [UserController::class, 'forgotPasswordForm'], ['GET']),
+
+    // Forgot password (POST submit)
+    new \PhpDevCommunity\Route('forgot_password.submit', '/forgot-password', [UserController::class, 'forgotPassword'], ['POST'])
 
 ];
 
