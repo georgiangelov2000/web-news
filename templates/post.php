@@ -14,10 +14,6 @@ $customCss = '/assets/comments.css';
   <link rel="stylesheet" href="<?= htmlspecialchars($customCss) ?>">
 <?php endif; ?>
 
-<style>
-
-</style>
-
 <!-- Hero section -->
 <section class="post-hero">
     <div class="container">

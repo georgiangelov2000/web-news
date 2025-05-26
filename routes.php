@@ -26,16 +26,19 @@ $routes = [
 
     // USERS API: GET /users
     new \PhpDevCommunity\Route('users.register_form_get', '/register', [UserController::class, 'registerForm'], ['GET','HEAD']),
-    new \PhpDevCommunity\Route('users.logout', '/logout', [UserController::class, 'logout'], ['GET','HEAD']),
-    new \PhpDevCommunity\Route('users.register_form_create', '/register', [UserController::class, 'register'], ['POST']),
-    new \PhpDevCommunity\Route('users.login_form_get', '/login', [UserController::class, 'loginForm'], ['GET']),
-    new \PhpDevCommunity\Route('users.login_form_create', '/login', [UserController::class, 'login'], ['POST']),
+    new \PhpDevCommunity\Route('users.login_form_get', '/login', [UserController::class, 'loginForm'], ['GET', 'HEAD']),
     new \PhpDevCommunity\Route('users', '/users', [UserController::class, 'index'], ['GET', 'HEAD']),
+    new \PhpDevCommunity\Route('users.logout', '/logout', [UserController::class, 'logout'], ['GET','HEAD']),
     new \PhpDevCommunity\Route('users.show', '/user/{id}', [UserController::class, 'show'], ['GET', 'HEAD']),
+    new \PhpDevCommunity\Route('profile.show', '/profile', [UserController::class, 'profile'], ['GET', 'HEAD']),
+    new \PhpDevCommunity\Route('profile.update_get', '/profile/update', [UserController::class, 'getProfileForm'], ['GET', 'HEAD']),
+    new \PhpDevCommunity\Route('profile.update_put', '/profile/update', [UserController::class, 'updateProfile'], ['PUT']),
+
+    new \PhpDevCommunity\Route('users.register_form_create', '/register', [UserController::class, 'register'], ['POST']),
+    new \PhpDevCommunity\Route('users.login_form_create', '/login', [UserController::class, 'login'], ['POST']),
     new \PhpDevCommunity\Route('users.create', '/users/create', [UserController::class, 'create'], ['POST']),
     new \PhpDevCommunity\Route('users.update', '/users/{id}/update', [UserController::class, 'update'], ['POST']),
     new \PhpDevCommunity\Route('users.delete', '/users/{id}/delete', [UserController::class, 'delete'], ['POST']),
-    new \PhpDevCommunity\Route('profile.show', '/profile', [UserController::class, 'profile'], ['GET', 'HEAD']),
 ];
 
 return $routes;

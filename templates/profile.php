@@ -26,7 +26,7 @@ $customCss = '/assets/profile.css';
                 <a class="nav-link" href="/posts/create"><i class="bi bi-plus-circle me-1"></i>Create Post</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/posts/create"><i class="bi bi-plus-circle me-1"></i>Update Profile</a>
+                <a class="nav-link" href="/profile/update"><i class="bi bi-plus-circle me-1"></i>Update Profile</a>
             </li>
         </ul>
     </nav>

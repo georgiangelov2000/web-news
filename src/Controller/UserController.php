@@ -260,4 +260,60 @@ class UserController extends ApiController
         http_response_code(200);
         echo $this->view->render('profile', $data);
     }
+
+    public function updateProfile()
+    {
+        $userId = $this->session->get('user_id');
+        
+        if (!$userId) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Unauthorized access.']);
+            return;
+        }
+
+        $data = array_filter([
+            'username' => isset($_POST['username']) ? trim($_POST['username']) : null,
+            'email' => isset($_POST['email']) ? trim($_POST['email']) : null,
+            'password' => isset($_POST['password']) ? password_hash(trim($_POST['password']), PASSWORD_DEFAULT) : null
+        ]);
+
+        if (empty($data)) {
+            http_response_code(422);
+            echo json_encode(['error' => 'No data to update.']);
+            return;
+        }
+
+        if (!$this->userService->update($userId, $data)) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Profile update failed']);
+            return;
+        }
+
+        http_response_code(200);
+        echo json_encode(['success' => true]);
+    }
+
+    public function getProfileForm(){
+        $userId = $this->session->get('user_id');
+        
+        if (!$userId) {
+            http_response_code(401);
+            echo $this->view->render('error', [
+                'error' => 'Unauthorized access.'
+            ]);
+            return;
+        }
+
+        $user = $this->userService->find($userId);
+        if (!$user) {
+            http_response_code(404);
+            echo $this->view->render('error', [
+                'error' => 'User not found.'
+            ]);
+            return;
+        }
+
+        http_response_code(200);
+        echo $this->view->render('profile_update', ['profile' => $user]);
+    }
 }
