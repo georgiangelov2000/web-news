@@ -15,9 +15,9 @@ $totalPages = $data['total_pages'] ?? 1;
 
 <h4 class="mb-4">Posts</h4>
 
-<form method="GET" action="/posts" class="row mb-4 g-3 align-items-end">
+<form method="GET" action="/posts" class="row mb-4 g-3 align-items-end bg-white rounded-4 shadow-sm p-3 px-md-4 py-md-3">
   <div class="col-md-3">
-    <label for="filter_category" class="form-label">Category</label>
+    <label for="filter_category" class="form-label fw-semibold text-primary">Category</label>
     <select class="form-select" name="category" id="filter_category">
       <option value="">All</option>
       <option value="technology" <?= ($_GET['category'] ?? '') === 'technology' ? 'selected' : '' ?>>Technology</option>
@@ -25,38 +25,62 @@ $totalPages = $data['total_pages'] ?? 1;
       <option value="business" <?= ($_GET['category'] ?? '') === 'business' ? 'selected' : '' ?>>Business</option>
       <option value="health" <?= ($_GET['category'] ?? '') === 'health' ? 'selected' : '' ?>>Health</option>
       <option value="sports" <?= ($_GET['category'] ?? '') === 'sports' ? 'selected' : '' ?>>Sports</option>
+      <option value="science" <?= ($_GET['category'] ?? '') === 'science' ? 'selected' : '' ?>>Science</option>
+      <option value="entertainment" <?= ($_GET['category'] ?? '') === 'entertainment' ? 'selected' : '' ?>>Entertainment</option>
+      <option value="travel" <?= ($_GET['category'] ?? '') === 'travel' ? 'selected' : '' ?>>Travel</option>
+      <option value="education" <?= ($_GET['category'] ?? '') === 'education' ? 'selected' : '' ?>>Education</option>
+      <option value="lifestyle" <?= ($_GET['category'] ?? '') === 'lifestyle' ? 'selected' : '' ?>>Lifestyle</option>
     </select>
   </div>
 
   <div class="col-md-3">
-    <label for="filter_author" class="form-label">Author</label>
+    <label for="filter_author" class="form-label fw-semibold text-primary">Author</label>
     <input type="text" class="form-control" name="author" id="filter_author"
-      value="<?= htmlspecialchars($_GET['author'] ?? '') ?>">
+      value="<?= htmlspecialchars($_GET['author'] ?? '') ?>" placeholder="Enter author name">
   </div>
 
   <div class="col-md-2">
-    <label for="date_from" class="form-label">Date from</label>
+    <label for="filter_tags" class="form-label fw-semibold text-primary">Tags</label>
+    <input type="text" class="form-control" name="tags" id="filter_tags"
+      value="<?= htmlspecialchars($_GET['tags'] ?? '') ?>" placeholder="e.g. php, news">
+  </div>
+
+  <div class="col-md-2">
+    <label for="filter_status" class="form-label fw-semibold text-primary">Status</label>
+    <select class="form-select" name="status" id="filter_status">
+      <option value="">All</option>
+      <option value="published" <?= ($_GET['status'] ?? '') === 'published' ? 'selected' : '' ?>>Published</option>
+      <option value="draft" <?= ($_GET['status'] ?? '') === 'draft' ? 'selected' : '' ?>>Drafts</option>
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <label for="date_from" class="form-label fw-semibold text-primary">Date from</label>
     <input type="date" class="form-control" name="date_from" id="date_from"
       value="<?= htmlspecialchars($_GET['date_from'] ?? '') ?>">
   </div>
 
   <div class="col-md-2">
-    <label for="date_to" class="form-label">Date to</label>
+    <label for="date_to" class="form-label fw-semibold text-primary">Date to</label>
     <input type="date" class="form-control" name="date_to" id="date_to"
       value="<?= htmlspecialchars($_GET['date_to'] ?? '') ?>">
   </div>
 
   <div class="col-md-2">
-    <label for="sort" class="form-label">Sort by</label>
+    <label for="sort" class="form-label fw-semibold text-primary">Sort by</label>
     <select class="form-select" name="sort" id="sort">
       <option value="newest" <?= ($_GET['sort'] ?? '') === 'newest' ? 'selected' : '' ?>>Newest</option>
+      <option value="oldest" <?= ($_GET['sort'] ?? '') === 'oldest' ? 'selected' : '' ?>>Oldest</option>
       <option value="most_liked" <?= ($_GET['sort'] ?? '') === 'most_liked' ? 'selected' : '' ?>>Most Liked</option>
       <option value="most_viewed" <?= ($_GET['sort'] ?? '') === 'most_viewed' ? 'selected' : '' ?>>Most Viewed</option>
+      <option value="most_commented" <?= ($_GET['sort'] ?? '') === 'most_commented' ? 'selected' : '' ?>>Most Commented</option>
+      <option value="random" <?= ($_GET['sort'] ?? '') === 'random' ? 'selected' : '' ?>>Random</option>
     </select>
   </div>
 
-  <div class="col-md-2">
-    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+  <div class="col-md-2 d-flex flex-column gap-2">
+    <button type="submit" class="btn btn-primary w-100 shadow-sm fw-semibold"><i class="bi bi-funnel me-1"></i>Apply Filters</button>
+    <a href="/posts" class="btn btn-outline-secondary w-100"><i class="bi bi-x-circle me-1"></i>Clear</a>
   </div>
 </form>
 <hr>
