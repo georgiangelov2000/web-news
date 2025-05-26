@@ -52,10 +52,10 @@ class SessionGuard
      * Redirect to home if already authenticated (for login/register pages)
      */
     public function redirectIfAuthenticated($redirectTo = '/')
-    {
+    {   
         if ($this->isAuthenticated()) {
             header("Location: $redirectTo");
             exit;
-        }
+        } 
     }
 }

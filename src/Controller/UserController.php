@@ -232,20 +232,14 @@ class UserController extends ApiController
         $userId = $this->session->get('user_id');
         
         if (!$userId) {
-            http_response_code(401);
-            echo $this->view->render('error', [
-                'error' => 'Unauthorized access.'
-            ]);
-            return;
+            header('Location: /login', true, 302);
+            exit;
         }
 
         $user = $this->userService->find($userId);
         if (!$user) {
-            http_response_code(404);
-            echo $this->view->render('error', [
-                'error' => 'User not found.'
-            ]);
-            return;
+            header('Location: /login', true, 302);
+            exit;
         }
 
         $posts = $this->userService->findByUserId($userId);
