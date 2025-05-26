@@ -30,6 +30,14 @@ class PostController extends ApiController
     public function index(array $request)
     {
         $currentPage = isset($request['identifier']) ? (int) $request['identifier'] : 1;
+
+        if ($currentPage < 1) {
+            return $this->view->render('notfound', [
+                'message' => 'Invalid page number',
+                'code' => 400
+            ]);
+        }
+
         $posts = $this->postService->paginate($currentPage, $this->perPage);
 
         $userId = $this->session->get('user_id');
