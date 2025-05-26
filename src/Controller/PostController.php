@@ -50,7 +50,7 @@ class PostController extends ApiController
       
 
     // Render single post as HTML and cache it
-    // HTML API: GET /api/posts/<alias>||<id>
+    // HTML: GET /posts/<alias>||<id>
     public function show($request)
     {
         $alias = $request['identifier'] ?? null;
@@ -59,7 +59,8 @@ class PostController extends ApiController
             echo "Missing post alias";
             return;
         }
-    
+
+        $this->cacheDir = "post";
         $relativePath = $this->cacheDir . '/' . $alias . '.html';
         
         // Serve from cache if available
@@ -281,6 +282,8 @@ class PostController extends ApiController
     // GET /api/posts/favourites?page=1
     public function favoritesPage(array $request = [])
     {
+        var_dump(1);
+        return;
         // Get the page number from the request, default to 1
         $page = isset($request['page']) && is_numeric($request['page']) ? (int) $request['page'] : 1;
         $perPage = 5; // Number of favorites per page
