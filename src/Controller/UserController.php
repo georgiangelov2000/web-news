@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use App\Queue\DatabaseQueue;
 use App\Service\UserService;
 use App\Repository\UserRepository;
 use App\Repository\PostRepository;
 use App\Security\SessionGuard;
 use App\Service\WelcomeMailService;
+use App\Jobs\SendWelcomeMailJob;
+
 class UserController extends ApiController
 {
     protected $userService;
@@ -14,6 +17,7 @@ class UserController extends ApiController
     private $currentPage = 1;
     protected $session;
     protected $guard;
+    protected $queue; // Add queue property
 
     protected $sendWelcomeMailService;
 
@@ -27,6 +31,7 @@ class UserController extends ApiController
         $this->sendWelcomeMailService = new WelcomeMailService();
         $this->session = $GLOBALS['session'];
         $this->guard = new SessionGuard($this->session);
+        $this->queue = new DatabaseQueue();
     }
 
     public function registerForm()
@@ -72,8 +77,8 @@ class UserController extends ApiController
             $this->session->set('user_name', $user->username);
             $this->session->regenerate();
 
-            // Send welcome email
-            $this->sendWelcomeMailService->sendWelcome(
+            // Queue welcome email job
+            $job = new SendWelcomeMailJob(
                 $user->email,
                 $user->username,
                 [
@@ -82,6 +87,7 @@ class UserController extends ApiController
                     'text' => "Hi {$user->username},\n\nThank you for registering at My App. We're excited to have you on board!"
                 ]
             );
+            $this->queue->push($job);
 
             header('Location: /profile', true, 302);
             exit;

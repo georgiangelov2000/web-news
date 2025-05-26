@@ -2,6 +2,7 @@
 namespace App\Queue;
 
 use App\Contracts\QueueableJob;
+use App\Database\Database; // <-- use your singleton
 use PDO;
 
 class DatabaseQueue extends AbstractQueue
@@ -9,9 +10,9 @@ class DatabaseQueue extends AbstractQueue
     protected PDO $pdo;
     protected string $table;
 
-    public function __construct(PDO $pdo, string $table = 'queue_jobs')
+    public function __construct(string $table = 'queue_jobs')
     {
-        $this->pdo = $pdo;
+        $this->pdo = Database::getConnection(); // Use singleton
         $this->table = $table;
     }
 
