@@ -6,6 +6,7 @@ use App\Database\Models\Comment;
 use App\Service\PostService;
 use App\Repository\PostRepository;
 use App\Session\Session;
+use App\Security\SessionGuard;
 
 class PostController extends ApiController
 {
@@ -13,14 +14,17 @@ class PostController extends ApiController
     private $perPage = 10;
     private $currentPage = 1;
     protected $session;
-
+    protected $guard;
     public function __construct()
     {
         parent::__construct();
         $this->setResource('posts');
         $this->setCacheDir('posts');
+
         $this->postService = new PostService(new PostRepository());
+        
         $this->session = $GLOBALS['session'];
+        $this->guard = new SessionGuard($this->session);
     }
 
     // HTML API: GET /api/posts
@@ -282,8 +286,6 @@ class PostController extends ApiController
     // GET /api/posts/favourites?page=1
     public function favoritesPage(array $request = [])
     {
-        var_dump(1);
-        return;
         // Get the page number from the request, default to 1
         $page = isset($request['page']) && is_numeric($request['page']) ? (int) $request['page'] : 1;
         $perPage = 5; // Number of favorites per page
@@ -324,6 +326,12 @@ class PostController extends ApiController
 
     public function createForm(): void
     {
+        $isAuthenticated = $this->guard->isAuthenticated();
+        if (!$isAuthenticated) {
+            header('Location: /login', true, 302);
+            exit;
+        }
+        
         http_response_code(200);
         echo $this->view->render('create_post');
     }
