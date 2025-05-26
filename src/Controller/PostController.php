@@ -175,7 +175,7 @@ class PostController extends ApiController
         $this->session->set('disliked_posts', array_values($disliked));
 
         // Fetch updated counts
-        $post = $this->postService->getPostById((int) $postId);
+        $post = $this->postService->find((int) $postId);
         $likes = (int) ($post->likes ?? 0);
         $dislikes = (int) ($post->dislikes ?? 0);
 
