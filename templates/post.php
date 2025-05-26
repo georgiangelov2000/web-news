@@ -35,7 +35,7 @@ $customCss = '/assets/comments.css';
 <!-- Main content card -->
 <div class="post-content-card">
     <div class="post-body">
-        <?= isset($post->body) ? nl2br(htmlspecialchars($post->body)) : '' ?>
+        <?= nl2br(htmlspecialchars($post->body))?>
     </div>
     <div class="post-actions">
         <?php

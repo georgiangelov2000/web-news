@@ -15,6 +15,54 @@ $totalPages = $data['total_pages'] ?? 1;
 
 <h4 class="mb-4">Posts</h4>
 
+<form method="GET" action="/posts" class="row mb-4 g-3 align-items-end">
+  <div class="col-md-3">
+    <label for="filter_category" class="form-label">Category</label>
+    <select class="form-select" name="category" id="filter_category">
+      <option value="">All</option>
+      <option value="technology" <?= ($_GET['category'] ?? '') === 'technology' ? 'selected' : '' ?>>Technology</option>
+      <option value="politics" <?= ($_GET['category'] ?? '') === 'politics' ? 'selected' : '' ?>>Politics</option>
+      <option value="business" <?= ($_GET['category'] ?? '') === 'business' ? 'selected' : '' ?>>Business</option>
+      <option value="health" <?= ($_GET['category'] ?? '') === 'health' ? 'selected' : '' ?>>Health</option>
+      <option value="sports" <?= ($_GET['category'] ?? '') === 'sports' ? 'selected' : '' ?>>Sports</option>
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <label for="filter_author" class="form-label">Author</label>
+    <input type="text" class="form-control" name="author" id="filter_author"
+      value="<?= htmlspecialchars($_GET['author'] ?? '') ?>">
+  </div>
+
+  <div class="col-md-2">
+    <label for="date_from" class="form-label">Date from</label>
+    <input type="date" class="form-control" name="date_from" id="date_from"
+      value="<?= htmlspecialchars($_GET['date_from'] ?? '') ?>">
+  </div>
+
+  <div class="col-md-2">
+    <label for="date_to" class="form-label">Date to</label>
+    <input type="date" class="form-control" name="date_to" id="date_to"
+      value="<?= htmlspecialchars($_GET['date_to'] ?? '') ?>">
+  </div>
+
+  <div class="col-md-2">
+    <label for="sort" class="form-label">Sort by</label>
+    <select class="form-select" name="sort" id="sort">
+      <option value="newest" <?= ($_GET['sort'] ?? '') === 'newest' ? 'selected' : '' ?>>Newest</option>
+      <option value="most_liked" <?= ($_GET['sort'] ?? '') === 'most_liked' ? 'selected' : '' ?>>Most Liked</option>
+      <option value="most_viewed" <?= ($_GET['sort'] ?? '') === 'most_viewed' ? 'selected' : '' ?>>Most Viewed</option>
+    </select>
+  </div>
+
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+  </div>
+</form>
+<hr>
+
+
+
 <div class="row g-4">
   <?php
   $chunks = array_chunk($posts, 5);
@@ -24,21 +72,21 @@ $totalPages = $data['total_pages'] ?? 1;
     <div class="slick-slider mb-5 bg-white rounded" id="<?= $sliderId ?>">
       <?php foreach ($group as $post): ?>
         <?php
-          $favorited = in_array($post['id'], $favIds);
-          $liked1 = in_array($post['id'], $liked);
-          $disliked1 = in_array($post['id'], $disliked);
+        $favorited = in_array($post['id'], $favIds);
+        $liked1 = in_array($post['id'], $liked);
+        $disliked1 = in_array($post['id'], $disliked);
         ?>
         <div class="widget-post">
           <div class="card h-100 amazon-fancy-box border-0">
-          <span
-            class="badge rounded-pill bg-warning text-dark mb-2 px-3 py-2 d-inline-flex align-items-center post-widget-badge">
-            <i class="bi bi-clock me-1"></i> <?= htmlspecialchars($post['created_at']) ?>
-            <span class="mx-2">|</span>
-            <i class="bi bi-person-circle me-1"></i>
-            <?php if (!empty($post['promoted']) && $post['promoted'] == 1): ?>
-              <span class="badge bg-success ms-2">Promoted</span>
-            <?php endif; ?>
-          </span>
+            <span
+              class="badge rounded-pill bg-warning text-dark mb-2 px-3 py-2 d-inline-flex align-items-center post-widget-badge">
+              <i class="bi bi-clock me-1"></i> <?= htmlspecialchars($post['created_at']) ?>
+              <span class="mx-2">|</span>
+              <i class="bi bi-person-circle me-1"></i>
+              <?php if (!empty($post['promoted']) && $post['promoted'] == 1): ?>
+                <span class="badge bg-success ms-2">Promoted</span>
+              <?php endif; ?>
+            </span>
 
             <div class="card-img-top bg-light d-flex align-items-center justify-content-center">
               <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?w=400&q=80" alt="Default product image"
@@ -54,44 +102,26 @@ $totalPages = $data['total_pages'] ?? 1;
               <div class="d-flex justify-content-between align-items-center mb-2">
                 <div class="btn-group-widget-actions" role="group">
                   <a class="btn-post-favorite btn btn-outline-warning btn-sm<?= $favorited ? ' active' : '' ?>"
-                    role="button" 
-                    data-post-id="<?= $post['id'] ?? 0 ?>"
-                    title="<?= $favorited ? 'Remove from Favorites' : 'Add to Favorites' ?>"
-                  >
+                    role="button" data-post-id="<?= $post['id'] ?? 0 ?>"
+                    title="<?= $favorited ? 'Remove from Favorites' : 'Add to Favorites' ?>">
                     <i class="bi bi-star<?= $favorited ? '-fill text-warning' : '' ?>"></i>
                   </a>
-                  <a 
-                    class="btn btn-outline-success btn-sm btn-post-like <?= $liked1 ? ' active' : '' ?>" 
-                    role="button" 
-                    data-post-id="<?= $post['id'] ?? 0 ?>" 
-                    title="Like"
-                    title="<?= $liked1 ? 'Remove from Likes' : 'Add to Likes' ?>"
-                  >
+                  <a class="btn btn-outline-success btn-sm btn-post-like <?= $liked1 ? ' active' : '' ?>" role="button"
+                    data-post-id="<?= $post['id'] ?? 0 ?>" title="Like"
+                    title="<?= $liked1 ? 'Remove from Likes' : 'Add to Likes' ?>">
                     <i class="bi bi-hand-thumbs-up"></i>
                   </a>
-                  <a 
-                    class="btn btn-outline-danger btn-sm btn-post-dislike <?= $disliked ? ' active' : '' ?>" 
-                    role="button" 
-                    data-post-id="<?= $post['id'] ?? 0 ?>" 
-                    title="Dislike"
-                    title="<?= $disliked1 ? 'Remove from Dislikes' : 'Add to Dislikes' ?>"
-                  >
+                  <a class="btn btn-outline-danger btn-sm btn-post-dislike <?= $disliked ? ' active' : '' ?>" role="button"
+                    data-post-id="<?= $post['id'] ?? 0 ?>" title="Dislike"
+                    title="<?= $disliked1 ? 'Remove from Dislikes' : 'Add to Dislikes' ?>">
                     <i class="bi bi-hand-thumbs-down"></i>
                   </a>
-                  <a 
-                    class="btn btn-outline-primary btn-sm btn-post-share" 
-                    role="button" 
-                    data-post-id="<?= $post['id'] ?? 0 ?>" 
-                    title="Share"
-                  >
+                  <a class="btn btn-outline-primary btn-sm btn-post-share" role="button"
+                    data-post-id="<?= $post['id'] ?? 0 ?>" title="Share">
                     <i class="bi bi-share"></i>
                   </a>
-                  <a 
-                    class="btn btn-outline-secondary btn-sm btn-post-report" 
-                    role="button" 
-                    data-post-id="<?= $post['id'] ?? 0 ?>" 
-                    title="Report"
-                  >
+                  <a class="btn btn-outline-secondary btn-sm btn-post-report" role="button"
+                    data-post-id="<?= $post['id'] ?? 0 ?>" title="Report">
                     <i class="bi bi-flag"></i>
                   </a>
                 </div>

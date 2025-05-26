@@ -27,21 +27,8 @@ class PostController extends ApiController
     public function index(array $request)
     {
         $page = $request['identifier'];
+        $this->currentPage = $page ? (int) $page : 1;
     
-        if ($page) {
-            $this->currentPage = (int) $page;
-            $relativePath = $this->cacheDir . '/' . $page . '.html';
-        } else {
-            $relativePath = $this->cacheDir . '.html';
-        }
-    
-        // Serve from cache if available
-        if ($this->cache->has($relativePath)) {
-            http_response_code(200);
-            echo $this->cache->get($relativePath);
-            return;
-        }
-
         $data = $this->postService->paginate($this->currentPage, $this->perPage);
     
         $userId = $this->session->get('user_id');
@@ -52,17 +39,13 @@ class PostController extends ApiController
         }
         $data['favIds'] = $favIds;
     
-        // 👍 / 👎
         $data['liked'] = $this->session->get('liked_posts', []);
         $data['disliked'] = $this->session->get('disliked_posts', []);
     
-        $html = $this->view->render('posts', $data);
-    
-        // Cache it
-        $this->cache->set($relativePath, $html);
         http_response_code(200);
-        echo $html;
-    }    
+        echo $this->view->render('posts', $data);
+    }
+      
 
     // Render single post as HTML and cache it
     // HTML API: GET /api/posts/<alias>||<id>
@@ -76,7 +59,7 @@ class PostController extends ApiController
         }
     
         $relativePath = $this->cacheDir . '/' . $alias . '.html';
-    
+        
         // Serve from cache if available
         if ($this->cache->has($relativePath)) {
             http_response_code(200);
@@ -85,7 +68,7 @@ class PostController extends ApiController
         }
     
         // Retrieve post by alias (or ID if necessary)
-        $post = $this->postService->getPost($alias);
+        $post = $this->postService->find($alias);
         
         if (!$post) {
             http_response_code(404);
