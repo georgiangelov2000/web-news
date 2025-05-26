@@ -9,6 +9,7 @@ $routes = [
     // =============================
 
     // Post listing and details
+    new \PhpDevCommunity\Route('posts.index',        '/',                    [PostController::class, 'index'],        ['GET', 'HEAD']),
     new \PhpDevCommunity\Route('posts.index',        '/posts',                    [PostController::class, 'index'],        ['GET', 'HEAD']),
     new \PhpDevCommunity\Route('posts.show',         '/posts/{identifier}',             [PostController::class, 'index'],         ['GET', 'HEAD']),
     new \PhpDevCommunity\Route('posts.show_legacy',  '/post/{identifier}',              [PostController::class, 'show'],         ['GET', 'HEAD']), // for backward compatibility
@@ -18,7 +19,7 @@ $routes = [
     new \PhpDevCommunity\Route('posts.store',        '/posts',                    [PostController::class, 'store'],        ['POST']),
 
     // Post update/delete
-    new \PhpDevCommunity\Route('posts.edit_form',    '/posts/{post}/edit',        [PostController::class, 'editForm'],     ['GET']),
+    new \PhpDevCommunity\Route('posts.edit_form',    '/post/{post}/edit',        [PostController::class, 'editForm'],     ['GET']),
     new \PhpDevCommunity\Route('posts.update',       '/posts/{post}',             [PostController::class, 'update'],       ['POST']),
     new \PhpDevCommunity\Route('posts.delete',       '/posts/{post}',             [PostController::class, 'delete'],       ['DELETE', 'POST']),
 

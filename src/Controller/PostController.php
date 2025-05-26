@@ -453,7 +453,8 @@ class PostController extends ApiController
 
         if (empty($body)) {
             http_response_code(422);
-            return jsonError('Comment body is required.', 422);
+            jsonError('Comment body is required.', 422);
+            return; // just end the method, do not return a value
         }
 
         Comment::create([

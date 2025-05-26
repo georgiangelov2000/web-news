@@ -95,7 +95,7 @@ $customCss = '/assets/profile.css';
                                 </div>
                                 <div class="mt-2 mt-md-0 d-flex gap-2">
                                     <!-- Add extra options for payments and post actions -->
-                                    <a href="/post/update/<?= htmlspecialchars($post->id) ?>"
+                                    <a href="/post/<?= htmlspecialchars($post->id) ?>/edit"
                                         class="btn btn-sm btn-outline-primary">
                                         Update
                                     </a>
