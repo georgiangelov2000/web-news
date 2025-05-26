@@ -264,7 +264,6 @@ class UserController extends ApiController
     public function updateProfile()
     {
         $userId = $this->session->get('user_id');
-        
         if (!$userId) {
             http_response_code(401);
             echo json_encode(['error' => 'Unauthorized access.']);

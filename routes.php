@@ -31,8 +31,8 @@ $routes = [
     new \PhpDevCommunity\Route('users.logout', '/logout', [UserController::class, 'logout'], ['GET','HEAD']),
     new \PhpDevCommunity\Route('users.show', '/user/{id}', [UserController::class, 'show'], ['GET', 'HEAD']),
     new \PhpDevCommunity\Route('profile.show', '/profile', [UserController::class, 'profile'], ['GET', 'HEAD']),
+    new \PhpDevCommunity\Route('profile.update_put', '/profile/update', [UserController::class, 'updateProfile'], ['POST']),
     new \PhpDevCommunity\Route('profile.update_get', '/profile/update', [UserController::class, 'getProfileForm'], ['GET', 'HEAD']),
-    new \PhpDevCommunity\Route('profile.update_put', '/profile/update', [UserController::class, 'updateProfile'], ['PUT']),
 
     new \PhpDevCommunity\Route('users.register_form_create', '/register', [UserController::class, 'register'], ['POST']),
     new \PhpDevCommunity\Route('users.login_form_create', '/login', [UserController::class, 'login'], ['POST']),

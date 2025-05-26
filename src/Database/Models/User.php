@@ -66,4 +66,38 @@ class User extends Model
             'total_pages' => $totalPages
         ];
     }
+
+    public static function update(int $id, array $data) {
+        $db = static::getConnection();
+        $setParts = [];
+        $params = [];
+
+        if (isset($data['name'])) {
+            $setParts[] = 'name = :name';
+            $params[':name'] = $data['name'];
+        }
+        if (isset($data['username'])) {
+            $setParts[] = 'username = :username';
+            $params[':username'] = $data['username'];
+        }
+        if (isset($data['email'])) {
+            $setParts[] = 'email = :email';
+            $params[':email'] = $data['email'];
+        }
+        if (isset($data['password'])) {
+            $passwordHash = password_hash($data['password'], PASSWORD_DEFAULT);
+            $setParts[] = 'password = :password';
+            $params[':password'] = $passwordHash;
+        }
+
+        if (empty($setParts)) {
+            return false; // No fields to update
+        }
+
+        $sql = "UPDATE users SET " . implode(', ', $setParts) . " WHERE id = :id";
+        $params[':id'] = $id;
+
+        $stmt = $db->prepare($sql);
+        return $stmt->execute($params);
+    }
 }
