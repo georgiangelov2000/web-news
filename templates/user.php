@@ -32,7 +32,7 @@ include __DIR__ . '/layouts/header.php';
                             <span><?= date('Y-m-d H:i', strtotime($post->created_at)) ?></span>
                         </div>
                         <p><?= nl2br(htmlspecialchars(mb_strimwidth($post->content, 0, 220, '...'))) ?></p>
-                        <a class="btn btn-warning" href="/api/post/<?= $post->id ?>">Read more</a>
+                        <a class="btn btn-warning" href="/post/<?= $post->id ?>">Read more</a>
                     </div>
                 <?php endforeach; ?>
             </div>

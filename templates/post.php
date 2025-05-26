@@ -58,7 +58,7 @@ $customCss = '/assets/comments.css';
             <i class="bi bi-flag"></i> Report
         </a>
     </div>
-    <a class="back-link" href="/api/posts"><i class="bi bi-arrow-left"></i> Back to posts</a>
+    <a class="back-link" href="/posts"><i class="bi bi-arrow-left"></i> Back to posts</a>
 </div>
 
 <!-- Comments section -->
@@ -66,7 +66,7 @@ $customCss = '/assets/comments.css';
     <h3><i class="bi bi-chat-left-text me-1"></i> Comments</h3>
 
     <!-- Comment form -->
-    <form id="comment-form" class="comment-form mb-4" method="post" action="/api/posts/<?= $post->id ?? 0 ?>/comment">
+    <form id="comment-form" class="comment-form mb-4" method="post" action="/posts/<?= $post->id ?? 0 ?>/comment">
         <div class="mb-2">
             <textarea id="comment-body" name="body" placeholder="Write your comment..." required></textarea>
         </div>

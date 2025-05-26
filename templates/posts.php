@@ -113,7 +113,7 @@ $totalPages = $data['total_pages'] ?? 1;
               </div>
 
               <a class="btn btn-warning btn-sm rounded-pill shadow-sm w-100 mt-1"
-                href="/api/post/<?= $post['alias'] ?? 0 ?>">Open post</a>
+                href="/post/<?= $post['alias'] ?? 0 ?>">Open post</a>
             </div>
           </div>
         </div>
@@ -127,17 +127,17 @@ $totalPages = $data['total_pages'] ?? 1;
     <nav aria-label="Posts pagination" class="mt-4">
       <ul class="pagination justify-content-center amazon-pagination">
         <li class="page-item <?= $currentPage <= 1 ? 'disabled' : '' ?>">
-          <a class="page-link" href="/api/posts/<?= $currentPage - 1 ?>" tabindex="-1">
+          <a class="page-link" href="/posts/<?= $currentPage - 1 ?>" tabindex="-1">
             <i class="bi bi-chevron-left"></i>
           </a>
         </li>
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
           <li class="page-item <?= $i == $currentPage ? 'active' : '' ?>">
-            <a class="page-link" href="/api/posts/<?= $i ?>"><?= $i ?></a>
+            <a class="page-link" href="/posts/<?= $i ?>"><?= $i ?></a>
           </li>
         <?php endfor; ?>
         <li class="page-item <?= $currentPage >= $totalPages ? 'disabled' : '' ?>">
-          <a class="page-link" href="/api/posts/<?= $currentPage + 1 ?>">
+          <a class="page-link" href="/posts/<?= $currentPage + 1 ?>">
             <i class="bi bi-chevron-right"></i>
           </a>
         </li>

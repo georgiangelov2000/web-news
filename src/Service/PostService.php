@@ -3,47 +3,14 @@
 namespace App\Service;
 
 use App\Repository\PostRepository;
-
-class PostService
+use App\Service\BaseService;
+class PostService extends BaseService
 {
     protected $posts;
-
     public function __construct(PostRepository $posts)
     {
+        parent::__construct($posts);
         $this->posts = $posts;
-    }
-
-    /**
-     * Get paginated posts with optional search filter
-     */
-    public function getPaginatedPosts($page = 1, $perPage = 10, $search = '')
-    {
-        $filters = [];
-        if (!empty($search)) {
-            $filters['search'] = $search;
-        }
-        return $this->posts->paginate($page, $perPage, $filters);
-    }
-
-    /**
-     * Get a single post by ALIAS
-     */
-    public function getPost($alias)
-    {
-        return $this->posts->find($alias);
-    }
-
-    /**
-     * Get a single post by ID
-     */
-    public function getPostById(int $id)
-    {
-        return $this->posts->findById($id);
-    }
-
-    public function create(array $data)
-    {
-        return $this->posts->create($data);
     }
 
     public function getComments($postId)
@@ -78,7 +45,7 @@ class PostService
 
     public function getFavorites(int $userId, int $page = 1, int $perPage = 10)
     {
-        return $this->posts->getFavorites($userId, $page, $perPage);
+        return $this->posts->getFavoritePosts($userId, $page, $perPage);
     }
 
 }

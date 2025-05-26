@@ -7,7 +7,7 @@ use App\Repository\UserRepository;
 use App\Repository\PostRepository;
 use App\Security\SessionGuard;
 
-class UsersApiController extends ApiController
+class UserController extends ApiController
 {
     protected $userService;
     private $perPage = 10;
@@ -33,6 +33,7 @@ class UsersApiController extends ApiController
         http_response_code(200);
         echo $this->view->render('register');
     }
+
 
     public function register()
     {
@@ -69,7 +70,7 @@ class UsersApiController extends ApiController
             $this->session->set('user_name', $user->username);
             $this->session->regenerate();
 
-            header('Location: /api/profile', true, 302);
+            header('Location: /profile', true, 302);
             exit;
         }
 
@@ -105,7 +106,7 @@ class UsersApiController extends ApiController
             $this->session->set('user_name', $user->username);
             $this->session->regenerate();
 
-            header('Location: /api/profile', true, 302);
+            header('Location: /profile', true, 302);
             exit;
         }
 
@@ -117,6 +118,7 @@ class UsersApiController extends ApiController
 
     public function logout()
     {
+        var_dump($this->session->get('user_id'));
         $this->session->destroy();
         header('Location: /login', true, 302);
         exit;

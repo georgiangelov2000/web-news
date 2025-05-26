@@ -30,7 +30,7 @@ $(document).ready(function () {
     let postId = $btn.data('post-id');
     console.log('Favorite button clicked for post ID:', postId);
     $.ajax({
-      url: '/api/posts/' + postId + '/favorite',
+      url: '/posts/' + postId + '/favorite',
       type: 'POST',
       dataType: 'json',
       success: function (resp) {
@@ -60,7 +60,7 @@ $(document).ready(function () {
     let $btn = $(this);
     let postId = $btn.data('post-id');
     $.ajax({
-      url: '/api/posts/' + postId + '/like',
+      url: '/posts/' + postId + '/like',
       type: 'POST',
       dataType: 'json',
       success: function (resp) {
@@ -86,7 +86,7 @@ $(document).ready(function () {
     let $btn = $(this);
     let postId = $btn.data('post-id');
     $.ajax({
-      url: '/api/posts/' + postId + '/dislike',
+      url: '/posts/' + postId + '/dislike',
       type: 'POST',
       dataType: 'json',
       success: function (resp) {
@@ -113,7 +113,7 @@ $(document).ready(function () {
     let postId = $btn.data('post-id');
     if (!confirm("Report this post as inappropriate?")) return;
     $.ajax({
-      url: '/api/posts/' + postId + '/report',
+      url: '/posts/' + postId + '/report',
       type: 'POST',
       dataType: 'json',
       data: { reason: 'Inappropriate content' },
@@ -131,7 +131,7 @@ $(document).ready(function () {
     // Optionally, open in modal or popup
     // e.preventDefault();
     // let postId = $(this).data('post-id');
-    // $('#shareModal').modal('show').find('.modal-body').load('/api/posts/' + postId + '/share');
+    // $('#shareModal').modal('show').find('.modal-body').load('/posts/' + postId + '/share');
     // Or, just allow normal navigation
   });
 

@@ -8,7 +8,7 @@ include __DIR__ . '/layouts/header.php';
   <?php if (!empty($error)): ?>
     <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
   <?php endif; ?>
-  <form method="post" action="/api/register">
+  <form method="post" action="/register">
     <div class="mb-3">
       <label for="username" class="form-label">Username</label>
       <input type="text" class="form-control" name="username" id="username" required value="<?= htmlspecialchars($old['username'] ?? '') ?>">
@@ -22,7 +22,7 @@ include __DIR__ . '/layouts/header.php';
       <input type="password" class="form-control" name="password" id="password" required>
     </div>
     <button type="submit" class="btn btn-primary w-100">Register</button>
-    <p class="mt-3 small">Already have an account? <a href="/api/login">Login</a></p>
+    <p class="mt-3 small">Already have an account? <a href="/login">Login</a></p>
   </form>
 </div>
 

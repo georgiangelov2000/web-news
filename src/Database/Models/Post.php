@@ -113,12 +113,6 @@ class Post extends Model
         return $stmt->execute([$data['title'], $data['body'], $id]);
     }
 
-    // public static function delete(int $id): bool
-    // {
-    //     $stmt = static::getConnection()->prepare("DELETE FROM posts WHERE id = ?");
-    //     return $stmt->execute([$id]);
-    // }
-
     public static function getComments($id): array
     {
         $stmt = static::getConnection()->prepare("SELECT * FROM comments WHERE post_id = ?");
@@ -162,4 +156,29 @@ class Post extends Model
         $stmt = static::getConnection()->query("SELECT * FROM posts");
         return $stmt->fetchAll();
     }
+
+    public static function paginate(int $page = 1, int $perPage = 10): array
+    {
+        $offset = ($page - 1) * $perPage;
+        $stmt = static::getConnection()->prepare("SELECT * FROM posts LIMIT :limit OFFSET :offset");
+        $stmt->bindValue(':limit', $perPage, \PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, \PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return [
+            'posts' => $stmt->fetchAll(),
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'total_items' => static::count(),
+            'total_pages' => (int)ceil(static::count() / $perPage)
+        ];
+    }
+
+    public static function count(): int
+    {
+        $stmt = static::getConnection()->query("SELECT COUNT(*) FROM posts");
+        return (int)$stmt->fetchColumn();
+    }
+
+
 }

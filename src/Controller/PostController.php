@@ -7,7 +7,7 @@ use App\Service\PostService;
 use App\Repository\PostRepository;
 use App\Session\Session;
 
-class PostsApiController extends ApiController
+class PostController extends ApiController
 {
     protected $postService;
     private $perPage = 10;
@@ -27,42 +27,42 @@ class PostsApiController extends ApiController
     public function index(array $request)
     {
         $page = $request['identifier'];
-
+    
         if ($page) {
             $this->currentPage = (int) $page;
             $relativePath = $this->cacheDir . '/' . $page . '.html';
         } else {
             $relativePath = $this->cacheDir . '.html';
         }
-
-        $data = $this->postService->getPaginatedPosts(
-            $this->currentPage,
-            $this->perPage
-        );
-
-        // Check if the data is already cached
+    
+        // Serve from cache if available
         if ($this->cache->has($relativePath)) {
             http_response_code(200);
             echo $this->cache->get($relativePath);
             return;
         }
 
-        // Favourite posts
-        $favIds = $this->session->get('favorite_posts', []);
+        $data = $this->postService->paginate($this->currentPage, $this->perPage);
+    
+        $userId = $this->session->get('user_id');
+        if ($userId) {
+            $favIds = $this->postService->getFavorites($userId);
+        } else {
+            $favIds = $this->session->get('favorite_posts', []);
+        }
         $data['favIds'] = $favIds;
-
-        // Liked and disliked posts
-        $liked = $this->session->get('liked_posts', []);
-        $disliked = $this->session->get('disliked_posts', []);
-        $data['liked'] = $liked;
-        $data['disliked'] = $disliked;
-
+    
+        // 👍 / 👎
+        $data['liked'] = $this->session->get('liked_posts', []);
+        $data['disliked'] = $this->session->get('disliked_posts', []);
+    
         $html = $this->view->render('posts', $data);
+    
+        // Cache it
         $this->cache->set($relativePath, $html);
-
         http_response_code(200);
         echo $html;
-    }
+    }    
 
     // Render single post as HTML and cache it
     // HTML API: GET /api/posts/<alias>||<id>
@@ -315,7 +315,7 @@ class PostsApiController extends ApiController
 
         $favPosts = [];
         foreach ($favIdsPage as $id) {
-            $post = $this->postService->getPostById($id);
+            $post = $this->postService->find($id);
             if ($post)
                 $favPosts[] = $post;
         }

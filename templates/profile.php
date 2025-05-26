@@ -23,10 +23,10 @@ $customCss = '/assets/profile.css';
     <nav class="profile-actions-nav mt-3">
         <ul class="nav nav-pills">
             <li class="nav-item">
-                <a class="nav-link" href="/api/posts/create"><i class="bi bi-plus-circle me-1"></i>Create Post</a>
+                <a class="nav-link" href="/posts/create"><i class="bi bi-plus-circle me-1"></i>Create Post</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/api/posts/create"><i class="bi bi-plus-circle me-1"></i>Update Profile</a>
+                <a class="nav-link" href="/posts/create"><i class="bi bi-plus-circle me-1"></i>Update Profile</a>
             </li>
         </ul>
     </nav>
@@ -76,14 +76,14 @@ $customCss = '/assets/profile.css';
                                 </div>
                                 <span class="text-muted small"><?= date('Y-m-d H:i', strtotime($post->created_at)) ?></span>
                                 <div>
-                                    <a href="/api/post/<?= htmlspecialchars($post->alias) ?>"
+                                    <a href="/post/<?= htmlspecialchars($post->alias) ?>"
                                         class="fw-semibold"><?= htmlspecialchars($post->title) ?></a>
                                 </div>
                                 <div class="small text-secondary">
                                     <?= mb_strimwidth(strip_tags($post->body), 0, 120, '...') ?>
                                 </div>
                                 <div>
-                                    <a href="/api/post/<?= htmlspecialchars($post->alias) ?>"
+                                    <a href="/post/<?= htmlspecialchars($post->alias) ?>"
                                         class="small text-decoration-underline">View Post</a>
                                 </div>
                             </li>
@@ -107,14 +107,14 @@ $customCss = '/assets/profile.css';
                                 </div>
                                 <span class="text-muted small"><?= date('Y-m-d H:i', strtotime($post->created_at)) ?></span>
                                 <div>
-                                    <a href="/api/post/<?= htmlspecialchars($post->alias) ?>"
+                                    <a href="/post/<?= htmlspecialchars($post->alias) ?>"
                                         class="fw-semibold"><?= htmlspecialchars($post->title) ?></a>
                                 </div>
                                 <div class="small text-secondary">
                                     <?= mb_strimwidth(strip_tags($post->body), 0, 120, '...') ?>
                                 </div>
                                 <div>
-                                    <a href="/api/post/<?= htmlspecialchars($post->alias) ?>"
+                                    <a href="/post/<?= htmlspecialchars($post->alias) ?>"
                                         class="small text-decoration-underline">View Post</a>
                                 </div>
                             </li>

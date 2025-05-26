@@ -1,34 +1,19 @@
 <?php
 
 namespace App\Repository;
-
+use App\Repository\BaseRepository;
 use App\Database\Models\Post;
 
-class PostRepository
+class PostRepository extends BaseRepository
 {
-    public function paginate(int $page = 1, int $perPage = 10, array $filters = []): array
-    {
-        return Post::paginate($page, $perPage);
-    }
 
-    public function find($alias): ?Post
+    protected $model;
+    /**
+     * PostRepository constructor.
+     */
+    public function __construct($model = Post::class)
     {
-        return Post::findByIdOrAlias($alias);
-    }
-
-    public function findById(int $id): ?Post
-    {
-        return Post::findByIdOrAlias($id);
-    }
-
-    public function findByUserId(int $userId): array
-    {
-        return Post::findByUserId($userId);
-    }
-
-    public function create(array $data): int
-    {
-        return Post::create($data);
+        $this->model = $model;
     }
 
     public function getComments(int $postId): array
