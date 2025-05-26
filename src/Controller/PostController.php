@@ -90,7 +90,7 @@ class PostController extends ApiController
         $userId = $this->session->get('user_id');
         if ($userId) {
             // Authenticated: from database
-            $favIds = $this->postService->getFavoritePostIds($userId);
+            $favIds = $this->postService->getFavorites($userId);
         } else {
             // Guest: from session
             $favIds = $this->session->get('favorite_posts', []);
