@@ -12,6 +12,7 @@
                 <a href="/contact" class="text-decoration-none text-secondary">Contact</a>
                 <a href="/privacy" class="text-decoration-none text-secondary">Privacy Policy</a>
                 <a href="/terms" class="text-decoration-none text-secondary">Terms of Service</a>
+                <a href="/pricing" class="text-decoration-none text-secondary">Pricing</a>
                 <a href="/faq" class="text-decoration-none text-secondary">FAQ</a>
                 <a href="/register" class="text-decoration-none text-secondary">Register</a>
                 <a href="/login" class="text-decoration-none text-secondary">Login</a>

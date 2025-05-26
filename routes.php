@@ -2,7 +2,7 @@
 
 use App\Controller\PostController;
 use App\Controller\UserController;
-
+use App\Controller\CustomizationController;
 $routes = [
     // =============================
     // POSTS ROUTES
@@ -59,6 +59,9 @@ $routes = [
     new \PhpDevCommunity\Route('profile.show',       '/profile',                  [UserController::class, 'profile'],      ['GET', 'HEAD']),
     new \PhpDevCommunity\Route('profile.edit_form',  '/profile/edit',             [UserController::class, 'getProfileForm'],['GET', 'HEAD']),
     new \PhpDevCommunity\Route('profile.update',     '/profile',                  [UserController::class, 'updateProfile'],['POST']),
+
+    new \PhpDevCommunity\Route('pricing.show',     '/pricing',                  [CustomizationController::class, 'getPricingPage'],['GET', 'HEAD']),
+
 ];
 
 return $routes;
