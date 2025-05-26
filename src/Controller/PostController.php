@@ -10,52 +10,47 @@ use App\Security\SessionGuard;
 
 class PostController extends ApiController
 {
-    protected $postService;
-    private $perPage = 10;
-    private $currentPage = 1;
+    protected PostService $postService;
+    private int $perPage = 10;
+    private int $currentPage = 1;
     protected $session;
     protected $guard;
+
     public function __construct()
     {
         parent::__construct();
         $this->setResource('posts');
         $this->setCacheDir('posts');
-
         $this->postService = new PostService(new PostRepository());
-        
         $this->session = $GLOBALS['session'];
         $this->guard = new SessionGuard($this->session);
     }
 
-    // HTML API: GET /api/posts
+    // List posts: GET /posts
     public function index(array $request)
     {
-        $data = $this->getRequest();
+        $currentPage = isset($request['identifier']) ? (int)$request['identifier'] : 1;
+        $posts = $this->postService->paginate($currentPage, $this->perPage);
 
-        $page = $request['identifier'];
-        $this->currentPage = $page ? (int) $page : 1;
-    
-        $data = $this->postService->paginate($this->currentPage, $this->perPage);
-    
         $userId = $this->session->get('user_id');
-        if ($userId) {
-            $favIds = $this->postService->getFavorites($userId);
-        } else {
-            $favIds = $this->session->get('favorite_posts', []);
-        }
-        $data['favIds'] = $favIds;
-    
-        $data['liked'] = $this->session->get('liked_posts', []);
-        $data['disliked'] = $this->session->get('disliked_posts', []);
-    
+        $favIds = $userId 
+            ? $this->postService->getFavorites($userId)
+            : $this->session->get('favorite_posts', []);
+
+        $data = [
+            ...$posts,
+            'favIds'    => $favIds,
+            'liked'     => $this->session->get('liked_posts', []),
+            'disliked'  => $this->session->get('disliked_posts', []),
+        ];
+
         http_response_code(200);
         echo $this->view->render('posts', $data);
     }
       
 
-    // Render single post as HTML and cache it
-    // HTML: GET /posts/<alias>||<id>
-    public function show($request)
+    // Show single post: GET /posts/{alias}
+    public function show(array $request)
     {
         $alias = $request['identifier'] ?? null;
         if (!$alias) {
@@ -64,53 +59,36 @@ class PostController extends ApiController
             return;
         }
 
-        $this->cacheDir = "post";
-        $relativePath = $this->cacheDir . '/' . $alias . '.html';
-        
-        // Serve from cache if available
-        if ($this->cache->has($relativePath)) {
+        $cacheKey = "post/{$alias}.html";
+        if ($this->cache->has($cacheKey)) {
             http_response_code(200);
-            echo $this->cache->get($relativePath);
+            echo $this->cache->get($cacheKey);
             return;
         }
-    
-        // Retrieve post by alias (or ID if necessary)
+
         $post = $this->postService->find($alias);
-        
         if (!$post) {
             http_response_code(404);
             echo "Post not found";
             return;
         }
-    
-        // Get comments
-        $comments = $this->postService->getComments($post->id);
-    
-        // Get favorite post IDs depending on auth status
+
         $userId = $this->session->get('user_id');
-        if ($userId) {
-            // Authenticated: from database
-            $favIds = $this->postService->getFavorites($userId);
-        } else {
-            // Guest: from session
-            $favIds = $this->session->get('favorite_posts', []);
-        }
-    
-        // Prepare data
+        $favIds = $userId
+            ? $this->postService->getFavorites($userId)
+            : $this->session->get('favorite_posts', []);
+
         $data = [
-            'post' => $post,
-            'comments' => $comments,
-            'favIds' => $favIds,
+            'post'     => $post,
+            'comments' => $this->postService->getComments($post->id),
+            'favIds'   => $favIds,
         ];
-    
-        // Render view
+
         $html = $this->view->render('post', $data);
-    
-        // Cache it
-        $this->cache->set($relativePath, $html);
+        $this->cache->set($cacheKey, $html);
         http_response_code(200);
         echo $html;
-    }    
+    }
 
 
     // POST /posts/{id}/favorite
@@ -118,36 +96,26 @@ class PostController extends ApiController
     {
         $postId = $params['id'] ?? null;
         if (!$postId || !is_numeric($postId)) {
-            http_response_code(400);
-            echo json_encode(['status' => 'error', 'message' => 'Missing or invalid post ID']);
-            return;
+            return jsonError('Missing or invalid post ID', 400);
         }
-    
+
         $userId = $this->session->get('user_id');
-    
         if ($userId) {
-            // Authenticated user: use DB
             $isNowFavorited = $this->postService->toggleFavoriteInDb($userId, (int)$postId);
-            http_response_code(200);
-            echo json_encode(['status' => 'success', 'favorited' => $isNowFavorited]);
-        } else {
-            // Guest: store in session
-            $favorites = $this->session->get('favorite_posts', []);
-            $favorited = false;
-    
-            if (in_array($postId, $favorites)) {
-                $favorites = array_diff($favorites, [$postId]);
-                $favorited = false;
-            } else {
-                $favorites[] = $postId;
-                $favorited = true;
-            }
-    
-            $this->session->set('favorite_posts', array_values($favorites));
-    
-            http_response_code(200);
-            echo json_encode(['status' => 'success', 'favorited' => $favorited]);
+            return jsonSuccess(['favorited' => $isNowFavorited]);
         }
+
+        // Guest: session
+        $favorites = $this->session->get('favorite_posts', []);
+        if (in_array($postId, $favorites)) {
+            $favorites = array_diff($favorites, [$postId]);
+            $favorited = false;
+        } else {
+            $favorites[] = $postId;
+            $favorited = true;
+        }
+        $this->session->set('favorite_posts', array_values($favorites));
+        return jsonSuccess(['favorited' => $favorited]);
     }
     
 
@@ -156,88 +124,66 @@ class PostController extends ApiController
     {
         $postId = $params['id'] ?? null;
         if (!$postId) {
-            http_response_code(400);
-            echo 'Missing post ID';
-            return;
+            return jsonError('Missing post ID', 400);
         }
 
         // Prevent disliking and liking at the same time
         $liked = $this->session->get('liked_posts', []);
         $disliked = $this->session->get('disliked_posts', []);
-        $isLiked = in_array($postId, $liked);
 
-        if (!$isLiked) {
+        if (!in_array($postId, $liked)) {
             $liked[] = $postId;
-            $this->postService->likePost((int) $postId);
+            $this->postService->likePost((int)$postId);
         }
-
-        // Remove from disliked if present
         if (in_array($postId, $disliked)) {
             $disliked = array_diff($disliked, [$postId]);
-            $this->postService->undislikePost((int) $postId);
+            $this->postService->undislikePost((int)$postId);
         }
 
-        // Remove from disliked if present
         $this->session->set('liked_posts', array_values($liked));
         $this->session->set('disliked_posts', array_values($disliked));
-
-        // Fetch updated counts
-        $post = $this->postService->find((int) $postId);
-        $likes = (int) ($post->likes ?? 0);
-        $dislikes = (int) ($post->dislikes ?? 0);
+        $post = $this->postService->find((int)$postId);
 
         http_response_code(200);
-        echo json_encode([
-            'status' => 'success',
-            'liked' => true,
-            'likes' => $likes,
-            'dislikes' => $dislikes
+        return jsonSuccess([
+            'liked'    => true,
+            'likes'    => (int)($post->likes ?? 0),
+            'dislikes' => (int)($post->dislikes ?? 0)
         ]);
     }
 
-    // POST /posts/{id}/dislike
+    // Dislike post: POST /posts/{id}/dislike
     public function dislike(array $params)
     {
         $postId = $params['id'] ?? null;
         if (!$postId) {
-            http_response_code(400);
-            echo 'Missing post ID';
-            return;
+            return jsonError('Missing post ID', 400);
         }
 
-        // Prevent liking and disliking at the same time
         $liked = $this->session->get('liked_posts', []);
         $disliked = $this->session->get('disliked_posts', []);
-        $isDisliked = in_array($postId, $disliked);
 
-        if (!$isDisliked) {
+        if (!in_array($postId, $disliked)) {
             $disliked[] = $postId;
-            $this->postService->dislikePost((int) $postId);
+            $this->postService->dislikePost((int)$postId);
         }
-        // Remove from liked if present
         if (in_array($postId, $liked)) {
             $liked = array_diff($liked, [$postId]);
-            $this->postService->unlikePost((int) $postId);
+            $this->postService->unlikePost((int)$postId);
         }
 
         $this->session->set('disliked_posts', array_values($disliked));
         $this->session->set('liked_posts', array_values($liked));
+        $post = $this->postService->find((int)$postId);
 
-        // Fetch updated counts
-        $post = $this->postService->getPostById((int) $postId);
-        $likes = (int) ($post->likes ?? 0);
-        $dislikes = (int) ($post->dislikes ?? 0);
-
-        http_response_code(200);
-        echo json_encode([
-            'status' => 'success',
+        return jsonSuccess([
             'disliked' => true,
-            'likes' => $likes,
-            'dislikes' => $dislikes
+            'likes'    => (int)($post->likes ?? 0),
+            'dislikes' => (int)($post->dislikes ?? 0)
         ]);
     }
 
-    // GET /posts/{id}/share
+    // Share post: GET /posts/{id}/share
     public function share(array $params)
     {
         $postId = $params['id'] ?? null;
@@ -247,7 +193,7 @@ class PostController extends ApiController
             return;
         }
 
-        $post = $this->postService->getById($postId);
+        $post = $this->postService->find($postId);
         if (!$post) {
             http_response_code(404);
             echo 'Post not found';
@@ -255,7 +201,6 @@ class PostController extends ApiController
         }
 
         http_response_code(200);
-        // Simple modal/page with share info (implement this view as needed)
         echo $this->view->render('post_share', ['post' => $post]);
     }
 
@@ -286,38 +231,24 @@ class PostController extends ApiController
     // GET /api/posts/favourites?page=1
     public function favoritesPage(array $request = [])
     {
-        // Get the page number from the request, default to 1
-        $page = isset($request['page']) && is_numeric($request['page']) ? (int) $request['page'] : 1;
-        $perPage = 5; // Number of favorites per page
+        $page = isset($request['page']) && is_numeric($request['page']) ? (int)$request['page'] : 1;
+        $perPage = 5;
 
-        // Get favorited post IDs from session
-        $favIds = $this->session->get('favorite_posts', []);
-        if (!is_array($favIds))
-            $favIds = [];
-
-        // Pagination calculations
+        $favIds = $this->session->get('favorite_posts', []) ?: [];
         $totalItems = count($favIds);
         $totalPages = max(1, ceil($totalItems / $perPage));
         $page = min(max($page, 1), $totalPages);
-
-        // Slice the favorites for the current page
         $favIdsPage = array_slice($favIds, ($page - 1) * $perPage, $perPage);
 
-        $favPosts = [];
-        foreach ($favIdsPage as $id) {
-            $post = $this->postService->find($id);
-            if ($post)
-                $favPosts[] = $post;
-        }
+        $favPosts = array_filter(array_map(fn($id) => $this->postService->find($id), $favIdsPage));
 
-        // Pass pagination info to the view
         $data = [
-            'favPosts' => $favPosts,
-            'favIds' => $favIds,
+            'favPosts'     => $favPosts,
+            'favIds'       => $favIds,
             'current_page' => $page,
-            'per_page' => $perPage,
-            'total_items' => $totalItems,
-            'total_pages' => $totalPages,
+            'per_page'     => $perPage,
+            'total_items'  => $totalItems,
+            'total_pages'  => $totalPages,
         ];
 
         http_response_code(200);
@@ -342,6 +273,7 @@ class PostController extends ApiController
         $body = trim($request['body'] ?? '');
 
         if (empty($title) || empty($body)) {
+            http_response_code(422);
             echo $this->view->render('create_post', [
                 'error' => 'Title and body are required.',
                 'old' => $request,
@@ -362,14 +294,13 @@ class PostController extends ApiController
 
     public function storeComment(array $request): void
     {
-        $body = trim(string: $_POST['body'] ?? '');
+        $body = trim($_POST['body'] ?? '');
         $id = $request['id'] ?? null;
-        $username = $_SESSION['user_name'] ?? 'Guest'; // Replace with actual session logic
+        $username = $_SESSION['user_name'] ?? 'Guest';
 
         if (empty($body)) {
             http_response_code(422);
-            echo json_encode(['error' => 'Comment body is required.']);
-            return;
+            return jsonError('Comment body is required.', 422);
         }
 
         Comment::create([
@@ -379,7 +310,12 @@ class PostController extends ApiController
         ]);
 
         http_response_code(201);
-        echo json_encode(['success' => true, 'username' => $username, 'created_at' => date('Y-m-d H:i'), 'body' => $body]);
+        echo json_encode([
+            'success' => true,
+            'username' => $username,
+            'created_at' => date('Y-m-d H:i'),
+            'body' => $body
+        ]);
     }
 
 }

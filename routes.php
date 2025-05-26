@@ -10,8 +10,8 @@ $routes = [
 
     // Post listing and details
     new \PhpDevCommunity\Route('posts.index',        '/posts',                    [PostController::class, 'index'],        ['GET', 'HEAD']),
-    new \PhpDevCommunity\Route('posts.show',         '/posts/{post}',             [PostController::class, 'show'],         ['GET', 'HEAD']),
-    new \PhpDevCommunity\Route('posts.show_legacy',  '/post/{post}',              [PostController::class, 'show'],         ['GET', 'HEAD']), // for backward compatibility
+    new \PhpDevCommunity\Route('posts.show',         '/posts/{identifier}',             [PostController::class, 'index'],         ['GET', 'HEAD']),
+    new \PhpDevCommunity\Route('posts.show_legacy',  '/post/{identifier}',              [PostController::class, 'show'],         ['GET', 'HEAD']), // for backward compatibility
 
     // Post create
     new \PhpDevCommunity\Route('posts.create_form',  '/posts/create',             [PostController::class, 'createForm'],   ['GET']),

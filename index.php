@@ -6,6 +6,8 @@ use Slim\Psr7\Factory\ServerRequestFactory;
 use PhpDevCommunity\Router;
 
 $routes = require __DIR__ . '/routes.php';
+require_once __DIR__ . '/functions.php';
+
 
 $router = new Router($routes, 'http://localhost');
 
