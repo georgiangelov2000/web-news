@@ -25,7 +25,7 @@ class BaseRepository
     {
         return $this->model::paginate($page, $perPage, $filters);
     }
-    public function create(array $data): int
+    public function create(array $data) 
     {
         return $this->model::create($data);
     }

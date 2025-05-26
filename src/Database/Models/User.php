@@ -25,7 +25,7 @@ class User extends Model
         return $data ? new static($data) : null;
     }
 
-    public static function createUser(array $data): self
+    public static function create(array $data): self
     {
         $passwordHash = isset($data['password'])
             ? (password_get_info($data['password'])['algo'] ? $data['password'] : password_hash($data['password'], PASSWORD_DEFAULT))
