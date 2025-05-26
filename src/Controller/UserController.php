@@ -6,7 +6,7 @@ use App\Service\UserService;
 use App\Repository\UserRepository;
 use App\Repository\PostRepository;
 use App\Security\SessionGuard;
-
+use App\Service\WelcomeMailService;
 class UserController extends ApiController
 {
     protected $userService;
@@ -15,6 +15,8 @@ class UserController extends ApiController
     protected $session;
     protected $guard;
 
+    protected $sendWelcomeMailService;
+
     public function __construct()
     {
         parent::__construct();
@@ -22,7 +24,7 @@ class UserController extends ApiController
         $this->setCacheDir('users');
 
         $this->userService = new UserService(new UserRepository(), new PostRepository());
-
+        $this->sendWelcomeMailService = new WelcomeMailService();
         $this->session = $GLOBALS['session'];
         $this->guard = new SessionGuard($this->session);
     }
@@ -69,6 +71,17 @@ class UserController extends ApiController
             $this->session->set('user_id', $user->id);
             $this->session->set('user_name', $user->username);
             $this->session->regenerate();
+
+            // Send welcome email
+            $this->sendWelcomeMailService->sendWelcome(
+                $user->email,
+                $user->username,
+                [
+                    'subject' => 'Welcome to My App!',
+                    'html' => "<p>Hi {$user->username},</p><p>Thank you for registering at My App. We're excited to have you on board!</p>",
+                    'text' => "Hi {$user->username},\n\nThank you for registering at My App. We're excited to have you on board!"
+                ]
+            );
 
             header('Location: /profile', true, 302);
             exit;
