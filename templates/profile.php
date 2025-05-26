@@ -94,6 +94,7 @@ $customCss = '/assets/profile.css';
                                     </div>
                                 </div>
                                 <div class="mt-2 mt-md-0 d-flex gap-2">
+                                    <!-- Add extra options for payments and post actions -->
                                     <a href="/post/update/<?= htmlspecialchars($post->id) ?>"
                                         class="btn btn-sm btn-outline-primary">
                                         Update
@@ -106,6 +107,15 @@ $customCss = '/assets/profile.css';
                                             Delete
                                         </button>
                                     </form>
+
+                                    <!-- Promote/Post Payment Options -->
+                                    <div class="btn-group" role="group">
+                                        <!-- Promote button (could open a payment modal or redirect to payment page) -->
+                                        <a href="/post/promote/<?= htmlspecialchars($post->id) ?>"
+                                            class="btn btn-sm btn-outline-warning">
+                                            Promote (Pay)
+                                        </a>
+                                    </div>
                                 </div>
                             </li>
                         <?php endforeach; ?>
