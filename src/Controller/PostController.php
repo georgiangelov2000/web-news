@@ -26,6 +26,8 @@ class PostController extends ApiController
     // HTML API: GET /api/posts
     public function index(array $request)
     {
+        $data = $this->getRequest();
+
         $page = $request['identifier'];
         $this->currentPage = $page ? (int) $page : 1;
     

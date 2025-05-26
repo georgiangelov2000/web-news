@@ -95,5 +95,8 @@ class ApiController
         ];
     }    
     
+    protected function getRequest(){
+        return $_REQUEST ?? [];
+    }
 
 }
