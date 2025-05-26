@@ -5,7 +5,6 @@ include __DIR__ . '/layouts/header.php';
 
 <style>
 .create-post-wrapper {
-    max-width: 740px;
     margin: 60px auto;
     background: #fff;
     border-radius: 18px;
@@ -82,7 +81,7 @@ include __DIR__ . '/layouts/header.php';
         <div class="alert alert-danger"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
-    <form method="POST" action="/posts/create">
+    <form method="POST" action="/posts/create" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
             <input type="text"
@@ -102,6 +101,45 @@ include __DIR__ . '/layouts/header.php';
                       rows="6"
                       placeholder="Write your post content..."
                       required><?= htmlspecialchars($old['body'] ?? '') ?></textarea>
+        </div>
+
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-control" id="category" name="category" required>
+                <option value="">-- Select category --</option>
+                <option value="news" <?= (isset($old['category']) && $old['category'] === 'news') ? 'selected' : '' ?>>News</option>
+                <option value="discussion" <?= (isset($old['category']) && $old['category'] === 'discussion') ? 'selected' : '' ?>>Discussion</option>
+                <option value="tutorial" <?= (isset($old['category']) && $old['category'] === 'tutorial') ? 'selected' : '' ?>>Tutorial</option>
+                <option value="question" <?= (isset($old['category']) && $old['category'] === 'question') ? 'selected' : '' ?>>Question</option>
+                <option value="other" <?= (isset($old['category']) && $old['category'] === 'other') ? 'selected' : '' ?>>Other</option>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label for="tags" class="form-label">Tags (comma-separated)</label>
+            <input type="text"
+                   class="form-control"
+                   id="tags"
+                   name="tags"
+                   value="<?= htmlspecialchars($old['tags'] ?? '') ?>"
+                   placeholder="e.g. php, web, tutorial">
+        </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Attach Image (optional)</label>
+            <input type="file"
+                   class="form-control"
+                   id="image"
+                   name="image"
+                   accept="image/*">
+        </div>
+
+        <div class="mb-3">
+            <label for="is_published" class="form-label">Publish Status</label>
+            <select class="form-control" id="is_published" name="is_published" required>
+                <option value="1" <?= (isset($old['is_published']) && $old['is_published'] == '1') ? 'selected' : '' ?>>Publish now</option>
+                <option value="0" <?= (isset($old['is_published']) && $old['is_published'] == '0') ? 'selected' : '' ?>>Save as draft</option>
+            </select>
         </div>
 
         <div class="d-flex gap-3">
