@@ -11,7 +11,9 @@ $customCss = '/assets/profile.css';
 <div class="profile-container">
     <div class="profile-header">
         <div class="avatar">
-            <img class="img-fluid rounded" src="<?= htmlspecialchars($user->avatar ?? 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALgAwwMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABQMEBgECB//EADMQAQABAwEECQQBAwUAAAAAAAABAgMEEQU0U3ISFBUhMVGRobEyM3HBQRNSYSIkQkWD/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9hAUkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS9rZlduqLNqej3a1THiqIO199nlgGKmxlVxFUUXZie/Xv73vVsvh3fSV3G3a1yR8PjJzLGPOlyrWr+2O+QRerZfDu+knVsvh3fSVextHHvVRTFU01T4RVGmrbBzvVsvh3fSTq2Xw7vpLogHO9Wy+Hd9JOrZfDu+kuiAc71bL4d30k6tl8O76S6IBzlNzJxLkazXRPjpV4Sv492L1mi5EadKNdPJK25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFe3V0MKiv+21E+zna6prqmqqdapnWZdJjxFWLbifCbcRPohZeJcxq5iaZmj/jVANZ0Wz7tV3Dt1Vd9XhM/hCsWLl+uKbdEz/n+IdFj2osWaLUd/Rjx8wZAfNy5TaomuudKY8ZAuXKbVE11zpTHjL5sXqL9uLludYn2Qs7Mqyq+7WLcfTT+5fGJk14tzpU98T9VPmDpBjsXqL9uLludYn2ZARtufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFnG3a1yR8MrFjbta5I+H3crpt0TXXMRTHjIFVVNumaqpimmP5nufTn8/Mqyq9I7rceFP7ln2dtD+lH9K/P+iPpq8gV7lym1RNdc6Ux4ygZ2ZVlV92sW4+mn9yZ2ZVlV92sW4+mn9y1QAAZ8TKrxbnSp76Z+qnzdBYvUX7cXLc6xPs5hQ2LVMZNVOs6TRrMA+tufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFixVFOJbqq7oi3Ez6Iudm1ZVekaxbjwp/cq//Xf+P6c9pPkDwe6T5Gk+QPB7pPkaT5A8Huk+RpPkDxQ2LvdXJPzDQ0nyb+xY/wB3VyT8wD625961yy39mbja/E/MtDbn3rXLLf2ZuNr8T8yDaAAAAAAAAAAAAQtsRpmz/mmF1rZuHRl0xrPRrjwqBjx83GixbpquxExTETEsnXsXjUp/Y93iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7godexeNSdexeNSn9j3uJR7nY97iUe4KHXsXjUnXsXjUp/Y97iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7gx7Wv2792ibVXSiKe+VTZsaYNrXyn5aVnZE9OJvXImnyp/lVpiKaYppjSIjSIB6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=') ?>" alt="Avatar">
+            <img class="img-fluid rounded"
+                src="<?= htmlspecialchars($user->avatar ?? 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALgAwwMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABQMEBgECB//EADMQAQABAwEECQQBAwUAAAAAAAABAgMEEQU0U3ISFBUhMVGRobEyM3HBQRNSYSIkQkWD/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9hAUkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS9rZlduqLNqej3a1THiqIO199nlgGKmxlVxFUUXZie/Xv73vVsvh3fSV3G3a1yR8PjJzLGPOlyrWr+2O+QRerZfDu+knVsvh3fSVextHHvVRTFU01T4RVGmrbBzvVsvh3fSTq2Xw7vpLogHO9Wy+Hd9JOrZfDu+kuiAc71bL4d30k6tl8O76S6IBzlNzJxLkazXRPjpV4Sv492L1mi5EadKNdPJK25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFe3V0MKiv+21E+zna6prqmqqdapnWZdJjxFWLbifCbcRPohZeJcxq5iaZmj/jVANZ0Wz7tV3Dt1Vd9XhM/hCsWLl+uKbdEz/n+IdFj2osWaLUd/Rjx8wZAfNy5TaomuudKY8ZAuXKbVE11zpTHjL5sXqL9uLludYn2Qs7Mqyq+7WLcfTT+5fGJk14tzpU98T9VPmDpBjsXqL9uLludYn2ZARtufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFnG3a1yR8MrFjbta5I+H3crpt0TXXMRTHjIFVVNumaqpimmP5nufTn8/Mqyq9I7rceFP7ln2dtD+lH9K/P+iPpq8gV7lym1RNdc6Ux4ygZ2ZVlV92sW4+mn9yZ2ZVlV92sW4+mn9y1QAAZ8TKrxbnSp76Z+qnzdBYvUX7cXLc6xPs5hQ2LVMZNVOs6TRrMA+tufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFixVFOJbqq7oi3Ez6Iudm1ZVekaxbjwp/cq//Xf+P6c9pPkDwe6T5Gk+QPB7pPkaT5A8Huk+RpPkDxQ2LvdXJPzDQ0nyb+xY/wB3VyT8wD625961yy39mbja/E/MtDbn3rXLLf2ZuNr8T8yDaAAAAAAAAAAAAQtsRpmz/mmF1rZuHRl0xrPRrjwqBjx83GixbpquxExTETEsnXsXjUp/Y93iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7godexeNSdexeNSn9j3uJR7nY97iUe4KHXsXjUnXsXjUp/Y97iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7gx7Wv2792ibVXSiKe+VTZsaYNrXyn5aVnZE9OJvXImnyp/lVpiKaYppjSIjSIB6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=') ?>"
+                alt="Avatar">
         </div>
         <div class="profile-info">
             <h2><?= htmlspecialchars($user->username) ?></h2>
@@ -68,23 +70,42 @@ $customCss = '/assets/profile.css';
                 <?php if (!empty($posts)): ?>
                     <ul class="list-group">
                         <?php foreach ($posts as $post): ?>
-                            <li class="list-group-item">
-                                <div class="mb-2">
-                                    <img src="<?= htmlspecialchars($post->image ?: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALgAwwMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABQMEBgECB//EADMQAQABAwEECQQBAwUAAAAAAAABAgMEEQU0U3ISFBUhMVGRobEyM3HBQRNSYSIkQkWD/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9hAUkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS9rZlduqLNqej3a1THiqIO199nlgGKmxlVxFUUXZie/Xv73vVsvh3fSV3G3a1yR8PjJzLGPOlyrWr+2O+QRerZfDu+knVsvh3fSVextHHvVRTFU01T4RVGmrbBzvVsvh3fSTq2Xw7vpLogHO9Wy+Hd9JOrZfDu+kuiAc71bL4d30k6tl8O76S6IBzlNzJxLkazXRPjpV4Sv492L1mi5EadKNdPJK25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFe3V0MKiv+21E+zna6prqmqqdapnWZdJjxFWLbifCbcRPohZeJcxq5iaZmj/jVANZ0Wz7tV3Dt1Vd9XhM/hCsWLl+uKbdEz/n+IdFj2osWaLUd/Rjx8wZAfNy5TaomuudKY8ZAuXKbVE11zpTHjL5sXqL9uLludYn2Qs7Mqyq+7WLcfTT+5fGJk14tzpU98T9VPmDpBjsXqL9uLludYn2ZARtufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFnG3a1yR8MrFjbta5I+H3crpt0TXXMRTHjIFVVNumaqpimmP5nufTn8/Mqyq9I7rceFP7ln2dtD+lH9K/P+iPpq8gV7lym1RNdc6Ux4ygZ2ZVlV92sW4+mn9yZ2ZVlV92sW4+mn9y1QAAZ8TKrxbnSp76Z+qnzdBYvUX7cXLc6xPs5hQ2LVMZNVOs6TRrMA+tufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFixVFOJbqq7oi3Ez6Iudm1ZVekaxbjwp/cq//Xf+P6c9pPkDwe6T5Gk+QPB7pPkaT5A8Huk+RpPkDxQ2LvdXJPzDQ0nyb+xY/wB3VyT8wD625961yy39mbja/E/MtDbn3rXLLf2ZuNr8T8yDaAAAAAAAAAAAAQtsRpmz/mmF1rZuHRl0xrPRrjwqBjx83GixbpquxExTETEsnXsXjUp/Y93iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7godexeNSdexeNSn9j3uJR7nY97iUe4KHXsXjUnXsXjUp/Y97iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7gx7Wv2792ibVXSiKe+VTZsaYNrXyn5aVnZE9OJvXImnyp/lVpiKaYppjSIjSIB6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=') ?>"
-                                        alt="Post image" class="img-fluid rounded mb-2"
-                                        style="max-height: 200px; object-fit: cover;">
+                            <li
+                                class="list-group-item d-flex flex-column flex-md-row align-items-md-center justify-content-between">
+                                <div class="mb-2 mb-md-0 d-flex flex-column flex-md-row align-items-md-center">
+                                    <img class="img-fluid rounded"
+                                        style="max-height: 100px; object-fit: cover; margin-right: 10px;"
+                                        src="<?= htmlspecialchars($user->avatar ?? 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALgAwwMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABQMEBgECB//EADMQAQABAwEECQQBAwUAAAAAAAABAgMEEQU0U3ISFBUhMVGRobEyM3HBQRNSYSIkQkWD/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9hAUkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS9rZlduqLNqej3a1THiqIO199nlgGKmxlVxFUUXZie/Xv73vVsvh3fSV3G3a1yR8PjJzLGPOlyrWr+2O+QRerZfDu+knVsvh3fSVextHHvVRTFU01T4RVGmrbBzvVsvh3fSTq2Xw7vpLogHO9Wy+Hd9JOrZfDu+kuiAc71bL4d30k6tl8O76S6IBzlNzJxLkazXRPjpV4Sv492L1mi5EadKNdPJK25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFe3V0MKiv+21E+zna6prqmqqdapnWZdJjxFWLbifCbcRPohZeJcxq5iaZmj/jVANZ0Wz7tV3Dt1Vd9XhM/hCsWLl+uKbdEz/n+IdFj2osWaLUd/Rjx8wZAfNy5TaomuudKY8ZAuXKbVE11zpTHjL5sXqL9uLludYn2Qs7Mqyq+7WLcfTT+5fGJk14tzpU98T9VPmDpBjsXqL9uLludYn2ZARtufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFnG3a1yR8MrFjbta5I+H3crpt0TXXMRTHjIFVVNumaqpimmP5nufTn8/Mqyq9I7rceFP7ln2dtD+lH9K/P+iPpq8gV7lym1RNdc6Ux4ygZ2ZVlV92sW4+mn9yZ2ZVlV92sW4+mn9y1QAAZ8TKrxbnSp76Z+qnzdBYvUX7cXLc6xPs5hQ2LVMZNVOs6TRrMA+tufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFixVFOJbqq7oi3Ez6Iudm1ZVekaxbjwp/cq//Xf+P6c9pPkDwe6T5Gk+QPB7pPkaT5A8Huk+RpPkDxQ2LvdXJPzDQ0nyb+xY/wB3VyT8wD625961yy39mbja/E/MtDbn3rXLLf2ZuNr8T8yDaAAAAAAAAAAAAQtsRpmz/mmF1rZuHRl0xrPRrjwqBjx83GixbpquxExTETEsnXsXjUp/Y93iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7godexeNSdexeNSn9j3uJR7nY97iUe4KHXsXjUnXsXjUp/Y97iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7gx7Wv2792ibVXSiKe+VTZsaYNrXyn5aVnZE9OJvXImnyp/lVpiKaYppjSIjSIB6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=') ?>"
+                                        alt="Avatar">
+                                    <div>
+                                        <span
+                                            class="text-muted small"><?= date('Y-m-d H:i', strtotime($post->created_at)) ?></span>
+                                        <div>
+                                            <a href="/post/<?= htmlspecialchars($post->alias) ?>"
+                                                class="fw-semibold"><?= htmlspecialchars($post->title) ?></a>
+                                        </div>
+                                        <div class="small text-secondary">
+                                            <?= mb_strimwidth(strip_tags($post->body), 0, 120, '...') ?>
+                                        </div>
+                                        <div>
+                                            <a href="/post/<?= htmlspecialchars($post->alias) ?>"
+                                                class="small text-decoration-underline">View Post</a>
+                                        </div>
+                                    </div>
                                 </div>
-                                <span class="text-muted small"><?= date('Y-m-d H:i', strtotime($post->created_at)) ?></span>
-                                <div>
-                                    <a href="/post/<?= htmlspecialchars($post->alias) ?>"
-                                        class="fw-semibold"><?= htmlspecialchars($post->title) ?></a>
-                                </div>
-                                <div class="small text-secondary">
-                                    <?= mb_strimwidth(strip_tags($post->body), 0, 120, '...') ?>
-                                </div>
-                                <div>
-                                    <a href="/post/<?= htmlspecialchars($post->alias) ?>"
-                                        class="small text-decoration-underline">View Post</a>
+                                <div class="mt-2 mt-md-0 d-flex gap-2">
+                                    <a href="/post/update/<?= htmlspecialchars($post->id) ?>"
+                                        class="btn btn-sm btn-outline-primary">
+                                        Update
+                                    </a>
+                                    <form action="/post/delete/<?= htmlspecialchars($post->id) ?>" method="POST"
+                                        class="d-inline"
+                                        onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                        <input type="hidden" name="_method" value="DELETE">
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </div>
                             </li>
                         <?php endforeach; ?>
@@ -103,7 +124,7 @@ $customCss = '/assets/profile.css';
                                 <div class="mb-2">
                                     <img src="<?= htmlspecialchars($post->image ?: 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIALgAwwMBIgACEQEDEQH/xAAbAAEBAAMBAQEAAAAAAAAAAAAABQMEBgECB//EADMQAQABAwEECQQBAwUAAAAAAAABAgMEEQU0U3ISFBUhMVGRobEyM3HBQRNSYSIkQkWD/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAL/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwD9hAUkAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAS9rZlduqLNqej3a1THiqIO199nlgGKmxlVxFUUXZie/Xv73vVsvh3fSV3G3a1yR8PjJzLGPOlyrWr+2O+QRerZfDu+knVsvh3fSVextHHvVRTFU01T4RVGmrbBzvVsvh3fSTq2Xw7vpLogHO9Wy+Hd9JOrZfDu+kuiAc71bL4d30k6tl8O76S6IBzlNzJxLkazXRPjpV4Sv492L1mi5EadKNdPJK25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFe3V0MKiv+21E+zna6prqmqqdapnWZdJjxFWLbifCbcRPohZeJcxq5iaZmj/jVANZ0Wz7tV3Dt1Vd9XhM/hCsWLl+uKbdEz/n+IdFj2osWaLUd/Rjx8wZAfNy5TaomuudKY8ZAuXKbVE11zpTHjL5sXqL9uLludYn2Qs7Mqyq+7WLcfTT+5fGJk14tzpU98T9VPmDpBjsXqL9uLludYn2ZARtufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFnG3a1yR8MrFjbta5I+H3crpt0TXXMRTHjIFVVNumaqpimmP5nufTn8/Mqyq9I7rceFP7ln2dtD+lH9K/P+iPpq8gV7lym1RNdc6Ux4ygZ2ZVlV92sW4+mn9yZ2ZVlV92sW4+mn9y1QAAZ8TKrxbnSp76Z+qnzdBYvUX7cXLc6xPs5hQ2LVMZNVOs6TRrMA+tufetcst/Zm42vxPzLQ25961yy39mbja/E/Mg2gAAAAAAAAAAAEHa++zywvIO199nlgFixVFOJbqq7oi3Ez6Iudm1ZVekaxbjwp/cq//Xf+P6c9pPkDwe6T5Gk+QPB7pPkaT5A8Huk+RpPkDxQ2LvdXJPzDQ0nyb+xY/wB3VyT8wD625961yy39mbja/E/MtDbn3rXLLf2ZuNr8T8yDaAAAAAAAAAAAAQtsRpmz/mmF1rZuHRl0xrPRrjwqBjx83GixbpquxExTETEsnXsXjUp/Y93iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7godexeNSdexeNSn9j3uJR7nY97iUe4KHXsXjUnXsXjUp/Y97iUe52Pe4lHuCh17F41J17F41Kf2Pe4lHudj3uJR7gx7Wv2792ibVXSiKe+VTZsaYNrXyn5aVnZE9OJvXImnyp/lVpiKaYppjSIjSIB6AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAD/9k=') ?>"
                                         alt="Post image" class="img-fluid rounded mb-2"
-                                        style="max-height: 200px; object-fit: cover;">
+                                        style="max-height: 150px; object-fit: cover;">
                                 </div>
                                 <span class="text-muted small"><?= date('Y-m-d H:i', strtotime($post->created_at)) ?></span>
                                 <div>
