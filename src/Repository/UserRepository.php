@@ -3,12 +3,16 @@
 namespace App\Repository;
 
 use App\Database\Models\User;
-
-class UserRepository
+use App\Repository\BaseRepository;
+class UserRepository extends BaseRepository
 {
-    public function paginate(int $page = 1, int $perPage = 10): array
+    protected $model;
+    /**
+     * UserRepository constructor.
+     */
+    public function __construct($model = User::class)
     {
-        return User::paginate($page, $perPage);
+        $this->model = $model;
     }
 
     public function getUserByUsernameOrEmail(string $username, string $email): ?User
@@ -16,13 +20,7 @@ class UserRepository
         return User::getUserByUsernameOrEmail($username, $email);
     }
 
-    public function createUser(array $data): User
-    {
-        return User::createUser($data);
-    }
-
-    public function getUserById(int $id): ?User
-    {
-        return User::find($id);
-    }
+    public function find($id) {
+        return $this->model::find($id);
+    } 
 }

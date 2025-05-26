@@ -50,4 +50,9 @@ class PostRepository extends BaseRepository
     {
         return Post::getFavoritePosts($userId, $page, $perPage, $columns);
     }
+
+    public function findByUserId(int $userId, int $page = 1, int $perPage = 10): array
+    {
+        return Post::findByUserId($userId);
+    }
 }

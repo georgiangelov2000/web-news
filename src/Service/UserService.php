@@ -4,8 +4,9 @@ namespace App\Service;
 
 use App\Repository\UserRepository;
 use App\Repository\PostRepository;
+use App\Service\BaseService;
 
-class UserService
+class UserService extends BaseService
 {
     protected $users;
     protected $posts;
@@ -14,6 +15,7 @@ class UserService
     {
         $this->users = $users;
         $this->posts = $posts;
+        parent::__construct($users);
     }
 
     // Get paginated users for the given page and perPage
@@ -30,17 +32,6 @@ class UserService
     public function getUserByUsernameOrEmail($username, $email)
     {
         return $this->users->getUserByUsernameOrEmail($username, $email);
-    }
-
-    public function create(array $data)
-    {
-        return $this->users->createUser($data);
-    }
-    
-    // Get user by id
-    public function getUserById($id)
-    {
-        return $this->users->getUserById($id);
     }
 
     public function findByUserId($userId)

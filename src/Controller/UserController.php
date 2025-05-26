@@ -230,6 +230,7 @@ class UserController extends ApiController
     public function profile()
     {
         $userId = $this->session->get('user_id');
+        
         if (!$userId) {
             http_response_code(401);
             echo $this->view->render('error', [
@@ -238,7 +239,7 @@ class UserController extends ApiController
             return;
         }
 
-        $user = $this->userService->getUserById($userId);
+        $user = $this->userService->find($userId);
         if (!$user) {
             http_response_code(404);
             echo $this->view->render('error', [
@@ -249,7 +250,7 @@ class UserController extends ApiController
 
         $posts = $this->userService->findByUserId($userId);
         $favoritePosts = $this->userService->getFavoritePosts($userId);
-
+        
         $data = [
             'user' => $user,
             'posts' => $posts,
